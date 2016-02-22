@@ -347,13 +347,6 @@ void BaseHero::onAttack(ClickState clickState)
 	this->_ifClickAttack = clickState;
 }
 
-bool BaseHero::ifCollide(cocos2d::Rect rect)
-{
-	return _Sprite->getBoundingBox().intersectsRect(rect);
-}
-
-void BaseHero::onFloorCollide(cocos2d::Point point, FloorOperate opType){}
-
 cocos2d::Size BaseHero::getVisualSize()
 {
 	return _Sprite->getBoundingBox().size;

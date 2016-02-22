@@ -60,6 +60,9 @@
     <ClCompile Include="..\Classes\Weapons\Bianbian.cpp">
       <Filter>src\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Base\BaseElement.cpp">
+      <Filter>src\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Weapons\WeaponDefine.h">
       <Filter>src\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Base\BaseElement.h">
+      <Filter>src\Base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

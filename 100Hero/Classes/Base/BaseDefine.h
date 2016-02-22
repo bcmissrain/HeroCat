@@ -47,7 +47,7 @@ enum class ClickState
 	End
 };
 
-enum class FloorOperate
+enum class CollideOperate
 {
 	CollideLeft = 0,
 	CollideRight,

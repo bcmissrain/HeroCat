@@ -15,22 +15,22 @@ bool Enemy360::init()
 	return true;
 }
 
-void Enemy360::onFloorCollide(cocos2d::Point point, FloorOperate opType)
+void Enemy360::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElemnt* gameElement)
 {
 	//Attention Convert the position
 	point = this->getParent()->convertToNodeSpace(point);
 	
 	switch (opType)
 	{
-	case FloorOperate::CollideLeft:
+	case CollideOperate::CollideLeft:
 		this->setPositionX(point.x - _Sprite->getBoundingBox().size.width / 2);
 		_TurnDirection();
 		break;
-	case FloorOperate::CollideRight:
+	case CollideOperate::CollideRight:
 		this->setPositionX(point.x + _Sprite->getBoundingBox().size.width / 2);
 		_TurnDirection();
 		break;
-	case FloorOperate::CollideUp:
+	case CollideOperate::CollideUp:
 		_IfHaveSupport = true;
 		if (_CurrentState == EnemyState::JumpDown)
 		{
@@ -38,7 +38,7 @@ void Enemy360::onFloorCollide(cocos2d::Point point, FloorOperate opType)
 			this->setPositionY(point.y + _Sprite->getBoundingBox().size.height * 0.49);
 		}
 		break;
-	case FloorOperate::CollideDown:
+	case CollideOperate::CollideDown:
 		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height * 0.5);
 		changeStateTo(EnemyState::JumpDown);
 		break;

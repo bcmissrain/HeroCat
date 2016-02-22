@@ -7,7 +7,7 @@ class Bianbian :public BaseWeapon
 public:
 	virtual bool init() override;
 	CREATE_FUNC(Bianbian);
-	virtual void onFloorCollide(cocos2d::Point point, FloorOperate opType) override;
+	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElemnt* gameElement) override;
 };
 
 #endif

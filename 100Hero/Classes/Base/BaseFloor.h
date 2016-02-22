@@ -1,7 +1,7 @@
 #ifndef __BASEFLOOR_H__
 #define __BASEFLOOR_H__
 
-#include "cocos2d.h"
+#include "Base/BaseElement.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 #include "BaseDefine.h"
@@ -12,17 +12,18 @@
 class BaseHero;
 class BaseWeapon;
 
-class BaseFloor : public cocos2d::Node
+class BaseFloor : public BaseElemnt
 {
 public:
 	BaseFloor(){}
 	~BaseFloor(){}
 
+	virtual cocos2d::Rect getBoundingBox() override;
+	virtual cocos2d::Size getVisualSize() override;
+	virtual cocos2d::Point getVisualCenter() override;
+
 	virtual bool init(){ return true; }
 	virtual void initBySprite(cocos2d::Node* sprite);
-	virtual cocos2d::Rect getBoundingBox();
-	virtual cocos2d::Size getVisualSize();
-	virtual cocos2d::Point getVisualCenter();
 	inline FloorType getFloorType();
 	virtual cocos2d::Rect getSmallCollideRect(BaseHero* baseHero);
 	virtual cocos2d::Rect getSmallCollideRect(BaseWeapon* baseWeapon);

@@ -20,8 +20,6 @@ WeaponType BaseWeapon::getWeaponType()
 	return _WeaponType;
 }
 
-void BaseWeapon::onFloorCollide(cocos2d::Point point, FloorOperate opType){}
-
 cocos2d::Rect BaseWeapon::getAttackBox()
 {
 	return _AttackArea;

@@ -145,6 +145,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
+    <ClCompile Include="..\Classes\Base\BaseElement.cpp" />
     <ClCompile Include="..\Classes\Base\BaseEnemy.cpp" />
     <ClCompile Include="..\Classes\Base\BaseFloor.cpp" />
     <ClCompile Include="..\Classes\Base\BaseHero.cpp" />
@@ -159,6 +160,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Base\BaseDefine.h" />
+    <ClInclude Include="..\Classes\Base\BaseElement.h" />
     <ClInclude Include="..\Classes\Base\BaseEnemy.h" />
     <ClInclude Include="..\Classes\Base\BaseFloor.h" />
     <ClInclude Include="..\Classes\Base\BaseHero.h" />

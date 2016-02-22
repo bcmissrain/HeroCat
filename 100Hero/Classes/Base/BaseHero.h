@@ -1,7 +1,7 @@
 #ifndef __BASEHERO_H__
 #define __BASEHERO_H__
 
-#include "cocos2d.h"
+#include "Base/BaseElement.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 #include "BaseDefine.h"
@@ -82,7 +82,7 @@ public:
 	virtual void updateState(BaseHero* hero, float deltaTime = 0) override;
 };
 
-class BaseHero : public cocos2d::Node
+class BaseHero : public BaseElemnt
 {
 public:
 	//base
@@ -97,14 +97,6 @@ public:
 	virtual void onMoveRight(ClickState clickState);
 	virtual void onJump(ClickState clickState);
 	virtual void onAttack(ClickState clickState);
-	virtual bool ifCollide(cocos2d::Rect rect);
-	virtual void onFloorCollide(cocos2d::Point point, FloorOperate opType);
-
-	//info
-	virtual cocos2d::Size getVisualSize();
-	virtual cocos2d::Point getVisualCenter();
-	virtual cocos2d::Rect getBoundingBox();
-	virtual cocos2d::Point getWeaponPosByIndex(int index);
 
 	//behave
 	virtual void _BeginStand();
@@ -127,6 +119,12 @@ public:
 	virtual void _Hurt();
 	//state
 	virtual void changeStateTo(ActionState state);
+
+	//info
+	virtual cocos2d::Rect getBoundingBox() override;
+	virtual cocos2d::Size getVisualSize() override;
+	virtual cocos2d::Point getVisualCenter() override;	
+	virtual cocos2d::Point getWeaponPosByIndex(int index);
 
 public:
 	//flag

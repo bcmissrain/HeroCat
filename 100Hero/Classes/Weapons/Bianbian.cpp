@@ -16,19 +16,19 @@ bool Bianbian::init()
 	return true;
 }
 
-void Bianbian::onFloorCollide(cocos2d::Point point, FloorOperate opType)
+void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElemnt* gameElement)
 {
 	auto tempPoint = this->getParent()->convertToNodeSpace(point);
 	float currentHeight = _Sprite->getChildByName("bigBian_2")->getBoundingBox().size.height * _Sprite->getScale();
 
 	switch (opType)
 	{
-	case FloorOperate::CollideLeft:
+	case CollideOperate::CollideLeft:
 		break;
-	case FloorOperate::CollideRight:
+	case CollideOperate::CollideRight:
 		break;
-	case FloorOperate::CollideUp:
-	case FloorOperate::CollideDown:
+	case CollideOperate::CollideUp:
+	case CollideOperate::CollideDown:
 		this->setPositionY(tempPoint.y + currentHeight / 2);
 		this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 		this->_IfSettle = true;

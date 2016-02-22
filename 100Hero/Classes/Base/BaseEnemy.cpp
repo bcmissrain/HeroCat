@@ -155,13 +155,6 @@ void BaseEnemy::_Die()
 	this->runAction(dieActions);
 }
 
-bool BaseEnemy::ifCollide(cocos2d::Rect rect)
-{
-	return _Sprite->getBoundingBox().intersectsRect(rect);
-}
-
-void BaseEnemy::onFloorCollide(cocos2d::Point point, FloorOperate opType){}
-
 void BaseEnemy::changeStateTo(EnemyState state)
 {
 	switch (state)

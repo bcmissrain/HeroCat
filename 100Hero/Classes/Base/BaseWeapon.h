@@ -4,25 +4,25 @@
 #include "BaseDefine.h"
 #include "BaseHero.h"
 #include "BaseFloor.h"
-#include "cocos2d.h"
+#include "Base/BaseElement.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 
-class BaseWeapon :public cocos2d::Node
+class BaseWeapon :public BaseElemnt
 {
 public:
 	BaseWeapon(){}
 	~BaseWeapon(){}
 	virtual bool init(){ return true; }
 	virtual void update(float deltaTime){}
-	virtual cocos2d::Rect getBoundingBox();
-	virtual cocos2d::Size getVisualSize();
-	virtual cocos2d::Point getVisualCenter();
+
 	virtual cocos2d::Rect getAttackBox();
 	inline WeaponType getWeaponType();
 	bool ifSettleDown();
-	virtual void onFloorCollide(cocos2d::Point point,FloorOperate opType);
 	
+	virtual cocos2d::Rect getBoundingBox() override;
+	virtual cocos2d::Size getVisualSize() override;
+	virtual cocos2d::Point getVisualCenter() override;
 public:
 	WeaponType _WeaponType = WeaponType::Hand;
 	WeaponMoveWays _WeaponMoveWays = WeaponMoveWays::Horizontal;

@@ -1,7 +1,7 @@
 #ifndef __BASE_ENEMY_H__
 #define __BASE_ENEMY_H__
 #include "BaseDefine.h"
-#include "cocos2d.h"
+#include "Base/BaseElement.h"
 
 enum class EnemyState
 {
@@ -14,7 +14,7 @@ enum class EnemyState
 	Die
 };
 
-class BaseEnemy :public cocos2d::Node
+class BaseEnemy :public BaseElemnt
 {
 public:
 	//base
@@ -26,9 +26,9 @@ public:
 	virtual void afterUpdate();
 
 	//info
-	virtual cocos2d::Rect getBoundingBox();
-	virtual cocos2d::Size getVisualSize();
-	virtual cocos2d::Point getVisualCenter();
+	virtual cocos2d::Rect getBoundingBox() override;
+	virtual cocos2d::Size getVisualSize() override;
+	virtual cocos2d::Point getVisualCenter() override;
 
 	//control
 	virtual void _Run(float deltaTime);
@@ -38,8 +38,6 @@ public:
 	virtual void _JumpDown();
 	virtual void _JumpFinish();
 	virtual void _Die();
-	virtual bool ifCollide(cocos2d::Rect rect);
-	virtual void onFloorCollide(cocos2d::Point point, FloorOperate opType);
 	virtual void changeStateTo(EnemyState state);
 
 public:

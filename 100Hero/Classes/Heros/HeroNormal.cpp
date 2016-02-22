@@ -79,21 +79,21 @@ void HeroNormal::_BeginJumpFinish()
 	this->_IsDoubleJump = false;
 }
 
-void HeroNormal::onFloorCollide(cocos2d::Point point, FloorOperate opType)
+void HeroNormal::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElemnt* gameElement)
 {
 	switch (opType)
 	{
-	case FloorOperate::CollideLeft:
+	case CollideOperate::CollideLeft:
 		this->setPositionX(point.x - _Sprite->getBoundingBox().size.width / 2);
 		break;
-	case FloorOperate::CollideRight:
+	case CollideOperate::CollideRight:
 		this->setPositionX(point.x + _Sprite->getBoundingBox().size.width / 2);
 		break;
-	case FloorOperate::CollideUp:
+	case CollideOperate::CollideUp:
 		_CollideState = CollideState::HaveSupport;
 		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height*0.3);
 		break;
-	case FloorOperate::CollideDown:
+	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
 		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height * 0.7);
 		break;
