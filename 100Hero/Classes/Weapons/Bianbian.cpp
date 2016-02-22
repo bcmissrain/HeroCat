@@ -13,6 +13,7 @@ bool Bianbian::init()
 	_SpriteTimeLine->retain();
 	_Sprite->runAction(_SpriteTimeLine);
 	_SpriteTimeLine->gotoFrameAndPlay(0, 30, true);
+	this->setTag(ELEMENT_WEAPON_TAG);
 	return true;
 }
 

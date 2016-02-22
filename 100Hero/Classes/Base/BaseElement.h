@@ -22,6 +22,6 @@ public:
 	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElemnt* gameElement){};
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElemnt* gameElement){};
 	
-	virtual void collideWithGameElement(BaseElemnt* gameElement){};
+	virtual bool collideWithGameElement(BaseElemnt* gameElement){ return false; };
 };
 #endif

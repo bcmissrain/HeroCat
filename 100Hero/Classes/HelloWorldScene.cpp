@@ -302,7 +302,7 @@ void HelloWorld::update(float delta)
 	bool ifDrawDebug = false;
 	for (auto itr = floors.begin(); itr != floors.end(); itr++)
 	{
-		ifSupport = (*itr)->CollideWithHero(normalHero);
+		ifSupport = (*itr)->collideWithGameElement(normalHero);
 		if (ifSupport)
 		{
 			ifDrawDebug = true;
@@ -312,11 +312,11 @@ void HelloWorld::update(float delta)
 
 		for (auto wea = weapons.begin(); wea != weapons.end(); wea++)
 		{
-			(*itr)->CollideWithWeapon(*wea);
+			(*itr)->collideWithGameElement(*wea);
 		}
 		if (enemy)
 		{
-			(*itr)->CollideWithEnemy(enemy);
+			(*itr)->collideWithGameElement(enemy);
 		}
 	}
 	if (enemy)

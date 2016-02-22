@@ -13,7 +13,7 @@ bool HeroNormal::init()
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
 	this->_JumpHeight2 = 160;
-	this->setTag(TAG_HERO);
+	this->setTag(ELEMENT_HERO_TAG);
 	this->_AttackState = AttackState::NotAttack;
 	_AttackColdTime = 3;
 

@@ -2,6 +2,7 @@
 
 bool Enemy360::init()
 {
+	
 	_Sprite = cocos2d::Sprite::create("360.png");
 	_Direction = Direction::Right;
 	_MoveState = MoveState::MoveRight;
@@ -12,6 +13,7 @@ bool Enemy360::init()
 	_Sprite->setScale(_Scale);
 	this->addChild(_Sprite);
 	changeStateTo(EnemyState::JumpDown);
+	this->setTag(ELEMENT_ENEMY_TAG);
 	return true;
 }
 

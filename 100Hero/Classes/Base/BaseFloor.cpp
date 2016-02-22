@@ -27,120 +27,40 @@ FloorType BaseFloor::getFloorType()
 	return _FloorType;
 }
 
-cocos2d::Rect BaseFloor::getSmallCollideRect(BaseHero* baseHero)
+cocos2d::Rect BaseFloor::getSmallCollideRect(BaseElemnt* gameElement)
 {
 	auto flrRec = getBoundingBox();
-	auto herRec = baseHero->getBoundingBox();
+	auto herRec = gameElement->getBoundingBox();
 	return cocos2d::Rect(flrRec.getMinX() + herRec.size.width*_borderScale, flrRec.getMinY(), flrRec.size.width - 2 * _borderScale*herRec.size.width, flrRec.size.height);
 }
 
-cocos2d::Rect BaseFloor::getSmallCollideRect(BaseWeapon* baseWeapon)
-{
-	auto flrRec = getBoundingBox();
-	auto wepRec = baseWeapon->getBoundingBox();
-	return cocos2d::Rect(flrRec.getMinX() + wepRec.size.width*_borderScale, flrRec.getMinY(), flrRec.size.width - 2 * _borderScale*wepRec.size.width, flrRec.size.height);
-}
-
-cocos2d::Rect BaseFloor::getSmallCollideRect(BaseEnemy* baseEnemy)
-{
-	auto flrRec = getBoundingBox();
-	auto eneRec = baseEnemy->getBoundingBox();
-	return cocos2d::Rect(flrRec.getMinX() + eneRec.size.width*_borderScale, flrRec.getMinY(), flrRec.size.width - 2 * _borderScale*eneRec.size.width, flrRec.size.height);
-}
-
-bool BaseFloor::CollideWithHero(BaseHero* baseHero)
+bool BaseFloor::collideWithGameElement(BaseElemnt* gameElement)
 {
 	auto boundingBox = getBoundingBox();
-	if (boundingBox.intersectsRect(baseHero->getBoundingBox()))
+	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))
 	{
-		auto collideRect = getSmallCollideRect(baseHero);
+		auto collideRect = getSmallCollideRect(gameElement);
 
-		if (collideRect.intersectsRect(baseHero->getBoundingBox()))
+		if (collideRect.intersectsRect(gameElement->getBoundingBox()))
 		{
-			if (baseHero->getVisualCenter().y > boundingBox.getMidY())
+			if (gameElement->getVisualCenter().y > boundingBox.getMidY())
 			{
-				baseHero->onFloorCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp,this);
+				gameElement->onFloorCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp, this);
 			}
 			else
 			{
-				baseHero->onFloorCollide(cocos2d::Point(0, boundingBox.getMinY()), CollideOperate::CollideDown,this);
+				gameElement->onFloorCollide(cocos2d::Point(0, boundingBox.getMinY()), CollideOperate::CollideDown, this);
 			}
 		}
 		else
 		{
-			if (baseHero->getVisualCenter().x > boundingBox.getMidX())
+			if (gameElement->getVisualCenter().x > boundingBox.getMidX())
 			{
-				baseHero->onFloorCollide(cocos2d::Point(boundingBox.getMaxX(), 0), CollideOperate::CollideRight,this);
+				gameElement->onFloorCollide(cocos2d::Point(boundingBox.getMaxX(), 0), CollideOperate::CollideRight, this);
 			}
 			else
 			{
-				baseHero->onFloorCollide(cocos2d::Point(boundingBox.getMinX(), 0), CollideOperate::CollideLeft,this);
-			}
-		}
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool BaseFloor::CollideWithWeapon(BaseWeapon* baseWeapon)
-{
-	if (baseWeapon->ifSettleDown())
-	{
-		return true;
-	}
-	auto boundingBox = getBoundingBox();
-
-	if (boundingBox.intersectsRect(baseWeapon->getBoundingBox()))
-	{
-		auto collideRect = getSmallCollideRect(baseWeapon);
-
-		if (collideRect.intersectsRect(baseWeapon->getBoundingBox()))
-		{
-			baseWeapon->onFloorCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp,this);
-		}
-		else
-		{
-			if (baseWeapon->getVisualCenter().x > boundingBox.getMidX())
-			{
-				baseWeapon->onFloorCollide(cocos2d::Point(boundingBox.getMaxX(), 0), CollideOperate::CollideRight,this);
-			}
-			else
-			{
-				baseWeapon->onFloorCollide(cocos2d::Point(boundingBox.getMinX(), 0), CollideOperate::CollideLeft,this);
-			}
-		}
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-bool BaseFloor::CollideWithEnemy(BaseEnemy* baseEnemy)
-{
-	auto boundingBox = getBoundingBox();
-
-	if (boundingBox.intersectsRect(baseEnemy->getBoundingBox()))
-	{
-		auto collideRect = getSmallCollideRect(baseEnemy);
-
-		if (collideRect.intersectsRect(baseEnemy->getBoundingBox()))
-		{
-			baseEnemy->onFloorCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp,this);
-		}
-		else
-		{
-			if (baseEnemy->getVisualCenter().x > boundingBox.getMidX())
-			{
-				baseEnemy->onFloorCollide(cocos2d::Point(boundingBox.getMaxX(), 0), CollideOperate::CollideRight,this);
-			}
-			else
-			{
-				baseEnemy->onFloorCollide(cocos2d::Point(boundingBox.getMinX(), 0), CollideOperate::CollideLeft,this);
+				gameElement->onFloorCollide(cocos2d::Point(boundingBox.getMinX(), 0), CollideOperate::CollideLeft, this);
 			}
 		}
 		return true;
