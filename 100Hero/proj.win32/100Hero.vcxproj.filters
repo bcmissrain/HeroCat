@@ -10,6 +10,21 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Base">
+      <UniqueIdentifier>{3238fa72-3a23-4c84-b4a9-89172aa79fe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Heros">
+      <UniqueIdentifier>{22859760-2fbb-4e28-b7b8-52791dad45d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Enemys">
+      <UniqueIdentifier>{00e199dc-7323-4c95-8113-e534f6c78ba3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Floors">
+      <UniqueIdentifier>{9322d5d9-774a-4bfa-89d7-f086dcf6bbdc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Weapons">
+      <UniqueIdentifier>{82b88b32-4e5d-407e-8917-1da80ff3d4b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -21,6 +36,30 @@
     <ClCompile Include="..\Classes\HelloWorldScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Base\BaseEnemy.cpp">
+      <Filter>src\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Base\BaseFloor.cpp">
+      <Filter>src\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Base\BaseHero.cpp">
+      <Filter>src\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Base\BaseWeapon.cpp">
+      <Filter>src\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Heros\HeroNormal.cpp">
+      <Filter>src\Heros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Enemys\Enemy360.cpp">
+      <Filter>src\Enemys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Floors\FloorNormal.cpp">
+      <Filter>src\Floors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\Bianbian.cpp">
+      <Filter>src\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -31,6 +70,36 @@
     </ClInclude>
     <ClInclude Include="..\Classes\HelloWorldScene.h">
       <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Base\BaseDefine.h">
+      <Filter>src\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Base\BaseEnemy.h">
+      <Filter>src\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Base\BaseFloor.h">
+      <Filter>src\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Base\BaseHero.h">
+      <Filter>src\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Base\BaseWeapon.h">
+      <Filter>src\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Heros\HeroNormal.h">
+      <Filter>src\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Enemys\Enemy360.h">
+      <Filter>src\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Floors\FloorNormal.h">
+      <Filter>src\Floors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\Bianbian.h">
+      <Filter>src\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\WeaponDefine.h">
+      <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
