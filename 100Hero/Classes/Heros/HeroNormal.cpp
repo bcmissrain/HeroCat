@@ -79,7 +79,7 @@ void HeroNormal::_BeginJumpFinish()
 	this->_IsDoubleJump = false;
 }
 
-void HeroNormal::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElemnt* gameElement)
+void HeroNormal::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
 	switch (opType)
 	{

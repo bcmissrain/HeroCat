@@ -82,7 +82,7 @@ public:
 	virtual void updateState(BaseHero* hero, float deltaTime = 0) override;
 };
 
-class BaseHero : public BaseElemnt
+class BaseHero : public BaseElement
 {
 public:
 	//base
@@ -123,9 +123,10 @@ public:
 	//info
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
-	virtual cocos2d::Point getVisualCenter() override;	
+	virtual cocos2d::Point getVisualCenter() override;
+	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
+	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 	virtual cocos2d::Point getWeaponPosByIndex(int index);
-
 public:
 	//flag
 	ClickState _ifClickLeft = ClickState::None;

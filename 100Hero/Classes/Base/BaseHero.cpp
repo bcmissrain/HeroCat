@@ -362,6 +362,16 @@ cocos2d::Rect BaseHero::getBoundingBox()
 	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2,getVisualSize());
 }
 
+void BaseHero::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	CCLOG("Collide with Weapon");
+}
+
+void BaseHero::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	CCLOG("Collide with Enemy");
+}
+
 cocos2d::Point BaseHero::getWeaponPosByIndex(int index)
 {
 	if (index < _Weapons.size())

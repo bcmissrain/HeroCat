@@ -84,6 +84,11 @@ cocos2d::Point BaseEnemy::getVisualCenter()
 	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
 }
 
+void BaseEnemy::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+
+}
+
 void BaseEnemy::_Run(float deltaTime)
 {
 	if (_MoveState == MoveState::MoveLeft)

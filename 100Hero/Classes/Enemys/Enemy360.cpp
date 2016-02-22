@@ -17,7 +17,7 @@ bool Enemy360::init()
 	return true;
 }
 
-void Enemy360::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElemnt* gameElement)
+void Enemy360::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
 	//Attention Convert the position
 	point = this->getParent()->convertToNodeSpace(point);

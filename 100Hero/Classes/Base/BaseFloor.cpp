@@ -27,14 +27,14 @@ FloorType BaseFloor::getFloorType()
 	return _FloorType;
 }
 
-cocos2d::Rect BaseFloor::getSmallCollideRect(BaseElemnt* gameElement)
+cocos2d::Rect BaseFloor::getSmallCollideRect(BaseElement* gameElement)
 {
 	auto flrRec = getBoundingBox();
 	auto herRec = gameElement->getBoundingBox();
 	return cocos2d::Rect(flrRec.getMinX() + herRec.size.width*_borderScale, flrRec.getMinY(), flrRec.size.width - 2 * _borderScale*herRec.size.width, flrRec.size.height);
 }
 
-bool BaseFloor::collideWithGameElement(BaseElemnt* gameElement)
+bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 {
 	auto boundingBox = getBoundingBox();
 	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))

@@ -8,7 +8,7 @@
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 
-class BaseWeapon :public BaseElemnt
+class BaseWeapon :public BaseElement
 {
 public:
 	BaseWeapon(){}

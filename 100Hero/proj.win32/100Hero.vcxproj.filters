@@ -25,6 +25,9 @@
     <Filter Include="src\Weapons">
       <UniqueIdentifier>{82b88b32-4e5d-407e-8917-1da80ff3d4b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Levels">
+      <UniqueIdentifier>{7347f6a7-c82a-4c6c-945e-ebad2ba9daee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">

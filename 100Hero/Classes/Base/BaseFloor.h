@@ -12,7 +12,7 @@
 class BaseHero;
 class BaseWeapon;
 
-class BaseFloor : public BaseElemnt
+class BaseFloor : public BaseElement
 {
 public:
 	BaseFloor(){}
@@ -21,16 +21,13 @@ public:
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
+	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 
 	virtual bool init(){ return true; }
 	virtual void initBySprite(cocos2d::Node* sprite);
 	inline FloorType getFloorType();
-	virtual cocos2d::Rect getSmallCollideRect(BaseHero* baseHero);
-	virtual cocos2d::Rect getSmallCollideRect(BaseWeapon* baseWeapon);
-	virtual cocos2d::Rect getSmallCollideRect(BaseEnemy* baseEnemy);
-	virtual bool CollideWithHero(BaseHero* baseHero);
-	virtual bool CollideWithWeapon(BaseWeapon* baseWeapon);
-	virtual bool CollideWithEnemy(BaseEnemy* baseEnemy);
+	virtual cocos2d::Rect getSmallCollideRect(BaseElement* gameElement);
+
 protected:
 	FloorType _FloorType = FloorType::Normal;
 	cocos2d::Node* _Sprite = nullptr;

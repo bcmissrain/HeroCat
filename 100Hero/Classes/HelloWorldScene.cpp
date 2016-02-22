@@ -19,59 +19,12 @@ Scene* HelloWorld::createScene()
     return scene;
 }
 
-
-RenderTexture* HelloWorld::getClipSprite(cocos2d::Sprite* sprite)
-{
-	if (sprite != nullptr)
-	{
-		auto originBlend = sprite->getBlendFunc();
-		auto originPos = sprite->getPosition();
-
-		auto renSize = Size(sprite->getBoundingBox().size.width, sprite->getBoundingBox().size.height);
-		RenderTexture* renTex = RenderTexture::create((int)renSize.width,(int)renSize.height);
-		sprite->setPosition(renSize.width / 2, renSize.height / 2);
-		auto backSprite = cocos2d::ui::Scale9Sprite::create("ninesis5.png");
-		backSprite->setAnchorPoint(Vec2(0,0));
-		backSprite->setContentSize(renSize);
-		BlendFunc blendFunc = { GL_ZERO, GL_SRC_COLOR };
-		sprite->addChild(backSprite,-1);
-		backSprite->setScale(1/sprite->getScale());
-		backSprite->setPosition(0,0);
-		sprite->setBlendFunc(blendFunc);
-		renTex->begin();
-		sprite->visit();
-		renTex->end();
-
-		sprite->setBlendFunc(originBlend);
-		sprite->setPosition(originPos);
-		sprite->removeChild(backSprite,true);
-		return renTex;
-	}
-	else 
-	{
-		return nullptr;
-	}
-}
-
-
 bool HelloWorld::init()
 {
     if ( !Layer::init() )
     {
         return false;
     }
-
-	//CCParticleSystem* particleSystem = CCParticleSpiral::create();
-	//particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("buttonJump.png"));
-	//addChild(particleSystem,100);
-
-	//CCParticleSystem* particleSystem = CCParticleSun::create();
-	//particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/huluhead.png"));
-	//addChild(particleSystem,100);
-
-	//CCParticleSystem* particleSystem = CCParticleExplosion::create();
-	//particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/huluhead.png"));
-	//addChild(particleSystem);
 
 	ifClickLeft = ClickState::None;
 	ifClickRight = ClickState::None;
@@ -313,14 +266,33 @@ void HelloWorld::update(float delta)
 		for (auto wea = weapons.begin(); wea != weapons.end(); wea++)
 		{
 			(*itr)->collideWithGameElement(*wea);
+
+			if ((*wea)->ifCollide(normalHero->getBoundingBox()))
+			{
+				normalHero->onWeaponCollide(Point(), CollideOperate::CollideUp, (*wea));
+			}
+
+			if (enemy)
+			{
+				if ((*wea)->ifCollide(enemy->getBoundingBox()))
+				{
+					enemy->onWeaponCollide(Point(), CollideOperate::CollideUp, (*wea));
+				}
+			}
 		}
 		if (enemy)
 		{
 			(*itr)->collideWithGameElement(enemy);
 		}
 	}
+
 	if (enemy)
 	{
+		if (enemy->ifCollide(normalHero->getBoundingBox()))
+		{
+			normalHero->onEnemyCollide(Point(0, 0), CollideOperate::CollideUp, enemy);
+		}
+
 		enemy->check();
 		enemy->update(delta);
 	}
