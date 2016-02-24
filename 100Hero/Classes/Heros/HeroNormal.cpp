@@ -6,7 +6,7 @@ bool HeroNormal::init()
 {
 	this->_BaseScale = 0.5f;
 	this->_BaseRunSpeed = 400;
-	this->_BaseAcceleration = 5;
+	this->_BaseAcceleration = 4;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 200;
 	this->_CanDoubleJump = true;
@@ -84,18 +84,43 @@ void HeroNormal::onFloorCollide(cocos2d::Point point, CollideOperate opType,Base
 	switch (opType)
 	{
 	case CollideOperate::CollideLeft:
-		this->setPositionX(point.x - _Sprite->getBoundingBox().size.width / 2);
+		this->setPositionX(point.x - _Sprite->getBoundingBox().size.width * 0.5f);
 		break;
 	case CollideOperate::CollideRight:
-		this->setPositionX(point.x + _Sprite->getBoundingBox().size.width / 2);
+		this->setPositionX(point.x + _Sprite->getBoundingBox().size.width *0.5f);
 		break;
 	case CollideOperate::CollideUp:
 		_CollideState = CollideState::HaveSupport;
-		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height*0.3);
+		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.32f);
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
-		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height * 0.7);
+		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.68f);
+		break;
+	default:
+		break;
+	}
+}
+
+void HeroNormal::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	switch (opType)
+	{
+	case CollideOperate::CollideLeft:
+		this->setPositionX(point.x - _Sprite->getBoundingBox().size.width * 0.7f);
+		_onWallCollide();
+		break;
+	case CollideOperate::CollideRight:
+		this->setPositionX(point.x + _Sprite->getBoundingBox().size.width *0.7f);
+		_onWallCollide();
+		break;
+	case CollideOperate::CollideUp:
+		_CollideState = CollideState::HaveSupport;
+		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.32f);
+		break;
+	case CollideOperate::CollideDown:
+		_CollideState = CollideState::HeadCollide;
+		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.68f);
 		break;
 	default:
 		break;

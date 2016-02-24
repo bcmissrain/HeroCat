@@ -22,6 +22,7 @@ public:
 
 	//be told I've been collided
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
+	virtual void onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onHeroCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};

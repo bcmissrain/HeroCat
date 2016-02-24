@@ -31,7 +31,7 @@ cocos2d::Rect BaseFloor::getSmallCollideRect(BaseElement* gameElement)
 {
 	auto flrRec = getBoundingBox();
 	auto herRec = gameElement->getBoundingBox();
-	return cocos2d::Rect(flrRec.getMinX() + herRec.size.width*_borderScale, flrRec.getMinY(), flrRec.size.width - 2 * _borderScale*herRec.size.width, flrRec.size.height);
+	return cocos2d::Rect(flrRec.getMinX() + herRec.size.width * _getBorderScale(), flrRec.getMinY(), flrRec.size.width - 2 * _getBorderScale()*herRec.size.width, flrRec.size.height);
 }
 
 bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
@@ -69,4 +69,9 @@ bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 	{
 		return false;
 	}
+}
+
+float BaseFloor::_getBorderScale()
+{
+	return 0.25f;
 }

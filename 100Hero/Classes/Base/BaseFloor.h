@@ -32,6 +32,6 @@ protected:
 	FloorType _FloorType = FloorType::Normal;
 	cocos2d::Node* _Sprite = nullptr;
 	cocostudio::timeline::ActionTimeline* _SpriteTimeLine = nullptr;
-	float _borderScale = 0.25f;
+	virtual float _getBorderScale();
 };
 #endif

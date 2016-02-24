@@ -20,6 +20,7 @@ bool Bianbian::init()
 void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
 	auto tempPoint = this->getParent()->convertToNodeSpace(point);
+	//tempPoint.y = gameElement->getBoundingBox().getMaxY();
 	float currentHeight = _Sprite->getChildByName("bigBian_2")->getBoundingBox().size.height * _Sprite->getScale();
 
 	switch (opType)

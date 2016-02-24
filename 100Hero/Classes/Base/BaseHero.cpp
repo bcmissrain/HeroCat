@@ -36,6 +36,11 @@ void StandStatus::checkState(BaseHero* hero)
 	}
 }
 
+void StandStatus::updateState(BaseHero* hero, float deltaTime /* = 0 */)
+{
+	hero->_Stand(deltaTime);
+}
+
 //Run
 ActionState RunStatus::getState()
 {
@@ -138,7 +143,6 @@ void StopStatus::updateState(BaseHero* hero, float deltaTime /* = 0 */)
 {
 	hero->_Stop(deltaTime);
 }
-
 
 //JumpUp
 ActionState JumpUpStatus::getState()
@@ -270,7 +274,7 @@ void JumpFinishStatus::checkState(BaseHero* hero)
 {
 	if (!hero->_SpriteTimeline->isPlaying())
 	{
-		if (hero->_MoveState == MoveState::None)
+		if (hero->_MoveStateCache == MoveState::None)
 		{
 			hero->changeStateTo(ActionState::Stand);
 		}
@@ -372,6 +376,17 @@ void BaseHero::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseE
 	CCLOG("Collide with Enemy");
 }
 
+void BaseHero::_onWallCollide()
+{
+	if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
+	{
+		this->_MoveStateCache = this->_MoveState = MoveState::None;
+		this->_RunSpeed = 0;
+		_ifClickLeft = ClickState::None;
+		_ifClickRight = ClickState::None;
+	}
+}
+
 cocos2d::Point BaseHero::getWeaponPosByIndex(int index)
 {
 	if (index < _Weapons.size())
@@ -399,7 +414,7 @@ void BaseHero::_BeginJumpFinish(){}
 
 void BaseHero::_BeginAttack(){}
 
-void BaseHero::_Stand(){}
+void BaseHero::_Stand(float deltaTime){ _Run(deltaTime); }
 
 void BaseHero::_Run(float deltaTime)
 {
@@ -411,7 +426,10 @@ void BaseHero::_Run(float deltaTime)
 	//reset speed
 	if (_MoveStateCache == _MoveState)
 	{
-		_RunSpeed += _BaseAcceleration;
+		if (_MoveState != MoveState::None)
+		{
+			_RunSpeed += _BaseAcceleration;
+		}
 	}
 	else//diff or none
 	{
@@ -470,7 +488,7 @@ void BaseHero::_Run(float deltaTime)
 		}
 	}
 
-	CCLOG("Run state %d , %d ,speed %f", _MoveState, _MoveStateCache, _RunSpeed);
+	//CCLOG("Run state %d , %d ,speed %f", _MoveState, _MoveStateCache, _RunSpeed);
 }
 
 void BaseHero::_Stop(float deltaTime){	_Run(deltaTime); }

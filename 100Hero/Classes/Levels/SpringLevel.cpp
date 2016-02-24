@@ -3,7 +3,8 @@
 #include "../Heros/HeroNormal.h"
 #include "../Floors/FloorNormal.h"
 #include "../Weapons/Bianbian.h"
-#include "Enemys/Enemy360.h"
+#include "../Floors/WallNormal.h"
+#include "../Enemys/Enemy360.h"
 
 USING_NS_CC;
 
@@ -52,7 +53,7 @@ bool SpringLevel::init()
 	_currentHero->_Sprite->setScale(0.3);
 
 	//init floor
-	auto floor0 = FloorNormal::create();
+	BaseFloor* floor0 = FloorNormal::create();
 	cocos2d::ui::Scale9Sprite* sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp0->setContentSize(Size(2048, 50));
 	floor0->initBySprite(sp0);
@@ -60,7 +61,7 @@ bool SpringLevel::init()
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
-	auto floor1 = FloorNormal::create();
+	BaseFloor* floor1 = FloorNormal::create();
 	auto sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp1->setContentSize(Size(200, 30));
 	floor1->initBySprite(sp1);
@@ -92,7 +93,7 @@ bool SpringLevel::init()
 	_elementLayer->addChild(floor1, -1);
 	_floors.pushBack(floor1);
 
-	floor1 = FloorNormal::create();
+	floor1 = WallNormal::create();
 	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp1->setContentSize(Size(30, 800));
 	floor1->initBySprite(sp1);
@@ -100,7 +101,7 @@ bool SpringLevel::init()
 	_elementLayer->addChild(floor1, -1);
 	_floors.pushBack(floor1);
 
-	floor1 = FloorNormal::create();
+	floor1 = WallNormal::create();
 	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp1->setContentSize(Size(30, 800));
 	floor1->initBySprite(sp1);

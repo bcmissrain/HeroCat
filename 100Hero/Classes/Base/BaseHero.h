@@ -25,7 +25,7 @@ public:
 	virtual ActionState getState() override;
 	virtual void initState(BaseHero* hero) override;
 	virtual void checkState(BaseHero* hero) override;
-	virtual void updateState(BaseHero* hero, float deltaTime = 0) override{}
+	virtual void updateState(BaseHero* hero, float deltaTime = 0) override;
 };
 
 class RunStatus :public BaseStatus
@@ -100,7 +100,6 @@ public:
 
 	//behave
 	virtual void _BeginStand();
-	virtual void _Stand();
 	virtual void _BeginRun();
 	virtual void _BeginStop();
 	virtual void _BeginJumpUp();
@@ -109,12 +108,14 @@ public:
 	virtual void _BeginJumpFinish();
 	virtual void _BeginAttack();
 
+	virtual void _Stand(float deltaTime);
 	virtual void _Run(float deltaTime);
 	virtual void _Stop(float deltaTime);
 	virtual void _JumpUp(float deltaTime);
 	virtual void _JumpUp2(float deltaTime);
 	virtual void _JumpDown(float deltaTime);
 	virtual void _JumpFinish(float deltaTime);
+	virtual void _onWallCollide();
 	virtual void _Attack(ClickState clickState);
 	virtual void _Hurt();
 	//state
