@@ -15,6 +15,16 @@ cocos2d::Point BaseWeapon::getVisualCenter()
 	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
 }
 
+bool BaseWeapon::collideWithGameElement(BaseElement* gameElement)
+{
+	if (this->ifCollide(gameElement->getBoundingBox()))
+	{
+		gameElement->onWeaponCollide(cocos2d::Point::ZERO, CollideOperate::CollideUp, this);
+		return true;
+	}
+	return false;
+}
+
 WeaponType BaseWeapon::getWeaponType()
 {
 	return _WeaponType;

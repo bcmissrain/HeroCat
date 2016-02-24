@@ -1,4 +1,5 @@
 #include "Enemy360.h"
+#include "../Base/BaseWeapon.h"
 
 bool Enemy360::init()
 {

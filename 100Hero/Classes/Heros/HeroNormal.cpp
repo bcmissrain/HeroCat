@@ -4,9 +4,9 @@ USING_NS_CC;
 
 bool HeroNormal::init()
 {
-	this->_BaseScale = 1.0f;
+	this->_BaseScale = 0.5f;
 	this->_BaseRunSpeed = 400;
-	//this->_BaseAcceleration = 5;
+	this->_BaseAcceleration = 5;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 200;
 	this->_CanDoubleJump = true;

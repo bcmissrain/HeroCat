@@ -66,6 +66,12 @@
     <ClCompile Include="..\Classes\Base\BaseElement.cpp">
       <Filter>src\Base</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Levels\BaseLevel.cpp">
+      <Filter>src\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Levels\SpringLevel.cpp">
+      <Filter>src\Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -109,6 +115,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Base\BaseElement.h">
       <Filter>src\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Levels\BaseLevel.h">
+      <Filter>src\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Levels\SpringLevel.h">
+      <Filter>src\Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,8 @@ public:
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
+
+	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 public:
 	WeaponType _WeaponType = WeaponType::Hand;
 	WeaponMoveWays _WeaponMoveWays = WeaponMoveWays::Horizontal;

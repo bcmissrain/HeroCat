@@ -29,7 +29,8 @@ public:
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
-	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
+	
+	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 	
 	//control
 	virtual void _Run(float deltaTime);

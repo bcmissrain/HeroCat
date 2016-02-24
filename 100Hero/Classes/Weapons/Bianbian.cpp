@@ -38,3 +38,13 @@ void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 		break;
 	}
 }
+
+void Bianbian::onHeroCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+
+}
+
+void Bianbian::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	
+}

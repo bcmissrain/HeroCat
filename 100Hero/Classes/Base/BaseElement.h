@@ -17,10 +17,13 @@ public:
 	{
 		return getBoundingBox().intersectsRect(rect);
 	}
+	//tell him I collide him,this handle the collide detect and dispatch
+	virtual bool collideWithGameElement(BaseElement* gameElement) = 0;
+
+	//be told I've been collided
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onHeroCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
-	virtual bool collideWithGameElement(BaseElement* gameElement){ return false; };
 };
 #endif

@@ -6,6 +6,7 @@
 #include "ui/CocosGUI.h"
 #include "Heros/HeroNormal.h"
 #include "Floors/FloorNormal.h"
+#include "Levels/BaseLevel.h"
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -16,25 +17,8 @@ public:
     
     CREATE_FUNC(HelloWorld);
 	void update(float delta);
-	void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-	void onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);
-	void onButtonClick(cocos2d::ui::TouchEventType type);
-	void ResetPosition();
-	void AddBianbianByPos(cocos2d::Vec2 pos);
 private:
-	ClickState ifClickLeft;
-	ClickState ifClickRight;
-	ClickState ifClickJump;
-	ClickState ifClickAttack;
-	Layer* floorLayer = nullptr;
-	BaseHero* normalHero;
-	cocos2d::Vector<BaseFloor*> floors;
-	cocos2d::Vector<BaseWeapon*> weapons;
-	float minX;
-	float minY;
-	float maxX;
-	float maxY;
-	int attackCounter = 0;
+	BaseLevel* _currentLevel;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

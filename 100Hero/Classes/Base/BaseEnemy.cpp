@@ -84,9 +84,14 @@ cocos2d::Point BaseEnemy::getVisualCenter()
 	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
 }
 
-void BaseEnemy::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+bool BaseEnemy::collideWithGameElement(BaseElement* gameElement)
 {
-
+	if (this->ifCollide(gameElement->getBoundingBox()))
+	{
+		gameElement->onEnemyCollide(cocos2d::Point::ZERO, CollideOperate::CollideUp, this);
+		return true;
+	}
+	return false;
 }
 
 void BaseEnemy::_Run(float deltaTime)

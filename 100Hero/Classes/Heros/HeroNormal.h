@@ -7,6 +7,7 @@ public:
 	virtual bool init() override;
 	CREATE_FUNC(HeroNormal);
 
+	virtual bool collideWithGameElement(BaseElement* gameElement) override { return false; }
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement) override;
 
 	virtual void _BeginStand() override;
