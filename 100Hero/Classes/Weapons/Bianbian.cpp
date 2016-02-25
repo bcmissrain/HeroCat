@@ -4,16 +4,23 @@ USING_NS_CC;
 
 bool Bianbian::init()
 {
+	this->setTag(ELEMENT_WEAPON_TAG);
 	_WeaponType = WeaponType::Hulu;
 	_WeaponMoveWays = WeaponMoveWays::Horizontal;
 	_Sprite = CSLoader::createNode("Bianbian.csb");
-	_IsValid = true;
 	this->addChild(_Sprite);
 	_SpriteTimeLine = CSLoader::createTimeline("Bianbian.csb");
 	_SpriteTimeLine->retain();
 	_Sprite->runAction(_SpriteTimeLine);
+	initElement();
+	return true;
+}
+
+bool Bianbian::initElement()
+{
+	_IsValid = true;
+	_CanClean = false;
 	_SpriteTimeLine->gotoFrameAndPlay(0, 30, true);
-	this->setTag(ELEMENT_WEAPON_TAG);
 	return true;
 }
 

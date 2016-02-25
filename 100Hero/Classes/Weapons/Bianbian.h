@@ -6,6 +6,7 @@ class Bianbian :public BaseWeapon
 {
 public:
 	virtual bool init() override;
+	virtual bool initElement() override;
 	CREATE_FUNC(Bianbian);
 	virtual void deal() override;
 	virtual bool isTarget(BaseElement* gameElement) override;

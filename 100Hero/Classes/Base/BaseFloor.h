@@ -23,7 +23,6 @@ public:
 	virtual cocos2d::Point getVisualCenter() override;
 	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 
-	virtual bool init(){ return true; }
 	virtual void initBySprite(cocos2d::Node* sprite);
 	inline FloorType getFloorType();
 	virtual cocos2d::Rect getSmallCollideRect(BaseElement* gameElement);

@@ -9,6 +9,11 @@ public:
 	BaseElement(){};
 	~BaseElement(){};
 
+	virtual bool init();
+	virtual bool initElement();
+	virtual void update(float delta){}
+	virtual void afterUpdate(){};
+
 	virtual cocos2d::Rect getBoundingBox() = 0;
 	virtual cocos2d::Size getVisualSize() = 0;
 	virtual cocos2d::Point getVisualCenter() = 0;

@@ -20,10 +20,9 @@ public:
 	//base
 	BaseEnemy(){}
 	~BaseEnemy(){}
-	virtual bool init(){ return true; }
 	virtual void check();
-	virtual void update(float delta);
-	virtual void afterUpdate();
+	virtual void update(float delta) override;
+	virtual void afterUpdate() override;
 
 	//info
 	virtual cocos2d::Rect getBoundingBox() override;

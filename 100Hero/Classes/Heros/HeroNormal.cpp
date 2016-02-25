@@ -4,32 +4,39 @@ USING_NS_CC;
 
 bool HeroNormal::init()
 {
+	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.5f;
 	this->_BaseRunSpeed = 400;
-	this->_BaseAcceleration = 4;
+	//this->_BaseAcceleration = 4;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 200;
 	this->_CanDoubleJump = true;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
 	this->_JumpHeight2 = 160;
-	this->setTag(ELEMENT_HERO_TAG);
-	this->_AttackState = AttackState::NotAttack;
-	_AttackColdTime = 3;
-
 	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
 	this->addChild(_Sprite);
 	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");
 	_SpriteTimeline->retain();
 	_Sprite->runAction(_SpriteTimeline);
-	this->_Sprite->setScale(_BaseScale);
-	changeStateTo(ActionState::Stand);
-
 
 	auto _Weapon = Sprite::create("point.png");
 	this->_Sprite->addChild(_Weapon,100);
 	_Weapon->setPosition(Vec2(getVisualSize().width/2, 0));
 	this->_Weapons.pushBack(_Weapon);
+
+	initElement();
+	return true;
+}
+
+bool HeroNormal::initElement()
+{
+	_IsValid = true;
+	_CanClean = false;
+	this->_AttackState = AttackState::NotAttack;
+	_AttackColdTime = 0;
+	this->_Sprite->setScale(_BaseScale);
+	changeStateTo(ActionState::Stand);
 	return true;
 }
 
@@ -127,6 +134,31 @@ void HeroNormal::onWallCollide(cocos2d::Point point, CollideOperate opType, Base
 	}
 }
 
+void HeroNormal::_BeginAttack()
+{
+	if (_AttackState == AttackState::NotAttack)
+	{
+		_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
+		_SpriteTimeline->setLastFrameCallFunc([=](){
+			if (_SpriteTimeline->getCurrentFrame() == 70)
+			{
+				if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
+				{
+					this->_BeginRun();
+				}
+				_SpriteTimeline->setLastFrameCallFunc(nullptr);
+			}
+		});
+		_eventDispatcher->dispatchCustomEvent("Bianbian", this);
+		//CCLOG("Add Bianbian");
+		_AttackCount++;
+		this->scheduleOnce([=](float delta){
+			_AttackState = AttackState::NotAttack;
+		}, _AttackColdTime, "yeah");
+		_AttackState = AttackState::Attacking;
+	}
+}
+
 void HeroNormal::_Attack(ClickState clickState)
 {
 	if (_AttackMaxTimes > 0)
@@ -134,29 +166,8 @@ void HeroNormal::_Attack(ClickState clickState)
 		if (_AttackCount >= _AttackMaxTimes)
 			return;
 	}
-
-	if (_AttackState == AttackState::NotAttack)
-	{		
-		if (clickState == ClickState::Begin)
-		{
-			_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
-			_SpriteTimeline->setLastFrameCallFunc([=](){
-				if (_SpriteTimeline->getCurrentFrame() == 70)
-				{
-					if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
-					{
-						this->_BeginRun();
-					}
-					_SpriteTimeline->setLastFrameCallFunc(nullptr);
-				}	
-			});
-			_eventDispatcher->dispatchCustomEvent("Bianbian", this);
-			CCLOG("Add Bianbian");
-			_AttackState = AttackState::Attacking;
-			_AttackCount++;
-			this->scheduleOnce([=](float delta){
-				_AttackState = AttackState::NotAttack;
-			}, _AttackColdTime, "yeah");
-		}
+	if (clickState == ClickState::Begin)
+	{
+		_BeginAttack();
 	}
 }

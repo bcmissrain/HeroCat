@@ -88,9 +88,8 @@ public:
 	//base
 	BaseHero(){}
 	~BaseHero(){}
-	virtual bool init(){ return true; }
-	virtual void update(float delta){}
-	virtual void afterUpdate();
+
+	virtual void afterUpdate() override;
 
 	//control
 	virtual void onMoveLeft(ClickState clickState);

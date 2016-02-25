@@ -6,6 +6,7 @@ class HeroNormal :public BaseHero
 public:
 	virtual bool init() override;
 	CREATE_FUNC(HeroNormal);
+	virtual bool initElement() override;
 
 	virtual bool collideWithGameElement(BaseElement* gameElement) override { return false; }
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement) override;
@@ -17,6 +18,8 @@ public:
 	virtual void _BeginJumpUp2() override;
 	virtual void _BeginJumpDown() override;
 	virtual void _BeginJumpFinish() override;
+	virtual void _BeginAttack() override;
+
 	virtual void _Attack(ClickState clickState) override;
 };
 #endif

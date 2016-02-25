@@ -13,8 +13,7 @@ class BaseWeapon :public BaseElement
 public:
 	BaseWeapon(){}
 	~BaseWeapon(){}
-	virtual bool init(){ return true; }
-	virtual void update(float deltaTime){}
+
 	virtual void deal(){};
 
 	virtual cocos2d::Rect getAttackBox();
