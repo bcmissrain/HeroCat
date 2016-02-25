@@ -120,7 +120,6 @@ bool SpringLevel::init()
 	//init enemy
 	auto enemy = Enemy360::create();
 	enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
-	enemy->setTag(1010);
 	_elementLayer->addChild(enemy, 1);
 	_enemys.pushBack(enemy);
 
@@ -369,12 +368,16 @@ void SpringLevel::updateLate(float delta)
 void SpringLevel::updateRecyle(float delta)
 {
 	//late update enemy
-	for (auto ene = _enemys.begin(); ene != _enemys.end(); ene++)
+	for (auto ene = _enemys.begin(); ene != _enemys.end();)
 	{
 		if ((*ene)->_CanClean)
 		{
-			_enemys.erase(ene);
 			(*ene)->removeFromParentAndCleanup(true);
+			ene = _enemys.erase(ene);
+		}
+		else
+		{
+			ene++;
 		}
 	}
 

@@ -15,24 +15,25 @@ public:
 	~BaseWeapon(){}
 	virtual bool init(){ return true; }
 	virtual void update(float deltaTime){}
+	virtual void deal(){};
 
 	virtual cocos2d::Rect getAttackBox();
 	inline WeaponType getWeaponType();
-	bool ifSettleDown();
-	
+	virtual bool isTarget(BaseElement* gameElement){ return false; }
+
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
-
 	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 public:
 	WeaponType _WeaponType = WeaponType::Hand;
 	WeaponMoveWays _WeaponMoveWays = WeaponMoveWays::Horizontal;
 	WeaponDirection _Direction = WeaponDirection::Right;
 	cocos2d::Node* _Sprite = nullptr;
-	cocostudio::timeline::ActionTimeline* _SpriteTimeLine;
+	cocostudio::timeline::ActionTimeline* _SpriteTimeLine = nullptr;
 	cocos2d::Rect _AttackArea;
-	bool _IfSettle = false;
+
+	float _HurtValue = 1;
 };
 
 #endif // !__BASE_WEAPON_H__

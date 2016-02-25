@@ -53,9 +53,8 @@ public:
 	float _RunSpeed;
 	float _JumpTime;
 	float _JumpHeight;
-	float _BaseBlood;
+	float _BaseBlood = 1;
 	float _Blood;
-	bool _CanClean = false;
 	bool _CanFly = false;
 	bool _IfHaveSupport = false;
 };

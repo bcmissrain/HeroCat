@@ -2,6 +2,9 @@
 
 void BaseEnemy::check()
 {
+	if (!_IsValid)
+		return;
+
 	if (_CurrentState == EnemyState::Run || _CurrentState == EnemyState::Fly)
 	{
 		if (_IfHaveSupport == false)
@@ -31,6 +34,9 @@ void BaseEnemy::check()
 
 void BaseEnemy::update(float delta)
 {
+	if (!_IsValid)
+		return;
+
 	if (_CurrentState == EnemyState::Stand)
 	{
 		
@@ -86,6 +92,9 @@ cocos2d::Point BaseEnemy::getVisualCenter()
 
 bool BaseEnemy::collideWithGameElement(BaseElement* gameElement)
 {
+	if (!_IsValid)
+		return false;
+
 	if (this->ifCollide(gameElement->getBoundingBox()))
 	{
 		gameElement->onEnemyCollide(cocos2d::Point::ZERO, CollideOperate::CollideUp, this);
@@ -158,8 +167,9 @@ void BaseEnemy::_JumpFinish()
 
 void BaseEnemy::_Die()
 {
+	this->_IsValid = false;
 	auto dieActions = cocos2d::Sequence::create(
-		cocos2d::FadeOut::create(0.5),
+		cocos2d::ScaleTo::create(0.2f,0.0f,0.0f,0.0f),
 		cocos2d::CallFunc::create([=](){_CanClean = true; }),
 		NULL);
 	this->runAction(dieActions);

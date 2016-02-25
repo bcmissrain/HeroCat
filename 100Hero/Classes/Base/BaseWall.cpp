@@ -2,6 +2,9 @@
 
 bool BaseWall::collideWithGameElement(BaseElement* gameElement)
 {
+	if (!_IsValid)
+		return false;
+
 	auto boundingBox = getBoundingBox();
 	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))
 	{

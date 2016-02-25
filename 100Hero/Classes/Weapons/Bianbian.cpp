@@ -7,7 +7,7 @@ bool Bianbian::init()
 	_WeaponType = WeaponType::Hulu;
 	_WeaponMoveWays = WeaponMoveWays::Horizontal;
 	_Sprite = CSLoader::createNode("Bianbian.csb");
-	_IfSettle = false;
+	_IsValid = true;
 	this->addChild(_Sprite);
 	_SpriteTimeLine = CSLoader::createTimeline("Bianbian.csb");
 	_SpriteTimeLine->retain();
@@ -17,8 +17,23 @@ bool Bianbian::init()
 	return true;
 }
 
+void Bianbian::deal()
+{
+	_IsValid = false;
+	_SpriteTimeLine->gotoFrameAndPlay(40, 60, false);
+	_SpriteTimeLine->setLastFrameCallFunc([=](){_CanClean = true; });
+}
+
+bool Bianbian::isTarget(BaseElement* gameElement)
+{
+	return gameElement->getTag() == ELEMENT_ENEMY_TAG;
+}
+
 void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
+	if (!_IsValid)
+		return;
+
 	auto tempPoint = this->getParent()->convertToNodeSpace(point);
 	//tempPoint.y = gameElement->getBoundingBox().getMaxY();
 	float currentHeight = _Sprite->getChildByName("bigBian_2")->getBoundingBox().size.height * _Sprite->getScale();
@@ -33,19 +48,8 @@ void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 	case CollideOperate::CollideDown:
 		this->setPositionY(tempPoint.y + currentHeight / 2);
 		this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
-		this->_IfSettle = true;
 		break;
 	default:
 		break;
 	}
-}
-
-void Bianbian::onHeroCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
-{
-
-}
-
-void Bianbian::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
-{
-	
 }

@@ -48,7 +48,6 @@ void Enemy360::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 	}
 }
 
-
 void Enemy360::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
 	//Attention Convert the position
@@ -79,4 +78,11 @@ void Enemy360::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseEl
 	default:
 		break;
 	}
+}
+
+void Enemy360::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	auto weaponElement = (BaseWeapon*)gameElement;
+	weaponElement->deal();
+	this->_Hurt(weaponElement->_HurtValue);
 }

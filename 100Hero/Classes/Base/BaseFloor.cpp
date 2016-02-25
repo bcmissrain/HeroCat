@@ -36,6 +36,9 @@ cocos2d::Rect BaseFloor::getSmallCollideRect(BaseElement* gameElement)
 
 bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 {
+	if (!_IsValid)
+		return false;
+
 	auto boundingBox = getBoundingBox();
 	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))
 	{

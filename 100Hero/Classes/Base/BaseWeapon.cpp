@@ -17,9 +17,15 @@ cocos2d::Point BaseWeapon::getVisualCenter()
 
 bool BaseWeapon::collideWithGameElement(BaseElement* gameElement)
 {
-	if (this->ifCollide(gameElement->getBoundingBox()))
+	if (!_IsValid)
+		return false;
+
+	if (this->getEffectiveBox().intersectsRect(gameElement->getEffectiveBox()))
 	{
-		gameElement->onWeaponCollide(cocos2d::Point::ZERO, CollideOperate::CollideUp, this);
+		if (isTarget(gameElement))
+		{
+			gameElement->onWeaponCollide(cocos2d::Point::ZERO, CollideOperate::CollideUp, this);
+		}
 		return true;
 	}
 	return false;
@@ -33,9 +39,4 @@ WeaponType BaseWeapon::getWeaponType()
 cocos2d::Rect BaseWeapon::getAttackBox()
 {
 	return _AttackArea;
-}
-
-bool BaseWeapon::ifSettleDown()
-{
-	return _IfSettle;
 }

@@ -26,5 +26,9 @@ public:
 	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onHeroCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
+
+public:
+	bool _IsValid = true;
+	bool _CanClean = false;
 };
 #endif
