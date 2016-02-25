@@ -14,7 +14,6 @@ bool SpringLevel::init()
 	{
 		return false;
 	}
-
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
@@ -236,6 +235,16 @@ void SpringLevel::updateBorn(float delta)
 {
 	ifSupport = false;
 	ifDrawDebug = false;
+
+	if (_enemys.size() == 0)
+	{
+		//init enemy
+		auto enemy = Enemy360::create();
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
+		_elementLayer->addChild(enemy, 1);
+		_enemys.pushBack(enemy);
+	}
 }
 
 void SpringLevel::updateFloor(float delta)
@@ -515,11 +524,11 @@ void SpringLevel::AddBianbianByPos(cocos2d::Vec2 pos)
 
 	if (!haveBianbian){
 		auto weapon = Bianbian::create();
-		weapon->_Sprite->setScale(0.3);
+		weapon->_Sprite->setScale(0.5);
 		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
 		_elementLayer->addChild(weapon, -1);
 		_weapons.pushBack(weapon);
-		auto jumpDownAction = EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0);
+		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(_currentHero->_JumpTime, Vec2(0, _currentHero->_JumpHeight * 0.7)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
 		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 		weapon->runAction(jumpDownAction);
 	}

@@ -30,4 +30,5 @@
 *.pdb
 
 Debug.win32
+Release.win32
 100Hero/proj.win32/100Hero.opensdf

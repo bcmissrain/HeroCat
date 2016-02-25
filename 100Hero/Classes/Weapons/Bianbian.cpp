@@ -25,6 +25,21 @@ bool Bianbian::initElement()
 	return true;
 }
 
+void Bianbian::update(float delta)
+{
+	float currentPosY = this->getVisualCenter().y;
+	if (_lastPosY < currentPosY)
+	{
+		_ifThrowUp = true;
+	}
+	else
+	{
+		_ifThrowUp = false;
+	}
+
+	_lastPosY = currentPosY;
+}
+
 void Bianbian::deal()
 {
 	_IsValid = false;
@@ -53,9 +68,11 @@ void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 	case CollideOperate::CollideRight:
 		break;
 	case CollideOperate::CollideUp:
-	case CollideOperate::CollideDown:
-		this->setPositionY(tempPoint.y + currentHeight / 2);
-		this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
+	//case CollideOperate::CollideDown:
+		if (!_ifThrowUp){
+			this->setPositionY(tempPoint.y + currentHeight / 2);
+			this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
+		}
 		break;
 	default:
 		break;

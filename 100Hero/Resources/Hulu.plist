@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>Images/bigBian.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{193,4},{128,106}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{128,106}</string>
+			</dict>
+			<key>Images/hulubody.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{193,118},{100,106}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{100,106}</string>
+			</dict>
+			<key>Images/huluhead.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,4},{181,198}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{181,198}</string>
+			</dict>
+			<key>Images/left_arm.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{398,4},{17,50}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{17,50}</string>
+			</dict>
+			<key>Images/left_hand.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{301,118},{55,51}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{55,51}</string>
+			</dict>
+			<key>Images/left_leg.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{329,4},{27,51}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{27,51}</string>
+			</dict>
+			<key>Images/right_arm.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{364,60},{17,50}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{17,50}</string>
+			</dict>
+			<key>Images/right_hand.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{301,177},{55,51}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{55,51}</string>
+			</dict>
+			<key>Images/right_leg.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{364,4},{26,48}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{26,48}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>Hulu.png</string>
+			<key>realTextureFileName</key>
+			<string>Hulu.png</string>
+			<key>size</key>
+			<string>{512,256}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>512</integer>
+			<key>height</key>
+			<integer>256</integer>
+		</dict>
+	</dict>
+</plist>

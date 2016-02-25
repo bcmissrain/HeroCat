@@ -13,7 +13,6 @@ class BaseWeapon :public BaseElement
 public:
 	BaseWeapon(){}
 	~BaseWeapon(){}
-
 	virtual void deal(){};
 
 	virtual cocos2d::Rect getAttackBox();
