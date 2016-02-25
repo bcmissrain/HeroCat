@@ -168,6 +168,7 @@ void BaseEnemy::_JumpFinish()
 void BaseEnemy::_Die()
 {
 	this->_IsValid = false;
+	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 	auto dieActions = cocos2d::Sequence::create(
 		cocos2d::ScaleTo::create(0.2f,0.0f,0.0f,0.0f),
 		cocos2d::CallFunc::create([=](){_CanClean = true; }),

@@ -43,6 +43,7 @@ void Bianbian::update(float delta)
 void Bianbian::deal()
 {
 	_IsValid = false;
+	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 	_SpriteTimeLine->gotoFrameAndPlay(40, 60, false);
 	_SpriteTimeLine->setLastFrameCallFunc([=](){_CanClean = true; });
 }

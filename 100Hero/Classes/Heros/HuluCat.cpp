@@ -10,11 +10,11 @@ bool HuluCat::init()
 	this->_BaseRunSpeed = 400;
 	//this->_BaseAcceleration = 4;
 	this->_JumpTime = 0.3f;
-	this->_JumpHeight = 200;
+	this->_JumpHeight = 220;
 	this->_CanDoubleJump = true;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
-	this->_JumpHeight2 = 160;
+	this->_JumpHeight2 = 180;
 	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
 	this->addChild(_Sprite);
 	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");

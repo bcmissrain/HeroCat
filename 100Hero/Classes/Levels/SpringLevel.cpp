@@ -47,66 +47,74 @@ bool SpringLevel::init()
 	//init hero
 	_currentHero = HuluCat::create();
 	this->addChild(_currentHero);
-	_currentHero->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	_currentHero->setPosition(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT / 2);
 	_currentHero->_BaseScale = 0.3;
 	_currentHero->_Sprite->setScale(0.3);
 
 	//init floor
 	BaseFloor* floor0 = FloorNormal::create();
 	cocos2d::ui::Scale9Sprite* sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(2048, 50));
+	sp0->setContentSize(Size(256, 60));
 	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width / 2, 0));
+	floor0->setPosition(Vec2(visibleSize.width *0.3, 0));
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
-	BaseFloor* floor1 = FloorNormal::create();
-	auto sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp1->setContentSize(Size(200, 30));
-	floor1->initBySprite(sp1);
-	floor1->setPosition(Vec2(floor1->getVisualSize().width / 2 + 50, 250));
-	_elementLayer->addChild(floor1, -1);
-	_floors.pushBack(floor1);
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(256, 60));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width *0.7, 0));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
 
-	floor1 = FloorNormal::create();
-	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp1->setContentSize(Size(200, 30));
-	floor1->initBySprite(sp1);
-	floor1->setPosition(Vec2(visibleSize.width - floor1->getVisualSize().width / 2 - 50, 250));
-	_elementLayer->addChild(floor1, -1);
-	_floors.pushBack(floor1);
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(300, 40));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width * 0.125, 200));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
 
-	floor1 = FloorNormal::create();
-	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp1->setContentSize(Size(300, 30));
-	floor1->initBySprite(sp1);
-	floor1->setPosition(Vec2(visibleSize.width / 2, 400));
-	_elementLayer->addChild(floor1, -1);
-	_floors.pushBack(floor1);
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(300, 40));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width * 0.875, 200));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
 
-	floor1 = FloorNormal::create();
-	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp1->setContentSize(Size(400, 30));
-	floor1->initBySprite(sp1);
-	floor1->setPosition(Vec2(visibleSize.width / 2, 160));
-	_elementLayer->addChild(floor1, -1);
-	_floors.pushBack(floor1);
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(320, 40));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width * 0.5, 400));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
 
-	floor1 = WallNormal::create();
-	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp1->setContentSize(Size(30, 800));
-	floor1->initBySprite(sp1);
-	floor1->setPosition(Vec2(0, 0));
-	_elementLayer->addChild(floor1, -1);
-	_floors.pushBack(floor1);
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(300, 40));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width * 0.25, 600));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
 
-	floor1 = WallNormal::create();
-	sp1 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp1->setContentSize(Size(30, 800));
-	floor1->initBySprite(sp1);
-	floor1->setPosition(Vec2(visibleSize.width, 0));
-	_elementLayer->addChild(floor1, -1);
-	_floors.pushBack(floor1);
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(300, 40));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width * 0.75, 600));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	floor0 = FloorNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(512, 40));
+	floor0->initBySprite(sp0);
+	floor0->setPosition(Vec2(visibleSize.width * 0.5, 800));
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
 
 	//init weapon listener
 	auto eventListener = EventListenerCustom::create("Bianbian",
@@ -118,7 +126,7 @@ bool SpringLevel::init()
 
 	//init enemy
 	auto enemy = Enemy360::create();
-	enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
+	enemy->setPosition(Vec2(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT));
 	_elementLayer->addChild(enemy, 1);
 	_enemys.pushBack(enemy);
 
