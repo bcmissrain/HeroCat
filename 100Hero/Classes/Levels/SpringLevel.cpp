@@ -6,6 +6,9 @@
 #include "../Floors/WallNormal.h"
 #include "../Enemys/Enemy360.h"
 
+#define GAME_SCREEN_SIZE_WIDTH 1024 /*1136*/
+#define GAME_SCREEN_SIZE_HEIGHT 1136 /*1024*/
+
 USING_NS_CC;
 
 bool SpringLevel::init()
@@ -86,7 +89,7 @@ bool SpringLevel::init()
 
 	floor0 = FloorNormal::create();
 	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(320, 40));
+	sp0->setContentSize(Size(512, 40));
 	floor0->initBySprite(sp0);
 	floor0->setPosition(Vec2(visibleSize.width * 0.5, 400));
 	_elementLayer->addChild(floor0, -1);
@@ -115,6 +118,38 @@ bool SpringLevel::init()
 	floor0->setPosition(Vec2(visibleSize.width * 0.5, 800));
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
+	
+	auto _wall0 = WallNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(40, 40));
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(visibleSize.width * 0.8+100,600+40));
+	_elementLayer->addChild(_wall0,-1);
+	_floors.pushBack(_wall0);
+
+	_wall0 = WallNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(40, 40));
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(visibleSize.width * 0.2 - 100, 600 + 40));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	_wall0 = WallNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(40, 40));
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(visibleSize.width * 0, 200 + 40));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	_wall0 = WallNormal::create();
+	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
+	sp0->setContentSize(Size(40, 40));
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(visibleSize.width * 1 , 200 + 40));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
 
 	//init weapon listener
 	auto eventListener = EventListenerCustom::create("Bianbian",
@@ -138,9 +173,9 @@ bool SpringLevel::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 #else
 	auto leftButton = ui::Button::create("buttonLeft.png", "", "");
-	leftButton->setScale(0.5f);
+	leftButton->setScale(0.8f);
 	this->addChild(leftButton);
-	leftButton->setPosition(Vec2(visibleSize.width*0.1, visibleSize.height * 0.2));
+	leftButton->setPosition(Vec2(100, visibleSize.height * 0.2));
 	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
 		switch (type)
 		{
@@ -160,9 +195,9 @@ bool SpringLevel::init()
 	});
 
 	auto rightButton = ui::Button::create("buttonRight.png", "", "");
-	rightButton->setScale(0.5f);
+	rightButton->setScale(0.8f);
 	this->addChild(rightButton);
-	rightButton->setPosition(Vec2(visibleSize.width*0.2, visibleSize.height * 0.2));
+	rightButton->setPosition(Vec2(300, visibleSize.height * 0.2));
 	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
 		switch (type)
 		{
@@ -182,9 +217,9 @@ bool SpringLevel::init()
 	});
 
 	auto jumpButton = ui::Button::create("buttonJump.png", "", "");
-	jumpButton->setScale(0.5f);
+	jumpButton->setScale(0.8f);
 	this->addChild(jumpButton);
-	jumpButton->setPosition(Vec2(visibleSize.width*0.8, visibleSize.height * 0.2));
+	jumpButton->setPosition(Vec2(1024 - 100, visibleSize.height * 0.2));
 	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
 		switch (type)
 		{
@@ -204,9 +239,9 @@ bool SpringLevel::init()
 	});
 
 	auto attackButton = ui::Button::create("buttonJump.png", "", "");
-	attackButton->setScale(0.5f);
+	attackButton->setScale(0.8f);
 	this->addChild(attackButton);
-	attackButton->setPosition(Vec2(visibleSize.width*0.9, visibleSize.height * 0.2));
+	attackButton->setPosition(Vec2(1024 - 300, visibleSize.height * 0.2));
 	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
 		switch (type)
 		{
@@ -247,11 +282,35 @@ void SpringLevel::updateBorn(float delta)
 	if (_enemys.size() == 0)
 	{
 		//init enemy
-		auto enemy = Enemy360::create();
-		Size visibleSize = Director::getInstance()->getVisibleSize();
-		enemy->setPosition(Vec2(visibleSize.width / 2, visibleSize.height));
-		_elementLayer->addChild(enemy, 1);
-		_enemys.pushBack(enemy);
+		if (ifBornHurt)
+		{
+			auto enemy = Enemy360Hurt::create();
+			Size visibleSize = Director::getInstance()->getVisibleSize();
+			enemy->setPosition(Vec2(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT));
+			_elementLayer->addChild(enemy, 1);
+			_enemys.pushBack(enemy);
+			ifBornHurt = false;
+		}
+		else
+		{
+			auto enemy = Enemy360::create();
+			Size visibleSize = Director::getInstance()->getVisibleSize();
+			enemy->setPosition(Vec2(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT));
+			_elementLayer->addChild(enemy, 1);
+			_enemys.pushBack(enemy);
+		}
+
+	}
+
+	if (_currentHero->getBoundingBox().getMaxY() < 0 || _currentHero->_CanClean)
+	{
+		_currentHero->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+		_currentHero->_CanClean = false;
+		_currentHero->changeStateTo(ActionState::JumpDown);
+		for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+		{
+			(*wea)->deal();
+		}
 	}
 }
 
@@ -387,6 +446,12 @@ void SpringLevel::updateRecyle(float delta)
 	//late update enemy
 	for (auto ene = _enemys.begin(); ene != _enemys.end();)
 	{
+		if ((*ene)->getBoundingBox().getMaxY() < 0)
+		{
+			(*ene)->_CanClean = true;
+			ifBornHurt = true;
+		}
+
 		if ((*ene)->_CanClean)
 		{
 			(*ene)->removeFromParentAndCleanup(true);
@@ -395,6 +460,19 @@ void SpringLevel::updateRecyle(float delta)
 		else
 		{
 			ene++;
+		}
+	}
+
+	for (auto wea = _weapons.begin(); wea != _weapons.end();)
+	{
+		if ((*wea)->_CanClean)
+		{
+			_elementLayer->removeChild(*wea, true);
+			wea = _weapons.erase(wea);
+		}
+		else
+		{
+			wea++;
 		}
 	}
 

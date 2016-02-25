@@ -13,4 +13,11 @@ public:
 	virtual void onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 };
+
+class Enemy360Hurt : public Enemy360
+{
+public:
+	CREATE_FUNC(Enemy360Hurt);
+	virtual bool init() override;
+};
 #endif

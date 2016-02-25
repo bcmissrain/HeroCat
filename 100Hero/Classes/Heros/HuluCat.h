@@ -11,6 +11,7 @@ public:
 	virtual bool collideWithGameElement(BaseElement* gameElement) override { return false; }
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement) override;
 	virtual void onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
+	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 
 	virtual void _BeginStand() override;
 	virtual void _BeginRun() override;

@@ -27,6 +27,8 @@ private:
 	bool ifSupport;
 	bool ifDrawDebug;
 	void AddBianbianByPos(cocos2d::Vec2 pos);
+
+	bool ifBornHurt = false;
 };
 
 #endif

@@ -31,4 +31,10 @@
 
 Debug.win32
 Release.win32
+proj.android
+proj.android-studio
+android
+bin
+100Hero/proj.android/project.properties
+100Hero/proj.android/proguard-project.txt
 100Hero/proj.win32/100Hero.opensdf

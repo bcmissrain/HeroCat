@@ -8,7 +8,7 @@ bool HuluCat::init()
 	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.5f;
 	this->_BaseRunSpeed = 400;
-	//this->_BaseAcceleration = 4;
+	this->_BaseAcceleration = 6;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 220;
 	this->_CanDoubleJump = true;
@@ -133,6 +133,12 @@ void HuluCat::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseEle
 	default:
 		break;
 	}
+}
+
+void HuluCat::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	//TODEL
+	this->_CanClean = true;
 }
 
 void HuluCat::_BeginAttack()

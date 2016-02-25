@@ -93,3 +93,19 @@ void Enemy360::onWeaponCollide(cocos2d::Point point, CollideOperate opType, Base
 	weaponElement->deal();
 	this->_Hurt(weaponElement->_HurtValue);
 }
+
+bool Enemy360Hurt::init()
+{
+	this->setTag(ELEMENT_ENEMY_TAG);
+	_Sprite = cocos2d::Sprite::create("360_hurt.png");
+	_Direction = Direction::Right;
+	_MoveState = MoveState::MoveRight;
+	_RunSpeed = _BaseRunSpeed = 300;
+	_JumpTime = 0.3f;
+	_JumpHeight = 200;
+	_Scale = _BaseScale = 0.6f;
+	_Sprite->setScale(_Scale);
+	this->addChild(_Sprite);
+	initElement();
+	return true;
+}
