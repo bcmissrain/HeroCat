@@ -1,8 +1,9 @@
-#include "HeroNormal.h"
+#include "HuluCat.h"
+#include "../Levels/BaseLevel.h"
 #include "../Weapons/Bianbian.h"
 USING_NS_CC;
 
-bool HeroNormal::init()
+bool HuluCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.5f;
@@ -29,28 +30,28 @@ bool HeroNormal::init()
 	return true;
 }
 
-bool HeroNormal::initElement()
+bool HuluCat::initElement()
 {
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackState = AttackState::NotAttack;
-	_AttackColdTime = 0;
+	_AttackColdTime = 0.2f;
 	this->_Sprite->setScale(_BaseScale);
 	changeStateTo(ActionState::Stand);
 	return true;
 }
 
-void HeroNormal::_BeginStand()
+void HuluCat::_BeginStand()
 {
 	_SpriteTimeline->gotoFrameAndPause(0);
 }
 
-void HeroNormal::_BeginRun()
+void HuluCat::_BeginRun()
 {
 	_SpriteTimeline->gotoFrameAndPlay(0, 20, true);
 }
 
-void HeroNormal::_BeginJumpUp()
+void HuluCat::_BeginJumpUp()
 {
 	_SpriteTimeline->gotoFrameAndPlay(30,40,false);
 	auto jumpUpAction = EaseOut::create(MoveBy::create(_JumpTime, Vec2(0, _JumpHeight)),2.0);
@@ -58,7 +59,7 @@ void HeroNormal::_BeginJumpUp()
 	this->runAction(jumpUpAction);
 }
 
-void HeroNormal::_BeginJumpUp2()
+void HuluCat::_BeginJumpUp2()
 {
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 	this->stopActionByTag(ACTION_TAG_JUMP_UP);
@@ -69,7 +70,7 @@ void HeroNormal::_BeginJumpUp2()
 	this->runAction(jumpUpAction);
 }
 
-void HeroNormal::_BeginJumpDown()
+void HuluCat::_BeginJumpDown()
 {
 	this->stopActionByTag(ACTION_TAG_JUMP_UP);
 	this->stopActionByTag(ACTION_TAG_JUMP_UP_2);
@@ -79,14 +80,14 @@ void HeroNormal::_BeginJumpDown()
 	this->runAction(jumpDownAction);
 }
 
-void HeroNormal::_BeginJumpFinish()
+void HuluCat::_BeginJumpFinish()
 {
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 	_SpriteTimeline->gotoFrameAndPlay(50, 55, false);
 	this->_IsDoubleJump = false;
 }
 
-void HeroNormal::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
+void HuluCat::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
 	switch (opType)
 	{
@@ -109,7 +110,7 @@ void HeroNormal::onFloorCollide(cocos2d::Point point, CollideOperate opType,Base
 	}
 }
 
-void HeroNormal::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+void HuluCat::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
 	switch (opType)
 	{
@@ -134,32 +135,49 @@ void HeroNormal::onWallCollide(cocos2d::Point point, CollideOperate opType, Base
 	}
 }
 
-void HeroNormal::_BeginAttack()
+void HuluCat::_BeginAttack()
 {
 	if (_AttackState == AttackState::NotAttack)
 	{
-		_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
-		_SpriteTimeline->setLastFrameCallFunc([=](){
-			if (_SpriteTimeline->getCurrentFrame() == 70)
+		/*just for fun
+		bool haveBianbian = false;
+		for (auto wea = BaseLevel::_weapons.begin(); wea != BaseLevel::_weapons.end(); wea++)
+		{
+			if ((*wea)->_IsValid)
 			{
-				if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
+				if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
 				{
-					this->_BeginRun();
+					haveBianbian = true;
 				}
-				_SpriteTimeline->setLastFrameCallFunc(nullptr);
 			}
-		});
-		_eventDispatcher->dispatchCustomEvent("Bianbian", this);
-		//CCLOG("Add Bianbian");
-		_AttackCount++;
-		this->scheduleOnce([=](float delta){
-			_AttackState = AttackState::NotAttack;
-		}, _AttackColdTime, "yeah");
-		_AttackState = AttackState::Attacking;
+		}
+		
+		if (!haveBianbian){
+		*/
+			_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
+			_SpriteTimeline->setLastFrameCallFunc([=](){
+				if (_SpriteTimeline->getCurrentFrame() == 70)
+				{
+					if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
+					{
+						this->_BeginRun();
+					}
+					_SpriteTimeline->setLastFrameCallFunc(nullptr);
+				}
+			});
+			_eventDispatcher->dispatchCustomEvent("Bianbian", this);
+
+			_AttackCount++;
+			this->scheduleOnce([=](float delta){
+				_AttackState = AttackState::NotAttack;
+			}, _AttackColdTime, "attack");
+			_AttackState = AttackState::Attacking;
+		/*just for fun
+		}*/
 	}
 }
 
-void HeroNormal::_Attack(ClickState clickState)
+void HuluCat::_Attack(ClickState clickState)
 {
 	if (_AttackMaxTimes > 0)
 	{

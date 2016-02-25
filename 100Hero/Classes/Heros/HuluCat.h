@@ -1,11 +1,11 @@
 #ifndef __HERO_NORMAL_H__
 #define __HERO_NORMAL_H__
 #include "../Base/BaseHero.h"
-class HeroNormal :public BaseHero
+class HuluCat :public BaseHero
 {
 public:
 	virtual bool init() override;
-	CREATE_FUNC(HeroNormal);
+	CREATE_FUNC(HuluCat);
 	virtual bool initElement() override;
 
 	virtual bool collideWithGameElement(BaseElement* gameElement) override { return false; }

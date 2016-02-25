@@ -51,9 +51,6 @@
     <ClCompile Include="..\Classes\Base\BaseWeapon.cpp">
       <Filter>src\Base</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Heros\HeroNormal.cpp">
-      <Filter>src\Heros</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Enemys\Enemy360.cpp">
       <Filter>src\Enemys</Filter>
     </ClCompile>
@@ -77,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Floors\WallNormal.cpp">
       <Filter>src\Floors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Heros\HuluCat.cpp">
+      <Filter>src\Heros</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +104,6 @@
     <ClInclude Include="..\Classes\Base\BaseWeapon.h">
       <Filter>src\Base</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Heros\HeroNormal.h">
-      <Filter>src\Heros</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Enemys\Enemy360.h">
       <Filter>src\Enemys</Filter>
     </ClInclude>
@@ -133,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Floors\WallNormal.h">
       <Filter>src\Floors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Heros\HuluCat.h">
+      <Filter>src\Heros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

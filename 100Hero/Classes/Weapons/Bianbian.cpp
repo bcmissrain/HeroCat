@@ -5,6 +5,7 @@ USING_NS_CC;
 bool Bianbian::init()
 {
 	this->setTag(ELEMENT_WEAPON_TAG);
+	this->setName(WEAPON_BIANBIAN_NAME);
 	_WeaponType = WeaponType::Hulu;
 	_WeaponMoveWays = WeaponMoveWays::Horizontal;
 	_Sprite = CSLoader::createNode("Bianbian.csb");

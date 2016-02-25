@@ -4,7 +4,7 @@
 #include "cocos2d.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
-#include "Heros/HeroNormal.h"
+#include "Heros/HuluCat.h"
 #include "Floors/FloorNormal.h"
 #include "Levels/BaseLevel.h"
 

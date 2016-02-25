@@ -14,6 +14,8 @@
 #define ELEMENT_FLOOR_TAG 1393652
 #define ELEMENT_ENEMY_TAG 1393653
 
+#define WEAPON_BIANBIAN_NAME "bian"
+
 #define TAG_HERO 15829383718
 //hero
 enum class ActionState

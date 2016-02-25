@@ -1,6 +1,6 @@
 #include "SpringLevel.h"
 
-#include "../Heros/HeroNormal.h"
+#include "../Heros/HuluCat.h"
 #include "../Floors/FloorNormal.h"
 #include "../Weapons/Bianbian.h"
 #include "../Floors/WallNormal.h"
@@ -46,7 +46,7 @@ bool SpringLevel::init()
 	this->addChild(enemyRect, 0);
 
 	//init hero
-	_currentHero = HeroNormal::create();
+	_currentHero = HuluCat::create();
 	this->addChild(_currentHero);
 	_currentHero->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 	_currentHero->_BaseScale = 0.3;
@@ -501,12 +501,26 @@ void SpringLevel::ResetPosition()
 
 void SpringLevel::AddBianbianByPos(cocos2d::Vec2 pos)
 {
-	auto weapon = Bianbian::create();
-	weapon->_Sprite->setScale(0.3);
-	weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
-	_elementLayer->addChild(weapon, -1);
-	_weapons.pushBack(weapon);
-	auto jumpDownAction = EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0);
-	jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
-	weapon->runAction(jumpDownAction);
+	bool haveBianbian = false;
+	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	{
+		if ((*wea)->_IsValid)
+		{
+			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
+			{
+				haveBianbian = true;
+			}
+		}
+	}
+
+	if (!haveBianbian){
+		auto weapon = Bianbian::create();
+		weapon->_Sprite->setScale(0.3);
+		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
+		_elementLayer->addChild(weapon, -1);
+		_weapons.pushBack(weapon);
+		auto jumpDownAction = EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0);
+		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
+		weapon->runAction(jumpDownAction);
+	}
 }
