@@ -118,6 +118,8 @@ bool Enemy360Boss::init()
 	_Direction = Direction::Right;
 	_MoveState = MoveState::MoveRight;
 	_RunSpeed = _BaseRunSpeed = 0;
+	_JumpTime = 40;
+	_JumpHeight = 80;
 	_Scale = _BaseScale = 0.6f;
 	_Sprite->setScale(_Scale);
 	this->addChild(_Sprite);
