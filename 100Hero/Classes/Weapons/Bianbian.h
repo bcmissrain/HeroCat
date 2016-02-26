@@ -11,6 +11,7 @@ public:
 	CREATE_FUNC(Bianbian);
 	virtual void deal() override;
 	virtual bool isTarget(BaseElement* gameElement) override;
+	virtual cocos2d::Size getVisualSize() override;
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement) override;
 
 private:

@@ -14,7 +14,7 @@ bool HuluCat::init()
 	this->_CanDoubleJump = true;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
-	this->_JumpHeight2 = 180;
+	this->_JumpHeight2 = 200;
 	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
 	this->addChild(_Sprite);
 	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");
@@ -75,7 +75,10 @@ void HuluCat::_BeginJumpDown()
 	this->stopActionByTag(ACTION_TAG_JUMP_UP);
 	this->stopActionByTag(ACTION_TAG_JUMP_UP_2);
 	_SpriteTimeline->gotoFrameAndPlay(40, 45, false);
-	auto jumpDownAction = EaseIn::create(MoveBy::create(_JumpTime * 2, Vec2(0, -_JumpHeight * 4)),2.0);
+	auto jumpDownAction = EaseIn::create(MoveBy::create(_JumpTime * 2, Vec2(0, -_JumpHeight*4)), 2.0);
+		/*Sequence::create(EaseIn::create(MoveBy::create(_JumpTime , Vec2(0, -_JumpHeight)), 2.0),
+		MoveBy::create(_JumpTime*4,Vec2(0,-_JumpHeight*4)),
+		NULL);*/
 	jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 	this->runAction(jumpDownAction);
 }

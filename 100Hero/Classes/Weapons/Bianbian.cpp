@@ -4,6 +4,7 @@ USING_NS_CC;
 
 bool Bianbian::init()
 {
+	this->_HurtValue = 0.5f;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_BIANBIAN_NAME);
 	_WeaponType = WeaponType::Hulu;
@@ -53,6 +54,12 @@ bool Bianbian::isTarget(BaseElement* gameElement)
 	return gameElement->getTag() == ELEMENT_ENEMY_TAG;
 }
 
+cocos2d::Size Bianbian::getVisualSize()
+{
+	return _Sprite->getChildByName("bigBian_2")->getBoundingBox().size *_Sprite->getScale();
+}
+
+
 void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
 	if (!_IsValid)
@@ -71,8 +78,8 @@ void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 	case CollideOperate::CollideUp:
 	//case CollideOperate::CollideDown:
 		if (!_ifThrowUp){
-			this->setPositionY(tempPoint.y + currentHeight / 2);
 			this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
+			this->setPositionY(tempPoint.y + currentHeight / 2);
 		}
 		break;
 	default:

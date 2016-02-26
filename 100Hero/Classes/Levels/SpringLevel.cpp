@@ -123,7 +123,7 @@ bool SpringLevel::init()
 	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp0->setContentSize(Size(40, 40));
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(visibleSize.width * 0.8+100,600+40));
+	_wall0->setPosition(Vec2(visibleSize.width * 0.8+100,600+50));
 	_elementLayer->addChild(_wall0,-1);
 	_floors.pushBack(_wall0);
 
@@ -131,7 +131,7 @@ bool SpringLevel::init()
 	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp0->setContentSize(Size(40, 40));
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(visibleSize.width * 0.2 - 100, 600 + 40));
+	_wall0->setPosition(Vec2(visibleSize.width * 0.2 - 100, 600 + 50));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 
@@ -139,7 +139,7 @@ bool SpringLevel::init()
 	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp0->setContentSize(Size(40, 40));
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(visibleSize.width * 0, 200 + 40));
+	_wall0->setPosition(Vec2(visibleSize.width * 0, 200 + 50));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 
@@ -147,7 +147,7 @@ bool SpringLevel::init()
 	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
 	sp0->setContentSize(Size(40, 40));
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(visibleSize.width * 1 , 200 + 40));
+	_wall0->setPosition(Vec2(visibleSize.width * 1 , 200 + 50));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 
@@ -610,11 +610,11 @@ void SpringLevel::AddBianbianByPos(cocos2d::Vec2 pos)
 
 	if (!haveBianbian){
 		auto weapon = Bianbian::create();
-		weapon->_Sprite->setScale(0.5);
+		weapon->_Sprite->setScale(0.3);
 		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
 		_elementLayer->addChild(weapon, -1);
 		_weapons.pushBack(weapon);
-		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(_currentHero->_JumpTime, Vec2(0, _currentHero->_JumpHeight * 0.7)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
+		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2, Vec2(0, 128)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
 		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 		weapon->runAction(jumpDownAction);
 	}

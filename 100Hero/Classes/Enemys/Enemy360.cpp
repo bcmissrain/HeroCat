@@ -12,6 +12,7 @@ bool Enemy360::init()
 	_JumpHeight = 200;
 	_Scale = _BaseScale = 0.6f;
 	_Sprite->setScale(_Scale);
+	_Blood = _BaseBlood = 1;
 	this->addChild(_Sprite);
 	initElement();
 	return true;
