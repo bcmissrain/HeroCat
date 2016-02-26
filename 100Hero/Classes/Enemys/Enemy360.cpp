@@ -92,7 +92,7 @@ void Enemy360::onWeaponCollide(cocos2d::Point point, CollideOperate opType, Base
 {
 	auto weaponElement = (BaseWeapon*)gameElement;
 	weaponElement->deal();
-	this->_Hurt(weaponElement->_HurtValue);
+	this->_Hurt(weaponElement->_HurtValue,weaponElement->_EnemyDieType);
 }
 
 bool Enemy360Hurt::init()
@@ -109,4 +109,25 @@ bool Enemy360Hurt::init()
 	this->addChild(_Sprite);
 	initElement();
 	return true;
+}
+
+bool Enemy360Boss::init()
+{
+	this->setTag(ELEMENT_ENEMY_TAG);
+	_Sprite = cocos2d::Sprite::create("360_boss.png");
+	_Direction = Direction::Right;
+	_MoveState = MoveState::MoveRight;
+	_RunSpeed = _BaseRunSpeed = 0;
+	_Scale = _BaseScale = 0.6f;
+	_Sprite->setScale(_Scale);
+	this->addChild(_Sprite);
+	initElement();
+	return true;
+}
+
+void Enemy360Boss::_JumpDown()
+{
+	auto jumpDownAction =cocos2d::MoveBy::create(_JumpTime, cocos2d::Vec2(0, -_JumpHeight));
+	jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
+	this->runAction(jumpDownAction);
 }

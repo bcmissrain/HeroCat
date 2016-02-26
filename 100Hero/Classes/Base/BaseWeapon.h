@@ -30,7 +30,7 @@ public:
 	cocos2d::Node* _Sprite = nullptr;
 	cocostudio::timeline::ActionTimeline* _SpriteTimeLine = nullptr;
 	cocos2d::Rect _AttackArea;
-
+	EnemyDieType _EnemyDieType = EnemyDieType::Transparent;
 	float _HurtValue = 1;
 };
 

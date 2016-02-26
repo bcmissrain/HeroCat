@@ -4,7 +4,7 @@ USING_NS_CC;
 
 bool Bianbian::init()
 {
-	this->_HurtValue = 0.5f;
+	this->_HurtValue = 1.0f;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_BIANBIAN_NAME);
 	_WeaponType = WeaponType::Hulu;
@@ -14,6 +14,7 @@ bool Bianbian::init()
 	_SpriteTimeLine = CSLoader::createTimeline("Bianbian.csb");
 	_SpriteTimeLine->retain();
 	_Sprite->runAction(_SpriteTimeLine);
+	_EnemyDieType = EnemyDieType::ScaleDown;
 	initElement();
 	return true;
 }

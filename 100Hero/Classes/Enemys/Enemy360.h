@@ -20,4 +20,12 @@ public:
 	CREATE_FUNC(Enemy360Hurt);
 	virtual bool init() override;
 };
+
+class Enemy360Boss : public Enemy360
+{
+public:
+	CREATE_FUNC(Enemy360Boss);
+	virtual bool init() override;
+	virtual void _JumpDown() override;
+};
 #endif

@@ -140,7 +140,7 @@ void BaseEnemy::_TurnDirection()
 	}
 }
 
-void BaseEnemy::_Hurt(float lostBlood)
+void BaseEnemy::_Hurt(float lostBlood,EnemyDieType dieType)
 {
 	this->_Blood -= lostBlood;
 	if (this->_Blood >= 0.001)
@@ -149,7 +149,7 @@ void BaseEnemy::_Hurt(float lostBlood)
 	}
 	else
 	{
-		_Die();
+		_Die(dieType);
 	}
 }
 
@@ -165,15 +165,26 @@ void BaseEnemy::_JumpFinish()
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 }
 
-void BaseEnemy::_Die()
+void BaseEnemy::_Die(EnemyDieType dieType)
 {
 	this->_IsValid = false;
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
-	auto dieActions = cocos2d::Sequence::create(
-		cocos2d::ScaleTo::create(0.2f,0.0f,0.0f,0.0f),
-		cocos2d::CallFunc::create([=](){_CanClean = true; }),
-		NULL);
-	this->runAction(dieActions);
+	if (dieType == EnemyDieType::Transparent)
+	{
+		auto dieActions = cocos2d::Sequence::create(
+			cocos2d::FadeTo::create(0.3f,0),
+			cocos2d::CallFunc::create([=](){_CanClean = true; }),
+			NULL);
+		this->_Sprite->runAction(dieActions);
+	}
+	else
+	{
+		auto dieActions = cocos2d::Sequence::create(
+			cocos2d::ScaleTo::create(0.2f, 0.0f, 0.0f, 0.0f),
+			cocos2d::CallFunc::create([=](){_CanClean = true; }),
+			NULL);
+		this->runAction(dieActions);
+	}
 }
 
 void BaseEnemy::changeStateTo(EnemyState state)

@@ -96,4 +96,10 @@ enum class WeaponDirection
 	Right = 0,
 	Left
 };
+//enemy
+enum class EnemyDieType
+{
+	Transparent,
+	ScaleDown
+};
 #endif

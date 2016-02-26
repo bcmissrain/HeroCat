@@ -7,7 +7,7 @@
 #include "../Enemys/Enemy360.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1024 /*1136*/
-#define GAME_SCREEN_SIZE_HEIGHT 1136 /*1024*/
+#define GAME_SCREEN_SIZE_HEIGHT 1280 /*1024*/
 
 USING_NS_CC;
 
@@ -160,7 +160,7 @@ bool SpringLevel::init()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 
 	//init enemy
-	auto enemy = Enemy360::create();
+	auto enemy = Enemy360Boss::create();
 	enemy->setPosition(Vec2(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT));
 	_elementLayer->addChild(enemy, 1);
 	_enemys.pushBack(enemy);
