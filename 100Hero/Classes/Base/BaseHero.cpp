@@ -34,6 +34,12 @@ void StandStatus::checkState(BaseHero* hero)
 		hero->_ifClickJump = ClickState::Still; //force change to still
 		hero->changeStateTo(ActionState::JumpUp);
 	}
+
+	//drop
+	if (hero->_CollideState == CollideState::NoneSupport)
+	{
+		hero->changeStateTo(ActionState::JumpDown);
+	}
 }
 
 void StandStatus::updateState(BaseHero* hero, float deltaTime /* = 0 */)

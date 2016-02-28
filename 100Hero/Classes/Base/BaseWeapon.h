@@ -24,6 +24,7 @@ public:
 	virtual cocos2d::Point getVisualCenter() override;
 	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 public:
+	float _BaseScale = 1;
 	WeaponType _WeaponType = WeaponType::Hand;
 	WeaponMoveWays _WeaponMoveWays = WeaponMoveWays::Horizontal;
 	WeaponDirection _Direction = WeaponDirection::Right;

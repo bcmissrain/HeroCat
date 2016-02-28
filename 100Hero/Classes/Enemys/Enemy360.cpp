@@ -6,11 +6,11 @@ bool Enemy360::init()
 	this->setTag(ELEMENT_ENEMY_TAG);
 	_Sprite = cocos2d::Sprite::create("360.png");
 	_Direction = Direction::Right;
-	_MoveState = MoveState::MoveRight;
+	_MoveState = MoveState::None;
 	_RunSpeed = _BaseRunSpeed = 200;
 	_JumpTime = 0.3f;
 	_JumpHeight = 200;
-	_Scale = _BaseScale = 0.6f;
+	_Scale = _BaseScale = 0.4f;
 	_Sprite->setScale(_Scale);
 	_Blood = _BaseBlood = 1;
 	this->addChild(_Sprite);
@@ -100,11 +100,11 @@ bool Enemy360Hurt::init()
 	this->setTag(ELEMENT_ENEMY_TAG);
 	_Sprite = cocos2d::Sprite::create("360_hurt.png");
 	_Direction = Direction::Right;
-	_MoveState = MoveState::MoveRight;
+	_MoveState = MoveState::None;
 	_RunSpeed = _BaseRunSpeed = 300;
 	_JumpTime = 0.3f;
 	_JumpHeight = 200;
-	_Scale = _BaseScale = 0.6f;
+	_Scale = _BaseScale = 0.4f;
 	_Sprite->setScale(_Scale);
 	this->addChild(_Sprite);
 	initElement();
@@ -116,7 +116,7 @@ bool Enemy360Boss::init()
 	this->setTag(ELEMENT_ENEMY_TAG);
 	_Sprite = cocos2d::Sprite::create("360_boss.png");
 	_Direction = Direction::Right;
-	_MoveState = MoveState::MoveRight;
+	_MoveState = MoveState::None;
 	_RunSpeed = _BaseRunSpeed = 0;
 	_JumpTime = 40;
 	_JumpHeight = 80;

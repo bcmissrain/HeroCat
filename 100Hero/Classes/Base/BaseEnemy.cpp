@@ -51,18 +51,11 @@ void BaseEnemy::update(float delta)
 	}
 	else if (_CurrentState == EnemyState::JumpDown)
 	{
-		
+		_Run(delta);
 	}
 	else if (_CurrentState == EnemyState::JumpFinish)
 	{
-		//if (!_CanFly)
-		//{
-		//	changeStateTo(EnemyState::Run);
-		//}
-		//else
-		//{
-		//	changeStateTo(EnemyState::Fly);
-		//}
+		_Run(delta);
 	}
 	else if (_CurrentState == EnemyState::Die)
 	{
@@ -163,6 +156,17 @@ void BaseEnemy::_JumpDown()
 void BaseEnemy::_JumpFinish()
 {
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
+	if (this->_MoveState == MoveState::None)
+	{
+		if (this->_Direction == Direction::Left)
+		{
+			_MoveState = MoveState::MoveLeft;
+		}
+		else if (this->_Direction == Direction::Right)
+		{
+			_MoveState = MoveState::MoveRight;
+		}
+	}
 }
 
 void BaseEnemy::_Die(EnemyDieType dieType)

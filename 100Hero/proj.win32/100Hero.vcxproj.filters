@@ -78,6 +78,9 @@
     <ClCompile Include="..\Classes\Heros\HuluCat.cpp">
       <Filter>src\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\Biscuit.cpp">
+      <Filter>src\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Heros\HuluCat.h">
       <Filter>src\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\Biscuit.h">
+      <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,15 +6,15 @@ USING_NS_CC;
 bool HuluCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
-	this->_BaseScale = 0.5f;
-	this->_BaseRunSpeed = 400;
-	this->_BaseAcceleration = 6;
+	this->_BaseScale = 0.25f;
+	this->_BaseRunSpeed = 500;
+	//this->_BaseAcceleration = 6;
 	this->_JumpTime = 0.3f;
-	this->_JumpHeight = 220;
+	this->_JumpHeight = 210;
 	this->_CanDoubleJump = true;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
-	this->_JumpHeight2 = 200;
+	this->_JumpHeight2 = 160;
 	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
 	this->addChild(_Sprite);
 	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");
@@ -92,6 +92,11 @@ void HuluCat::_BeginJumpFinish()
 
 void HuluCat::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
+	if (!this->_IsValid)
+	{
+		return;
+	}
+
 	switch (opType)
 	{
 	case CollideOperate::CollideLeft:
@@ -115,6 +120,11 @@ void HuluCat::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEle
 
 void HuluCat::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
+	if (!this->_IsValid)
+	{
+		return;
+	}
+
 	switch (opType)
 	{
 	case CollideOperate::CollideLeft:
@@ -140,8 +150,23 @@ void HuluCat::onWallCollide(cocos2d::Point point, CollideOperate opType, BaseEle
 
 void HuluCat::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
-	//TODEL
-	this->_CanClean = true;
+	if (!this->_IsValid)
+	{
+		return;
+	}
+	this->_IsValid = false;
+}
+
+void HuluCat::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
+{
+	if (!this->_IsValid)
+	{
+		return;
+	}
+
+	auto weaponElement = (BaseWeapon*)gameElement;
+	weaponElement->deal();
+	//TODO
 }
 
 void HuluCat::_BeginAttack()
@@ -188,6 +213,11 @@ void HuluCat::_BeginAttack()
 
 void HuluCat::_Attack(ClickState clickState)
 {
+	if (!this->_IsValid)
+	{
+		return;
+	}
+
 	if (_AttackMaxTimes > 0)
 	{
 		if (_AttackCount >= _AttackMaxTimes)

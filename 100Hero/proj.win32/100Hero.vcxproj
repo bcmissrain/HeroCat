@@ -159,6 +159,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Levels\BaseLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\SpringLevel.cpp" />
     <ClCompile Include="..\Classes\Weapons\Bianbian.cpp" />
+    <ClCompile Include="..\Classes\Weapons\Biscuit.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +179,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Levels\BaseLevel.h" />
     <ClInclude Include="..\Classes\Levels\SpringLevel.h" />
     <ClInclude Include="..\Classes\Weapons\Bianbian.h" />
+    <ClInclude Include="..\Classes\Weapons\Biscuit.h" />
     <ClInclude Include="..\Classes\Weapons\WeaponDefine.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

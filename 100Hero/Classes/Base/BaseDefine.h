@@ -11,6 +11,7 @@
 #define ELEMENT_FLOOR_TAG 1393652
 #define ELEMENT_ENEMY_TAG 1393653
 
+#define  WEAPON_BISCUIT_NAME "biscuit"
 #define WEAPON_BIANBIAN_NAME "bian"
 
 #define TAG_HERO 15829383718
@@ -80,6 +81,7 @@ enum class FloorType
 //weapon
 enum class WeaponType
 {
+	Biscuit = 0,
 	Hand,
 	Hulu,
 	Shoot

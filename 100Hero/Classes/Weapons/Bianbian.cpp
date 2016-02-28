@@ -5,10 +5,11 @@ USING_NS_CC;
 bool Bianbian::init()
 {
 	this->_HurtValue = 1.0f;
+	this->_BaseScale = 0.3f;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_BIANBIAN_NAME);
 	_WeaponType = WeaponType::Hulu;
-	_WeaponMoveWays = WeaponMoveWays::Horizontal;
+	_WeaponMoveWays = WeaponMoveWays::Vertical;
 	_Sprite = CSLoader::createNode("Bianbian.csb");
 	this->addChild(_Sprite);
 	_SpriteTimeLine = CSLoader::createTimeline("Bianbian.csb");
@@ -21,6 +22,7 @@ bool Bianbian::init()
 
 bool Bianbian::initElement()
 {
+	_Sprite->setScale(_BaseScale);
 	_IsValid = true;
 	_CanClean = false;
 	_SpriteTimeLine->gotoFrameAndPlay(0, 30, true);
