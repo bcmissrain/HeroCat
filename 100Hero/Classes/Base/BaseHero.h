@@ -124,6 +124,9 @@ public:
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
+	virtual DropState getJumpState() override;
+	virtual float getMaxJumpSpeed()override;
+
 	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 	virtual cocos2d::Point getWeaponPosByIndex(int index);

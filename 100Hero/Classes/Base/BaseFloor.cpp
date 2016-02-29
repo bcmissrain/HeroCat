@@ -22,6 +22,16 @@ cocos2d::Point BaseFloor::getVisualCenter()
 	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
 }
 
+DropState BaseFloor::getJumpState()
+{
+	return DropState::Still;
+}
+
+float BaseFloor::getMaxJumpSpeed()
+{
+	return 0;
+}
+
 FloorType BaseFloor::getFloorType()
 {
 	return _FloorType;
@@ -38,8 +48,38 @@ bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 {
 	if (!_IsValid)
 		return false;
-
+	auto elementBox = gameElement->getBoundingBox();
 	auto boundingBox = getBoundingBox();
+	/*
+	if ((elementBox.getMinX()>=boundingBox.getMinX()&&elementBox.getMinX() <= boundingBox.getMaxX())
+	||(elementBox.getMaxX() >= boundingBox.getMinX() && elementBox.getMaxX() <= boundingBox.getMaxX()))
+	{
+		if (gameElement->_LastRect.getMidY() - elementBox.getMidY() >= 0)//down
+		{
+			if (gameElement->_LastRect.getMaxY() > boundingBox.getMinY())
+			{
+				if (elementBox.getMinY() <= boundingBox.getMaxY())
+				{
+					gameElement->onFloorCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp, this);
+					return true;
+				}
+			}
+		}
+		else if (gameElement->_LastRect.getMidY() - elementBox.getMidY() < 0)//up
+		{
+			if (gameElement->_LastRect.getMinY() < boundingBox.getMaxY())
+			{
+				if (elementBox.getMaxY() >= boundingBox.getMinY())
+				{
+					gameElement->onFloorCollide(cocos2d::Point(0, boundingBox.getMinY()), CollideOperate::CollideDown, this);
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+	*/
 	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))
 	{
 		auto collideRect = getSmallCollideRect(gameElement);

@@ -23,6 +23,9 @@ public:
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
 	virtual bool collideWithGameElement(BaseElement* gameElement) override;
+	virtual DropState getJumpState() override{ return DropState::Down; }
+	virtual float getMaxJumpSpeed() override{ return 0; }
+
 public:
 	float _BaseScale = 1;
 	WeaponType _WeaponType = WeaponType::Hand;

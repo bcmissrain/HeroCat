@@ -12,7 +12,7 @@ public:
 	virtual bool init();
 	virtual bool initElement();
 	virtual void update(float delta){}
-	virtual void afterUpdate(){};
+	virtual void afterUpdate();
 
 	virtual cocos2d::Rect getBoundingBox() = 0;
 	virtual cocos2d::Size getVisualSize() = 0;
@@ -32,8 +32,13 @@ public:
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 	virtual void onHeroCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement){};
 
+	//tell up or down or still
+	virtual DropState getJumpState() = 0;
+	virtual float getMaxJumpSpeed() = 0;
+	cocos2d::Rect getDetectingBox();
 public:
 	bool _IsValid = true;
 	bool _CanClean = false;
+	cocos2d::Rect _LastRect = cocos2d::Rect(-10000,10000,10,10);
 };
 #endif

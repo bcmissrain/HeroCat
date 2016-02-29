@@ -372,6 +372,25 @@ cocos2d::Rect BaseHero::getBoundingBox()
 	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2,getVisualSize());
 }
 
+DropState BaseHero::getJumpState()
+{
+	if (_CurrentState->getState() == ActionState::JumpUp || _CurrentState->getState() == ActionState::JumpUp2)
+	{
+		return DropState::Up;
+	}
+	else
+	{
+		return DropState::Down;
+	}
+}
+
+float BaseHero::getMaxJumpSpeed()
+{
+	CCLOG("JumpMaxSpeed:%f", _JumpHeight * 2 / _JumpTime);
+	return _JumpHeight * 2 / _JumpTime;
+}
+
+
 void BaseHero::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
 	CCLOG("Collide with Weapon");
@@ -559,5 +578,6 @@ void BaseHero::changeStateTo(ActionState state)
 void BaseHero::afterUpdate()
 {
 	this->_CollideState = CollideState::NoneSupport;
-
+	BaseElement::afterUpdate();
+	CCLOG("Hero Last Pos %f,%f", _LastRect.getMidX(), _LastRect.getMidY());
 }

@@ -8,8 +8,8 @@ bool Enemy360::init()
 	_Direction = Direction::Right;
 	_MoveState = MoveState::None;
 	_RunSpeed = _BaseRunSpeed = 200;
-	_JumpTime = 0.3f;
-	_JumpHeight = 200;
+	_JumpTime = 0.1f;
+	_JumpHeight = 1600;
 	_Scale = _BaseScale = 0.4f;
 	_Sprite->setScale(_Scale);
 	_Blood = _BaseBlood = 1;
@@ -102,8 +102,8 @@ bool Enemy360Hurt::init()
 	_Direction = Direction::Right;
 	_MoveState = MoveState::None;
 	_RunSpeed = _BaseRunSpeed = 300;
-	_JumpTime = 0.3f;
-	_JumpHeight = 200;
+	_JumpTime = 0.1f;//0.3f;
+	_JumpHeight = 1600;//200;
 	_Scale = _BaseScale = 0.4f;
 	_Sprite->setScale(_Scale);
 	this->addChild(_Sprite);

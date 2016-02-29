@@ -21,6 +21,9 @@ public:
 	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
+	virtual DropState getJumpState() override;
+	virtual float getMaxJumpSpeed()override;
+
 	virtual bool collideWithGameElement(BaseElement* gameElement) override;
 
 	virtual void initBySprite(cocos2d::Node* sprite);

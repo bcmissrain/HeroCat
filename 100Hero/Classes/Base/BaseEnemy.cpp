@@ -66,6 +66,7 @@ void BaseEnemy::update(float delta)
 void BaseEnemy::afterUpdate()
 {
 	this->_IfHaveSupport = false;
+	BaseElement::afterUpdate();
 }
 
 cocos2d::Rect BaseEnemy::getBoundingBox()

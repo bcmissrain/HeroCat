@@ -8,7 +8,7 @@
 #include "../Enemys/Enemy360.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
-#define GAME_SCREEN_SIZE_HEIGHT 640 /*1024*/
+#define GAME_SCREEN_SIZE_HEIGHT 768 /*1024*/
 
 USING_NS_CC;
 
@@ -184,7 +184,15 @@ void SpringLevel::updateLate(float delta)
 		}
 	}
 #endif
+	
+	ResetPosition();
+
 	//late update enemy
+	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	{
+		(*wea)->afterUpdate();
+	}
+
 	for (auto ene = _enemys.begin(); ene != _enemys.end(); ene++)
 	{
 		(*ene)->afterUpdate();
@@ -192,7 +200,6 @@ void SpringLevel::updateLate(float delta)
 	
 	_currentHero->afterUpdate();
 
-	ResetPosition();
 
 	//reset input
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32

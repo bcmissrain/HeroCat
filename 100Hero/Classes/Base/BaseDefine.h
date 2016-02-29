@@ -15,6 +15,14 @@
 #define WEAPON_BIANBIAN_NAME "bian"
 
 #define TAG_HERO 15829383718
+//baseElement
+enum class DropState
+{
+	Still,
+	Up,
+	Down,
+};
+
 //hero
 enum class ActionState
 {
