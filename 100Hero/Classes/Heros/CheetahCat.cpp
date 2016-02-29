@@ -108,11 +108,11 @@ void CheetahCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, Bas
 		break;
 	case CollideOperate::CollideUp:
 		_CollideState = CollideState::HaveSupport;
-		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.32f);
+		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.33f);
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
-		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.68f);
+		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.67f);
 		break;
 	default:
 		break;

@@ -10,10 +10,11 @@ std::vector<cocos2d::Vec2> BaseLevel::_enemysBornPoints;
 
 void BaseLevel::initRandom()
 {
-	struct timeval now;
+	//compile error in android
+	/*struct timeval now;
 	cocos2d::gettimeofday(&now, NULL);
 	unsigned rand_seed = (unsigned)(now.tv_sec * 1000 + now.tv_usec / 1000);
-	srand(rand_seed);
+	srand(rand_seed);*/
 }
 /**
 [begin,end]

@@ -84,6 +84,9 @@
     <ClCompile Include="..\Classes\Heros\CheetahCat.cpp">
       <Filter>src\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Levels\TeachLevel.cpp">
+      <Filter>src\Levels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -145,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Heros\CheetahCat.h">
       <Filter>src\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Levels\TeachLevel.h">
+      <Filter>src\Levels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

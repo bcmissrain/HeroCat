@@ -3,6 +3,8 @@
 #include "ui/UIWidget.h"
 
 #include "Levels/SpringLevel.h"
+#include "Levels/TeachLevel.h"
+
 
 USING_NS_CC;
 
@@ -23,7 +25,7 @@ bool HelloWorld::init()
     {
         return false;
     }
-	_currentLevel = SpringLevel::create();
+	_currentLevel = TeachLevel::create();//SpringLevel::create();
 	this->addChild(_currentLevel);
 
     return true;

@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>Level0/button_attack.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,66},{128,128}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+			<key>Level0/button_jump.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,202},{128,128}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+			<key>Level0/button_left.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,338},{128,128}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+			<key>Level0/button_right.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{140,66},{128,128}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{128,128}</string>
+			</dict>
+			<key>Level0/floor4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{276,66},{204,53}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{204,53}</string>
+			</dict>
+			<key>Level0/floor5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{231,230},{250,53}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{250,53}</string>
+			</dict>
+			<key>Level0/floor9.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,4},{454,54}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{454,54}</string>
+			</dict>
+			<key>Level0/teach_enemy.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{423,291},{57,53}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{57,53}</string>
+			</dict>
+			<key>Level0/text_attack.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{328,291},{87,40}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{87,40}</string>
+			</dict>
+			<key>Level0/text_begin_game.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{276,127},{205,43}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{205,43}</string>
+			</dict>
+			<key>Level0/text_jump.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{230,291},{90,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{90,42}</string>
+			</dict>
+			<key>Level0/text_kill_enemy.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{276,178},{175,44}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{175,44}</string>
+			</dict>
+			<key>Level0/text_left.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{140,202},{83,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{83,46}</string>
+			</dict>
+			<key>Level0/text_right.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{140,256},{82,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{82,46}</string>
+			</dict>
+			<key>Level0/door.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{140,310},{50,75}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{50,75}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>Level0.png</string>
+			<key>realTextureFileName</key>
+			<string>Level0.png</string>
+			<key>size</key>
+			<string>{512,512}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>512</integer>
+			<key>height</key>
+			<integer>512</integer>
+		</dict>
+	</dict>
+</plist>
