@@ -37,6 +37,7 @@ bool HuluCat::initElement()
 	this->_AttackState = AttackState::NotAttack;
 	_AttackColdTime = 0.2f;
 	this->_Sprite->setScale(_BaseScale);
+	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
 	return true;
 }
@@ -154,19 +155,8 @@ void HuluCat::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseEl
 	{
 		return;
 	}
+	this->setRotation(180);
 	this->_IsValid = false;
-}
-
-void HuluCat::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
-{
-	if (!this->_IsValid)
-	{
-		return;
-	}
-
-	auto weaponElement = (BaseWeapon*)gameElement;
-	weaponElement->deal();
-	//TODO
 }
 
 void HuluCat::_BeginAttack()
