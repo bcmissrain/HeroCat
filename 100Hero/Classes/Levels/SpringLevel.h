@@ -7,6 +7,8 @@ class SpringLevel : public BaseLevel
 {
 public:
 	virtual bool init() override;
+	virtual void onExit() override;
+
 	CREATE_FUNC(SpringLevel);
 
 	virtual void updateInput(float delta) override;
@@ -24,7 +26,8 @@ public:
 	virtual void ResetPosition() override;
 
 	virtual void bornCake() override;
-
+	virtual void bornEnemys() override;
+	void bornHurtEnemys(BaseEnemy* baseEnemy);
 protected:
 	virtual void initBornPoints();
 	virtual void initBackground();
@@ -39,8 +42,10 @@ private:
 	bool ifDrawDebug;
 #endif
 	void AddBianbianByPos(cocos2d::Vec2 pos);
-	
+
 	bool ifBornHurt = false;
+	bool isBorningEnemy = false;
+	bool canBornEnemy = true;
 };
 
 #endif

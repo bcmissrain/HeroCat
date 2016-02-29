@@ -1,6 +1,7 @@
 #include "SpringLevel.h"
 
 #include "../Heros/HuluCat.h"
+#include "../Heros/CheetahCat.h"
 #include "../Floors/FloorNormal.h"
 #include "../Weapons/Bianbian.h"
 #include "../Weapons/Biscuit.h"
@@ -8,7 +9,7 @@
 #include "../Enemys/Enemy360.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
-#define GAME_SCREEN_SIZE_HEIGHT 768 /*1024*/
+#define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
 
 USING_NS_CC;
 
@@ -18,10 +19,26 @@ bool SpringLevel::init()
 	{
 		return false;
 	}
+	
+	BaseLevel::initRandom();
+
 	_minX = -(GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width) / 2;
 	_maxX = GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width - _minX;
 	_minY = -(GAME_SCREEN_SIZE_HEIGHT - getVisibleSize().height);
 	_maxY = 0;
+
+	//Load resources
+	TextureCache::getInstance()->addImage("360.png");
+	TextureCache::getInstance()->addImage("360_hurt.png");
+	TextureCache::getInstance()->addImage("360_boss.png");
+	TextureCache::getInstance()->addImage("Images/bigBian.png");
+
+	_baseMaxBornTime = 8;
+	_baseMinBornTime = 4;
+	_currentBornTime = _baseMaxBornTime;
+	_bornTimeSpeed = 4.0f / 20.0f;
+	_bornBetweenTime = 0.5f;
+
 	initBackground();
 	initBornPoints();
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32	
@@ -37,9 +54,18 @@ bool SpringLevel::init()
 	initEnemys();
 	initWeapons();
 	initControl();
-
 	this->scheduleUpdate();
 	return true;
+}
+
+void SpringLevel::onExit()
+{
+	_floors.clear();
+	_weapons.clear();
+	_enemys.clear();
+	_elementLayer->removeAllChildren();
+	this->removeAllChildren();
+	TextureCache::getInstance()->removeUnusedTextures();
 }
 
 void SpringLevel::updateInput(float delta)
@@ -58,28 +84,8 @@ void SpringLevel::updateBorn(float delta)
 	ifSupport = false;
 	ifDrawDebug = false;
 #endif
-	if (_enemys.size() == 0)
-	{
-		//init enemy
-		if (ifBornHurt)
-		{
-			auto enemy = Enemy360Hurt::create();
-			Size visibleSize = Director::getInstance()->getVisibleSize();
-			enemy->setPosition(Vec2(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT));
-			_elementLayer->addChild(enemy, 1);
-			_enemys.pushBack(enemy);
-			ifBornHurt = false;
-		}
-		else
-		{
-			auto enemy = Enemy360::create();
-			Size visibleSize = Director::getInstance()->getVisibleSize();
-			enemy->setPosition(Vec2(visibleSize.width / 2, GAME_SCREEN_SIZE_HEIGHT));
-			_elementLayer->addChild(enemy, 1);
-			_enemys.pushBack(enemy);
-		}
-
-	}
+	bornEnemys();
+	bornCake();
 
 	if (_currentHero->getBoundingBox().getMaxY() < 0 && !_currentHero->_IsValid)
 	{
@@ -246,10 +252,13 @@ void SpringLevel::updateRecyle(float delta)
 	//late update enemy
 	for (auto ene = _enemys.begin(); ene != _enemys.end();)
 	{
-		if ((*ene)->getBoundingBox().getMaxY() < 0)
+		if (_elementLayer->convertToNodeSpace((*ene)->getVisualCenter() + (*ene)->getVisualSize() / 2).y < 0)
 		{
-			(*ene)->_CanClean = true;
-			ifBornHurt = true;
+			if (!(*ene)->_CanClean)
+			{
+				(*ene)->_CanClean = true;
+				bornHurtEnemys(*ene);
+			}
 		}
 
 		if ((*ene)->_CanClean)
@@ -398,10 +407,116 @@ void SpringLevel::ResetPosition()
 
 void SpringLevel::bornCake()
 {
-	auto biscuit = Biscuit::create();
-	biscuit->setPosition(_cakeBornPoints.at(_cakeBornPoints.size()-1));
-	_elementLayer->addChild(biscuit, -1);
-	_weapons.pushBack(biscuit);
+	bool ifHaveCake = false;
+	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	{
+		if ((*wea)->getName() == WEAPON_BISCUIT_NAME)
+		{
+			ifHaveCake = true;
+			break;
+		}
+	}
+	if (!ifHaveCake)
+	{
+		//born cake
+		int index = getRandomPercent(0, _cakeBornPoints.size() - 1);
+
+		auto biscuit = Biscuit::create();
+		biscuit->setPosition(_cakeBornPoints.at(index));
+		_elementLayer->addChild(biscuit, -1);
+		_weapons.pushBack(biscuit);
+	}
+}
+
+void SpringLevel::bornEnemys()
+{
+	if (isBorningEnemy)
+	{
+		return;
+	}
+	
+	if (canBornEnemy)
+	{
+		isBorningEnemy = true;
+		canBornEnemy = false;
+
+		bool ifLeft = getRandomPercent(1, 100) <= 50;
+		//create 3 enemy (50): create 1 boss (25): create 2 enemy& 1 boss(15) :create 2 boss(10)
+		int createEnemyType = getRandomPercent(1, 100);
+		
+		auto bornNormal = Sequence::create(CallFunc::create([=](){
+			auto enemy = Enemy360::create();
+			enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+			if (ifLeft)
+			{
+				enemy->_TurnDirection();
+			}
+			_elementLayer->addChild(enemy, 1);
+			_enemys.pushBack(enemy);
+		}), DelayTime::create(_bornBetweenTime), NULL);
+
+		auto bornBoss = Sequence::create(CallFunc::create([=](){
+			auto enemy = Enemy360::create();
+			enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+			if (ifLeft)
+			{
+				enemy->_TurnDirection();
+			}
+			_elementLayer->addChild(enemy, 1);
+			_enemys.pushBack(enemy);
+		}), DelayTime::create(_bornBetweenTime), NULL);
+
+		auto bornEnd = Sequence::create(
+			CallFunc::create([=](){
+			isBorningEnemy = false;
+		}),
+			DelayTime::create(_currentBornTime),
+			CallFunc::create([=](){
+			canBornEnemy = true;
+		}), NULL);
+
+		Sequence* bornAction = nullptr;
+		if (createEnemyType <= 50)
+		{
+			bornAction = Sequence::create(Repeat::create(bornNormal, 3), bornEnd, NULL);
+		}
+		else if (createEnemyType <= 75)
+		{
+			bornAction = Sequence::create(bornBoss, bornEnd, NULL);
+		}
+		else if (createEnemyType <= 90)
+		{
+			bornAction = Sequence::create(Repeat::create(bornNormal, 2), bornBoss, bornEnd, NULL);
+		}
+		else
+		{
+			bornAction = Sequence::create(Repeat::create(bornBoss, 2), bornEnd, NULL);
+		}
+		this->runAction(bornAction);
+
+		_currentBornTime -= _bornTimeSpeed;
+		if (_currentBornTime < _baseMinBornTime)
+		{
+			_currentBornTime = _baseMinBornTime;
+		}
+	}
+}
+
+void SpringLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
+{
+	bool ifTurnLeft = baseEnemy->_Direction == Direction::Left;
+	auto bornAction = CallFunc::create([=](){
+		auto enemy = Enemy360Hurt::create();
+		
+		enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+		if (ifTurnLeft)
+		{
+			enemy->_TurnDirection();
+		}
+		_elementLayer->addChild(enemy, 1);
+		_enemys.pushBack(enemy);
+	});
+	this->runAction(bornAction);
 }
 
 void SpringLevel::AddBianbianByPos(cocos2d::Vec2 pos)
@@ -467,9 +582,9 @@ void SpringLevel::initBackground()
 	_elementLayer = Layer::create();
 	this->addChild(_elementLayer);
 
-	auto backSprite = Sprite::create("back0.png");
-	backSprite->setPosition(Vec2(getVisibleSize().width / 2, getVisibleSize().height / 2));
-	this->addChild(backSprite, -3);
+	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("back0.png"));
+	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
+	_elementLayer->addChild(backSprite, -3);
 }
 
 void SpringLevel::initFloors()
@@ -608,17 +723,17 @@ void SpringLevel::initWeapons()
 
 void SpringLevel::initEnemys()
 {
-	auto enemy = Enemy360Boss::create();
+	/*auto enemy = Enemy360Boss::create();
 	enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
 	_elementLayer->addChild(enemy, 1);
-	_enemys.pushBack(enemy);
+	_enemys.pushBack(enemy);*/
 }
 
 void SpringLevel::initHero()
 {
-	_currentHero = HuluCat::create();
+	_currentHero = CheetahCat::create();//HuluCat::create();
 	this->addChild(_currentHero);
-	_currentHero->setPosition(getVisibleSize().width / 2, GAME_SCREEN_SIZE_HEIGHT / 2);
+	_currentHero->setPosition(240, 500);
 }
 
 void SpringLevel::initControl()

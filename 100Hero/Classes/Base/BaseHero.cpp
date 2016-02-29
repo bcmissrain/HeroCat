@@ -393,7 +393,14 @@ float BaseHero::getMaxJumpSpeed()
 
 void BaseHero::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
-	CCLOG("Collide with Weapon");
+	if (!this->_IsValid)
+	{
+		return;
+	}
+
+	auto weaponElement = (BaseWeapon*)gameElement;
+	weaponElement->deal();
+	
 }
 
 void BaseHero::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)

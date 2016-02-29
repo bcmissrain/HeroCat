@@ -23,6 +23,8 @@ public:
 	static std::vector<cocos2d::Vec2> _cakeBornPoints;
 	static std::vector<cocos2d::Vec2> _enemysBornPoints;
 
+	static void initRandom();
+	static int getRandomPercent(int begin,int end);
 protected:
 	cocos2d::Size getVisibleSize();
 	virtual void updateInput(float delta){}
@@ -40,6 +42,7 @@ protected:
 	virtual void ResetPosition() = 0;
 
 	virtual void bornCake() = 0;
+	virtual void bornEnemys() = 0;
 protected:
 	ClickState _ifClickLeft;
 	ClickState _ifClickRight;
@@ -50,6 +53,7 @@ protected:
 	float _baseMinBornTime;
 	float _currentBornTime;
 	float _bornTimeSpeed;
+	float _bornBetweenTime;
 	float _minX;
 	float _minY;
 	float _maxX;

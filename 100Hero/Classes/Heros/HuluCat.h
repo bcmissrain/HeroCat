@@ -1,5 +1,5 @@
-#ifndef __HERO_NORMAL_H__
-#define __HERO_NORMAL_H__
+#ifndef __HULU_CAT_H__
+#define __HULU_CAT_H__
 #include "../Base/BaseHero.h"
 class HuluCat :public BaseHero
 {
@@ -12,7 +12,6 @@ public:
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement) override;
 	virtual void onWallCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 	virtual void onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
-	virtual void onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;
 
 	virtual void _BeginStand() override;
 	virtual void _BeginRun() override;

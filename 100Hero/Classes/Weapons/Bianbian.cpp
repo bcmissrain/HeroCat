@@ -1,5 +1,5 @@
 #include "Bianbian.h"
-
+#define  ACTION_TAG_BREATH 100100
 USING_NS_CC;
 
 bool Bianbian::init()
@@ -10,11 +10,15 @@ bool Bianbian::init()
 	this->setName(WEAPON_BIANBIAN_NAME);
 	_WeaponType = WeaponType::Hulu;
 	_WeaponMoveWays = WeaponMoveWays::Vertical;
-	_Sprite = CSLoader::createNode("Bianbian.csb");
+	_Sprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Images/bigBian.png"));
 	this->addChild(_Sprite);
-	_SpriteTimeLine = CSLoader::createTimeline("Bianbian.csb");
-	_SpriteTimeLine->retain();
-	_Sprite->runAction(_SpriteTimeLine);
+	auto breathAction = RepeatForever::create(Sequence::create(
+		ScaleTo::create(1.0f, 1.2f*_BaseScale),
+		ScaleTo::create(1.0f, 1.0f*_BaseScale),
+		NULL
+	));
+	breathAction->setTag(ACTION_TAG_BREATH);
+	_Sprite->runAction(breathAction);
 	_EnemyDieType = EnemyDieType::ScaleDown;
 	initElement();
 	return true;
@@ -25,7 +29,6 @@ bool Bianbian::initElement()
 	_Sprite->setScale(_BaseScale);
 	_IsValid = true;
 	_CanClean = false;
-	_SpriteTimeLine->gotoFrameAndPlay(0, 30, true);
 	return true;
 }
 
@@ -46,10 +49,19 @@ void Bianbian::update(float delta)
 
 void Bianbian::deal()
 {
-	_IsValid = false;
+	//_IsValid = false;
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
-	_SpriteTimeLine->gotoFrameAndPlay(40, 60, false);
-	_SpriteTimeLine->setLastFrameCallFunc([=](){_CanClean = true; });
+	_Sprite->stopActionByTag(ACTION_TAG_BREATH);
+	auto dieAction = Spawn::create(
+		RotateBy::create(0.3f,180),
+		Sequence::create(ScaleTo::create(0.2f, 2), ScaleTo::create(0.1f,0),NULL)
+		,NULL);
+	auto dealAction = Sequence::create(
+		dieAction,
+		CallFunc::create([=](){
+		_CanClean = true; 
+	}), NULL);
+	this->runAction(dealAction);
 }
 
 bool Bianbian::isTarget(BaseElement* gameElement)
@@ -59,9 +71,8 @@ bool Bianbian::isTarget(BaseElement* gameElement)
 
 cocos2d::Size Bianbian::getVisualSize()
 {
-	return _Sprite->getChildByName("bigBian_2")->getBoundingBox().size *_Sprite->getScale();
+	return _Sprite->getBoundingBox().size *this->getScale();
 }
-
 
 void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseElement* gameElement)
 {
@@ -69,8 +80,7 @@ void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 		return;
 
 	auto tempPoint = this->getParent()->convertToNodeSpace(point);
-	//tempPoint.y = gameElement->getBoundingBox().getMaxY();
-	float currentHeight = _Sprite->getChildByName("bigBian_2")->getBoundingBox().size.height * _Sprite->getScale();
+	float currentHeight = _Sprite->getBoundingBox().size.height * this->getScale();
 
 	switch (opType)
 	{
@@ -79,7 +89,6 @@ void Bianbian::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEl
 	case CollideOperate::CollideRight:
 		break;
 	case CollideOperate::CollideUp:
-	//case CollideOperate::CollideDown:
 		if (!_ifThrowUp){
 			this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 			this->setPositionY(tempPoint.y + currentHeight / 2);

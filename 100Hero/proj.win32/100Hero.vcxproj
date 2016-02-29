@@ -155,6 +155,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Floors\FloorNormal.cpp" />
     <ClCompile Include="..\Classes\Floors\WallNormal.cpp" />
     <ClCompile Include="..\Classes\HelloWorldScene.cpp" />
+    <ClCompile Include="..\Classes\Heros\CheetahCat.cpp" />
     <ClCompile Include="..\Classes\Heros\HuluCat.cpp" />
     <ClCompile Include="..\Classes\Levels\BaseLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\SpringLevel.cpp" />
@@ -175,6 +176,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Floors\FloorNormal.h" />
     <ClInclude Include="..\Classes\Floors\WallNormal.h" />
     <ClInclude Include="..\Classes\HelloWorldScene.h" />
+    <ClInclude Include="..\Classes\Heros\CheetahCat.h" />
     <ClInclude Include="..\Classes\Heros\HuluCat.h" />
     <ClInclude Include="..\Classes\Levels\BaseLevel.h" />
     <ClInclude Include="..\Classes\Levels\SpringLevel.h" />
