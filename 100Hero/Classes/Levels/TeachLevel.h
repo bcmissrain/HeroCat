@@ -39,6 +39,7 @@ private:
 	void playerInDoor();
 	void throwShield();
 	void throwBianbian();
+	void createLection();
 
 	cocos2d::Label* _cakeLabel;
 	int _eatenCakeNum = 0;

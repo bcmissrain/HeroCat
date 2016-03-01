@@ -160,11 +160,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Heros\CaptainCat.cpp" />
     <ClCompile Include="..\Classes\Heros\CheetahCat.cpp" />
     <ClCompile Include="..\Classes\Heros\HuluCat.cpp" />
+    <ClCompile Include="..\Classes\Heros\TangShengCat.cpp" />
     <ClCompile Include="..\Classes\Levels\BaseLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\SpringLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\TeachLevel.cpp" />
     <ClCompile Include="..\Classes\Weapons\Bianbian.cpp" />
     <ClCompile Include="..\Classes\Weapons\Biscuit.cpp" />
+    <ClCompile Include="..\Classes\Weapons\Lection.cpp" />
     <ClCompile Include="..\Classes\Weapons\Shield.cpp" />
     <ClCompile Include="..\Classes\Weapons\TeachDoor.cpp" />
     <ClCompile Include="main.cpp" />
@@ -187,11 +189,13 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Heros\CaptainCat.h" />
     <ClInclude Include="..\Classes\Heros\CheetahCat.h" />
     <ClInclude Include="..\Classes\Heros\HuluCat.h" />
+    <ClInclude Include="..\Classes\Heros\TangShengCat.h" />
     <ClInclude Include="..\Classes\Levels\BaseLevel.h" />
     <ClInclude Include="..\Classes\Levels\SpringLevel.h" />
     <ClInclude Include="..\Classes\Levels\TeachLevel.h" />
     <ClInclude Include="..\Classes\Weapons\Bianbian.h" />
     <ClInclude Include="..\Classes\Weapons\Biscuit.h" />
+    <ClInclude Include="..\Classes\Weapons\Lection.h" />
     <ClInclude Include="..\Classes\Weapons\Shield.h" />
     <ClInclude Include="..\Classes\Weapons\TeachDoor.h" />
     <ClInclude Include="..\Classes\Weapons\WeaponDefine.h" />

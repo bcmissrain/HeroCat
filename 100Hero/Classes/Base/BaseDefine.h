@@ -15,6 +15,7 @@
 #define WEAPON_BISCUIT_NAME "biscuit"
 #define WEAPON_BIANBIAN_NAME "bian"
 #define WEAPON_SHIELD_NAME "shield"
+#define WEAPON_LECTION_NAME "lection"
 
 #define EVENT_TEACH_DOOR "event_teach_door"
 #define EVENT_WEAPON_CREATE "event_weapon_create"
@@ -97,7 +98,8 @@ enum class WeaponEventType
 {
 	None = 0,
 	ThrowShield,
-	ThrowBianbian
+	ThrowBianbian,
+	CreateLection
 };
 
 enum class WeaponType

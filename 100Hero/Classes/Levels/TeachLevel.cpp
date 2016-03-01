@@ -2,11 +2,13 @@
 
 #include "../Heros/HuluCat.h"
 #include "../Heros/CaptainCat.h"
+#include "../Heros/TangShengCat.h"
 #include "../Heros/CheetahCat.h"
 #include "../Floors/FloorNormal.h"
 #include "../Weapons/Bianbian.h"
 #include "../Weapons/Shield.h"
 #include "../Weapons/Biscuit.h"
+#include "../Weapons/Lection.h"
 #include "../Floors/WallNormal.h"
 #include "../Enemys/ChalkEnemy.h"
 #include "../Weapons/TeachDoor.h"
@@ -58,7 +60,7 @@ bool TeachLevel::init()
 	initControl();
 	initTips();
 	this->scheduleUpdate();
-
+	
 	return true;
 }
 
@@ -70,6 +72,312 @@ void TeachLevel::onExit()
 	_elementLayer->removeAllChildren();
 	this->removeAllChildren();
 	TextureCache::getInstance()->removeUnusedTextures();
+}
+
+
+void TeachLevel::initBackground()
+{
+	_elementLayer = Layer::create();
+	this->addChild(_elementLayer);
+	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Level0/back0.png"));
+	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
+	_elementLayer->addChild(backSprite, -3);
+}
+
+void TeachLevel::initFloors()
+{
+	BaseFloor* floor0 = FloorNormal::create();
+	auto sp0 = Sprite::createWithSpriteFrameName("Level0/floor9.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 260);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("Level0/floor5.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(970, 260 + 160);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("Level0/floor4.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(710, 260 + 160 * 2);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	auto _wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(820, 460));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(1125, 460));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+}
+
+void TeachLevel::initWeapons()
+{
+	//init biscuit
+	auto biscuit = Biscuit::create();
+	biscuit->setPosition(Vec2(420, 260 + 120));
+	_elementLayer->addChild(biscuit, -1);
+	_weapons.pushBack(biscuit);
+
+	//init door listener
+	auto doorListener = EventListenerCustom::create(EVENT_TEACH_DOOR,
+		[=](EventCustom* arg){
+		playerInDoor();
+	});
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(doorListener, this);
+
+	auto weaponListener = EventListenerCustom::create(EVENT_WEAPON_CREATE, [=](EventCustom* arg)
+	{
+		auto wType = (int)(arg->getUserData());
+		if (wType == (int)WeaponEventType::ThrowShield)
+		{
+			throwShield();
+		}
+		else if (wType == (int)WeaponEventType::ThrowBianbian)
+		{
+			throwBianbian();
+		}
+		else if (wType == (int)WeaponEventType::CreateLection)
+		{
+			createLection();
+		}
+	});
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(weaponListener, this);
+
+	auto eatCakeListener = EventListenerCustom::create(EVENT_BISCAKE_EAT, [=](EventCustom* arg)
+	{
+		this->_eatenCakeNum++;
+		this->_cakeLabel->setString(Value(_eatenCakeNum).asString());
+
+		auto cakeSp = _elementLayer->getChildByTag(SPRITE_CAKE);
+		if (cakeSp)
+		{
+			cakeSp->stopAllActions();
+			cakeSp->setScale(1);
+			cakeSp->runAction(FadeTo::create(0.2f, 128));
+		}
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
+}
+
+void TeachLevel::initEnemys()
+{
+	auto enemy = ChalkEnemy::create();
+	enemy->setPosition(Vec2(970, 510));
+	_elementLayer->addChild(enemy, 1);
+	_enemys.pushBack(enemy);
+}
+
+void TeachLevel::initHero()
+{
+	_currentHero = //CheetahCat::create();//HuluCat::create();//CaptainCat::create();
+		TangShengCat::create();
+	this->addChild(_currentHero);
+	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
+}
+
+void TeachLevel::initControl()
+{
+	_ifClickLeft = ClickState::None;
+	_ifClickRight = ClickState::None;
+	_ifClickJump = ClickState::None;
+	_ifClickAttack = ClickState::None;
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	//add key listener
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyPressed = CC_CALLBACK_2(TeachLevel::onKeyPressed, this);
+	keyListener->onKeyReleased = CC_CALLBACK_2(TeachLevel::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+#else
+	auto leftButton = ui::Button::create("Level0/button_left.png", "", "");
+	this->addChild(leftButton);
+	leftButton->setPosition(Vec2(110, 100));
+	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchLeft)
+		{
+			ifTouchLeft = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_LEFT);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onMoveLeft(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onMoveLeft(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onMoveLeft(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+
+	auto rightButton = ui::Button::create("Level0/button_right.png", "", "");
+	this->addChild(rightButton);
+	rightButton->setPosition(Vec2(325, 100));
+	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchRight)
+		{
+			ifTouchRight = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_RIGHT);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onMoveRight(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onMoveRight(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onMoveRight(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+
+	auto jumpButton = ui::Button::create("Level0/button_jump.png", "", "");
+	this->addChild(jumpButton);
+	jumpButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 110, 100));
+	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchJump)
+		{
+			ifTouchJump = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_JUMP);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onJump(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onJump(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onJump(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+
+	auto attackButton = ui::Button::create("Level0/button_attack.png", "", "");
+	this->addChild(attackButton);
+	attackButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 270, 100));
+	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchAttack)
+		{
+			ifTouchAttack = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_ATTACK);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onAttack(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onAttack(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onAttack(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+#endif
+}
+
+void TeachLevel::initTips()
+{
+	auto tipAction = RepeatForever::create(Sequence::create(ScaleTo::create(1.2f, 1.1f), ScaleTo::create(0.8f, 1.0f), NULL));
+
+	auto tip_moveLeft = Sprite::createWithSpriteFrameName("Level0/text_left.png");
+	tip_moveLeft->setTag(SPRITE_LEFT);
+	tip_moveLeft->runAction(tipAction->clone());
+	tip_moveLeft->setPosition(Vec2(100, 195));
+	_elementLayer->addChild(tip_moveLeft);
+
+	auto tip_moveRight = Sprite::createWithSpriteFrameName("Level0/text_right.png");
+	tip_moveRight->setTag(SPRITE_RIGHT);
+	tip_moveRight->runAction(tipAction->clone());
+	tip_moveRight->setPosition(Vec2(340, 195));
+	_elementLayer->addChild(tip_moveRight);
+
+	auto tip_jump = Sprite::createWithSpriteFrameName("Level0/text_jump.png");
+	tip_jump->setTag(SPRITE_JUMP);
+	tip_jump->runAction(tipAction->clone());
+	tip_jump->setPosition(Vec2(1060, 195));
+	_elementLayer->addChild(tip_jump);
+
+	auto tip_attack = Sprite::createWithSpriteFrameName("Level0/text_attack.png");
+	tip_attack->setTag(SPRITE_ATTACK);
+	tip_attack->runAction(tipAction->clone());
+	tip_attack->setPosition(Vec2(815, 195));
+	_elementLayer->addChild(tip_attack);
+
+	auto tip_kill = Sprite::createWithSpriteFrameName("Level0/text_kill_enemy.png");
+	tip_kill->setTag(SPRITE_KILL);
+	tip_kill->runAction(tipAction->clone());
+	tip_kill->setPosition(Vec2(970, 560));
+	_elementLayer->addChild(tip_kill);
+
+	_cakeLabel = Label::create(Value(_eatenCakeNum).asString(), "Fonts/a_song_for_jennifer.ttf", 48);
+	_cakeLabel->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT - 80);
+	_elementLayer->addChild(_cakeLabel);
+
+	auto tip_cake_text = Sprite::createWithSpriteFrameName("Level0/text_cake.png");
+	tip_cake_text->setOpacity(128);
+	tip_cake_text->setPosition(Vec2(460, GAME_SCREEN_SIZE_HEIGHT - 110));
+	_elementLayer->addChild(tip_cake_text);
+
+	auto tip_cake_icon = Sprite::createWithSpriteFrameName("Level0/icon_heart.png");
+	//tip_cake_icon->setOpacity(128);
+	tip_cake_icon->setTag(SPRITE_CAKE);
+	tip_cake_icon->setPosition(Vec2(515, GAME_SCREEN_SIZE_HEIGHT - 60));
+	tip_cake_icon->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(1.0, 1.28f), ScaleTo::create(1.0, 1.0f), NULL)));
+	_elementLayer->addChild(tip_cake_icon);
 }
 
 void TeachLevel::updateInput(float delta)
@@ -86,7 +394,7 @@ void TeachLevel::updateBorn(float delta)
 {
 	if (_currentHero->getBoundingBox().getMaxY() < 0 && !_currentHero->_IsValid)
 	{
-		_currentHero->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+		_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
 		_currentHero->initElement();
 
 		for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
@@ -384,307 +692,6 @@ void TeachLevel::ResetPosition()
 	}
 }
 
-void TeachLevel::initBackground()
-{
-	_elementLayer = Layer::create();
-	this->addChild(_elementLayer);
-	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Level0/back0.png"));
-	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
-	_elementLayer->addChild(backSprite, -3);
-}
-
-void TeachLevel::initFloors()
-{
-	BaseFloor* floor0 = FloorNormal::create();
-	auto sp0 = Sprite::createWithSpriteFrameName("Level0/floor9.png");
-	floor0->initBySprite(sp0);
-	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 260);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = Sprite::createWithSpriteFrameName("Level0/floor5.png");
-	floor0->initBySprite(sp0);
-	floor0->setPosition(970, 260+160);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = Sprite::createWithSpriteFrameName("Level0/floor4.png");
-	floor0->initBySprite(sp0);
-	floor0->setPosition(710, 260 + 160*2);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	auto _wall0 = WallNormal::create();
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
-#else
-	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
-#endif
-	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(820, 460));
-	_elementLayer->addChild(_wall0, -1);
-	_floors.pushBack(_wall0);
-
-	_wall0 = WallNormal::create();
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
-#else
-	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
-#endif
-	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(1125, 460));
-	_elementLayer->addChild(_wall0, -1);
-	_floors.pushBack(_wall0);
-}
-
-void TeachLevel::initWeapons()
-{
-	//init biscuit
-	auto biscuit = Biscuit::create();
-	biscuit->setPosition(Vec2(420,260+120));
-	_elementLayer->addChild(biscuit, -1);
-	_weapons.pushBack(biscuit);
-
-	//init door listener
-	auto doorListener = EventListenerCustom::create(EVENT_TEACH_DOOR,
-		[=](EventCustom* arg){
-		playerInDoor();
-	});
-
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(doorListener, this);
-
-	auto weaponListener = EventListenerCustom::create(EVENT_WEAPON_CREATE, [=](EventCustom* arg)
-	{
-		auto wType = (int)(arg->getUserData());
-		if (wType == (int)WeaponEventType::ThrowShield)
-		{
-			throwShield();
-		}
-		else if (wType == (int)WeaponEventType::ThrowBianbian)
-		{
-			throwBianbian();
-		}
-	});
-
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(weaponListener,this);
-
-	auto eatCakeListener = EventListenerCustom::create(EVENT_BISCAKE_EAT, [=](EventCustom* arg)
-	{
-		this->_eatenCakeNum++;
-		this->_cakeLabel->setString(Value(_eatenCakeNum).asString());
-
-		auto cakeSp = _elementLayer->getChildByTag(SPRITE_CAKE);
-		if (cakeSp)
-		{
-			cakeSp->stopAllActions();
-			cakeSp->setScale(1);
-			cakeSp->runAction(FadeTo::create(0.2f,128));
-		}
-	});
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
-}
-
-void TeachLevel::initEnemys()
-{
-	auto enemy = ChalkEnemy::create();
-	enemy->setPosition(Vec2(970 , 510));
-	_elementLayer->addChild(enemy, 1);
-	_enemys.pushBack(enemy);
-}
-
-void TeachLevel::initHero()
-{
-	_currentHero = //CheetahCat::create();//HuluCat::create();
-		CaptainCat::create();
-	this->addChild(_currentHero);
-	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH/2, 600);
-}
-
-void TeachLevel::initControl()
-{
-	_ifClickLeft = ClickState::None;
-	_ifClickRight = ClickState::None;
-	_ifClickJump = ClickState::None;
-	_ifClickAttack = ClickState::None;
-
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	//add key listener
-	auto keyListener = EventListenerKeyboard::create();
-	keyListener->onKeyPressed = CC_CALLBACK_2(TeachLevel::onKeyPressed, this);
-	keyListener->onKeyReleased = CC_CALLBACK_2(TeachLevel::onKeyReleased, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
-#else
-	auto leftButton = ui::Button::create("Level0/button_left.png", "", "");
-	this->addChild(leftButton);
-	leftButton->setPosition(Vec2(110, 100));
-	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		if (!ifTouchLeft)
-		{
-			ifTouchLeft = true;
-			auto tempTip = _elementLayer->getChildByTag(SPRITE_LEFT);
-			tempTip->stopAllActions();
-			tempTip->runAction(FadeTo::create(0.5,64));
-		}
-
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onMoveLeft(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onMoveLeft(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onMoveLeft(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-
-	auto rightButton = ui::Button::create("Level0/button_right.png", "", "");
-	this->addChild(rightButton);
-	rightButton->setPosition(Vec2(325, 100));
-	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		if (!ifTouchRight)
-		{
-			ifTouchRight = true;
-			auto tempTip = _elementLayer->getChildByTag(SPRITE_RIGHT);
-			tempTip->stopAllActions();
-			tempTip->runAction(FadeTo::create(0.5, 64));
-		}
-
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onMoveRight(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onMoveRight(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onMoveRight(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-
-	auto jumpButton = ui::Button::create("Level0/button_jump.png", "", "");
-	this->addChild(jumpButton);
-	jumpButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 110, 100));
-	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		if (!ifTouchJump)
-		{
-			ifTouchJump = true;
-			auto tempTip = _elementLayer->getChildByTag(SPRITE_JUMP);
-			tempTip->stopAllActions();
-			tempTip->runAction(FadeTo::create(0.5, 64));
-		}
-
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onJump(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onJump(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onJump(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-
-	auto attackButton = ui::Button::create("Level0/button_attack.png", "", "");
-	this->addChild(attackButton);
-	attackButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 270, 100));
-	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		if (!ifTouchAttack)
-		{
-			ifTouchAttack = true;
-			auto tempTip = _elementLayer->getChildByTag(SPRITE_ATTACK);
-			tempTip->stopAllActions();
-			tempTip->runAction(FadeTo::create(0.5, 64));
-		}
-
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onAttack(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onAttack(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onAttack(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-#endif
-}
-
-void TeachLevel::initTips()
-{
-	auto tipAction =RepeatForever::create(Sequence::create(ScaleTo::create(1.2f,1.1f),ScaleTo::create(0.8f,1.0f),NULL));
-	
-	auto tip_moveLeft = Sprite::createWithSpriteFrameName("Level0/text_left.png");
-	tip_moveLeft->setTag(SPRITE_LEFT);
-	tip_moveLeft->runAction(tipAction->clone());
-	tip_moveLeft->setPosition(Vec2(100,195));
-	_elementLayer->addChild(tip_moveLeft);
-
-	auto tip_moveRight = Sprite::createWithSpriteFrameName("Level0/text_right.png");
-	tip_moveRight->setTag(SPRITE_RIGHT);
-	tip_moveRight->runAction(tipAction->clone());
-	tip_moveRight->setPosition(Vec2(340, 195));
-	_elementLayer->addChild(tip_moveRight);
-
-	auto tip_jump = Sprite::createWithSpriteFrameName("Level0/text_jump.png");
-	tip_jump->setTag(SPRITE_JUMP);
-	tip_jump->runAction(tipAction->clone());
-	tip_jump->setPosition(Vec2(1060, 195));
-	_elementLayer->addChild(tip_jump);
-
-	auto tip_attack = Sprite::createWithSpriteFrameName("Level0/text_attack.png");
-	tip_attack->setTag(SPRITE_ATTACK);
-	tip_attack->runAction(tipAction->clone());
-	tip_attack->setPosition(Vec2(815, 195));
-	_elementLayer->addChild(tip_attack);
-
-	auto tip_kill = Sprite::createWithSpriteFrameName("Level0/text_kill_enemy.png");
-	tip_kill->setTag(SPRITE_KILL);
-	tip_kill->runAction(tipAction->clone());
-	tip_kill->setPosition(Vec2(970, 560));
-	_elementLayer->addChild(tip_kill);
-
-	_cakeLabel = Label::create(Value(_eatenCakeNum).asString(), "Fonts/a_song_for_jennifer.ttf", 48);
-	_cakeLabel->setPosition(GAME_SCREEN_SIZE_WIDTH / 2,GAME_SCREEN_SIZE_HEIGHT -80);
-	_elementLayer->addChild(_cakeLabel);
-	
-	auto tip_cake_text = Sprite::createWithSpriteFrameName("Level0/text_cake.png");
-	tip_cake_text->setOpacity(128);
-	tip_cake_text->setPosition(Vec2(460, GAME_SCREEN_SIZE_HEIGHT - 110));
-	_elementLayer->addChild(tip_cake_text);
-
-	auto tip_cake_icon = Sprite::createWithSpriteFrameName("Level0/icon_heart.png");
-	//tip_cake_icon->setOpacity(128);
-	tip_cake_icon->setTag(SPRITE_CAKE);
-	tip_cake_icon->setPosition(Vec2(515,GAME_SCREEN_SIZE_HEIGHT - 60));
-	tip_cake_icon->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(1.0, 1.28f), ScaleTo::create(1.0, 1.0f), NULL)));
-	_elementLayer->addChild(tip_cake_icon);
-}
-
 void TeachLevel::playerInDoor()
 {
 	CCLOG("IN DOOR");
@@ -757,4 +764,11 @@ void TeachLevel::throwBianbian()
 		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 		weapon->runAction(jumpDownAction);
 	}
+}
+
+void TeachLevel::createLection()
+{
+	auto lection = Lection::create();
+	_elementLayer->addChild(lection);
+	_weapons.pushBack(lection);
 }

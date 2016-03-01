@@ -161,7 +161,7 @@ public:
 	float _JumpTime2;
 	float _AttackColdTime;
 	int   _AttackMaxTimes = -1;
-	int	  _AttackCount;
+	int	  _AttackCount = 0;
 	bool _CanDoubleJump;
 	bool _IsDoubleJump;
 };
