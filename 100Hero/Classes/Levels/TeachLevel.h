@@ -25,11 +25,9 @@ public:
 	virtual void onButtonClick(cocos2d::ui::TouchEventType type) override;
 	virtual void ResetPosition() override;
 
-	virtual void bornCake() override;
-	virtual void bornEnemys() override;
-	void bornHurtEnemys(BaseEnemy* baseEnemy);
+	virtual void bornCake() override{}
+	virtual void bornEnemys() override{}
 protected:
-	virtual void initBornPoints();
 	virtual void initBackground();
 	virtual void initFloors();
 	virtual void initWeapons();
@@ -38,12 +36,13 @@ protected:
 	virtual void initControl();
 private:
 	void initTips();
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	bool ifSupport;
-	bool ifDrawDebug;
-#endif
 	void playerInDoor();
+	void throwShield();
+	void throwBianbian();
 
+	cocos2d::Label* _cakeLabel;
+	int _eatenCakeNum = 0;
+private:
 	bool ifBornHurt = false;
 	bool isBorningEnemy = false;
 	bool canBornEnemy = true;

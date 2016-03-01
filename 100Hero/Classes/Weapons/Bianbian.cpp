@@ -1,11 +1,13 @@
 #include "Bianbian.h"
 #define  ACTION_TAG_BREATH 100100
+#define  ACTION_TAG_INVALID 100101
 USING_NS_CC;
 
 bool Bianbian::init()
 {
 	this->_HurtValue = 1.0f;
 	this->_BaseScale = 0.3f;
+	this->_InValidTime = 2.5f;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_BIANBIAN_NAME);
 	_WeaponType = WeaponType::Hulu;
@@ -19,6 +21,13 @@ bool Bianbian::init()
 	));
 	breathAction->setTag(ACTION_TAG_BREATH);
 	_Sprite->runAction(breathAction);
+	if (this->_InValidTime > 0)
+	{
+		auto invalidAction = Sequence::create(DelayTime::create(_InValidTime), CallFunc::create([=](){
+			deal();
+		}), NULL);
+		this->runAction(invalidAction);
+	}
 	_EnemyDieType = EnemyDieType::ScaleDown;
 	initElement();
 	return true;

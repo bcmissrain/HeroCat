@@ -99,6 +99,12 @@
     <ClCompile Include="..\Classes\Weapons\TeachDoor.cpp">
       <Filter>src\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Heros\CaptainCat.cpp">
+      <Filter>src\Heros</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\Shield.cpp">
+      <Filter>src\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -171,6 +177,12 @@
       <Filter>src\Enemys</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Weapons\TeachDoor.h">
+      <Filter>src\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Heros\CaptainCat.h">
+      <Filter>src\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\Shield.h">
       <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>

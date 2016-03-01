@@ -3,6 +3,7 @@
 bool ChalkEnemy::init()
 {
 	this->setTag(ELEMENT_ENEMY_TAG);
+	_Blood = _BaseBlood = 2;
 	_Sprite = cocos2d::Sprite::createWithSpriteFrameName("Level0/teach_enemy.png");
 	_Direction = Direction::Right;
 	_MoveState = MoveState::None;

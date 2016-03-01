@@ -1,9 +1,11 @@
 #include "TeachLevel.h"
 
 #include "../Heros/HuluCat.h"
+#include "../Heros/CaptainCat.h"
 #include "../Heros/CheetahCat.h"
 #include "../Floors/FloorNormal.h"
 #include "../Weapons/Bianbian.h"
+#include "../Weapons/Shield.h"
 #include "../Weapons/Biscuit.h"
 #include "../Floors/WallNormal.h"
 #include "../Enemys/ChalkEnemy.h"
@@ -38,18 +40,17 @@ bool TeachLevel::init()
 
 	//Load resources
 	TextureCache::getInstance()->addImage("Level0/back0.png");
+	TextureCache::getInstance()->addImage("Images/shield.png");
+	TextureCache::getInstance()->addImage("Images/bigBian.png");
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	TextureCache::getInstance()->addImage("blank_debug.png");
 #else
 	TextureCache::getInstance()->addImage("blank.png");
 #endif
-
-
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Level0/Level0.plist");
 
 	initBackground();
-	initBornPoints();
-
 	initHero();
 	initFloors();
 	initEnemys();
@@ -57,6 +58,7 @@ bool TeachLevel::init()
 	initControl();
 	initTips();
 	this->scheduleUpdate();
+
 	return true;
 }
 
@@ -98,26 +100,20 @@ void TeachLevel::updateBorn(float delta)
 
 	if (!ifDoorOpen)
 	{
-		ifDoorOpen = true;
-
-		auto bornAction = FadeIn::create(1.0f);
-
-		auto tip_door = Sprite::createWithSpriteFrameName("Level0/text_begin_game.png");
-		tip_door->setTag(SPRITE_GAME);
-		tip_door->runAction(bornAction->clone());
-		tip_door->setPosition(Vec2(680, 720));
-		_elementLayer->addChild(tip_door);
-
-		auto door = TeachDoor::create();
-		door->setPosition(Vec2(680,640));
-		_elementLayer->addChild(door,-1);
-		_weapons.pushBack(door);
-
 		if (ifTouchLeft && ifTouchRight && ifTouchAttack &&ifTouchJump&&ifEatCake&&ifKillEnemy)
 		{
+			ifDoorOpen = true;
+			auto bornAction = FadeIn::create(1.0f);
+			auto tip_door = Sprite::createWithSpriteFrameName("Level0/text_begin_game.png");
+			tip_door->setTag(SPRITE_GAME);
+			tip_door->runAction(bornAction->clone());
+			tip_door->setPosition(Vec2(680, 720));
+			_elementLayer->addChild(tip_door);
 
-
-
+			auto door = TeachDoor::create();
+			door->setPosition(Vec2(680, 640));
+			_elementLayer->addChild(door, -1);
+			_weapons.pushBack(door);
 		}
 	}
 }
@@ -252,7 +248,6 @@ void TeachLevel::updateRecyle(float delta)
 			if (!(*ene)->_CanClean)
 			{
 				(*ene)->_CanClean = true;
-				bornHurtEnemys(*ene);
 			}
 		}
 
@@ -278,6 +273,13 @@ void TeachLevel::updateRecyle(float delta)
 	{
 		if ((*wea)->_CanClean)
 		{
+			if ((*wea)->getName() == WEAPON_BISCUIT_NAME)
+			{
+				if (!ifEatCake)
+				{
+					ifEatCake = true;
+				}
+			}
 			_elementLayer->removeChild(*wea, true);
 			wea = _weapons.erase(wea);
 		}
@@ -372,58 +374,14 @@ void TeachLevel::ResetPosition()
 		_currentHero->setPositionY(_currentHero->getPositionY() - tempY);
 	}
 
-	if (_currentHero->getPositionX() < 0)
+	if (_currentHero->getPositionX() < 50)
 	{
-		_currentHero->setPositionX(0);
+		_currentHero->setPositionX(50);
 	}
-	else if (_currentHero->getPositionX() > visibleSize.width)
+	else if (_currentHero->getPositionX() > GAME_SCREEN_SIZE_WIDTH - 50)
 	{
-		_currentHero->setPositionX(visibleSize.width);
+		_currentHero->setPositionX(GAME_SCREEN_SIZE_WIDTH - 50);
 	}
-}
-
-void TeachLevel::bornCake()
-{
-	bool ifHaveCake = false;
-	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
-	{
-		if ((*wea)->getName() == WEAPON_BISCUIT_NAME)
-		{
-			ifHaveCake = true;
-			break;
-		}
-	}
-	if (!ifHaveCake)
-	{
-		//born cake
-		int index = getRandomPercent(0, _cakeBornPoints.size() - 1);
-
-		auto biscuit = Biscuit::create();
-		biscuit->setPosition(_cakeBornPoints.at(index));
-		_elementLayer->addChild(biscuit, -1);
-		_weapons.pushBack(biscuit);
-	}
-}
-
-void TeachLevel::bornEnemys()
-{
-}
-
-void TeachLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
-{
-}
-
-void TeachLevel::playerInDoor()
-{
-	CCLOG("IN DOOR");
-	auto tempTip = _elementLayer->getChildByTag(SPRITE_GAME);
-	tempTip->stopAllActions();
-	tempTip->runAction(FadeTo::create(0.5, 64));
-	//TODO
-}
-
-void TeachLevel::initBornPoints()
-{
 }
 
 void TeachLevel::initBackground()
@@ -483,17 +441,49 @@ void TeachLevel::initFloors()
 
 void TeachLevel::initWeapons()
 {
+	//init biscuit
 	auto biscuit = Biscuit::create();
 	biscuit->setPosition(Vec2(420,260+120));
 	_elementLayer->addChild(biscuit, -1);
 	_weapons.pushBack(biscuit);
 
 	//init door listener
-	auto eventListener = EventListenerCustom::create(EVENT_TEACH_DOOR,
+	auto doorListener = EventListenerCustom::create(EVENT_TEACH_DOOR,
 		[=](EventCustom* arg){
 		playerInDoor();
 	});
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(doorListener, this);
+
+	auto weaponListener = EventListenerCustom::create(EVENT_WEAPON_CREATE, [=](EventCustom* arg)
+	{
+		auto wType = (int)(arg->getUserData());
+		if (wType == (int)WeaponEventType::ThrowShield)
+		{
+			throwShield();
+		}
+		else if (wType == (int)WeaponEventType::ThrowBianbian)
+		{
+			throwBianbian();
+		}
+	});
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(weaponListener,this);
+
+	auto eatCakeListener = EventListenerCustom::create(EVENT_BISCAKE_EAT, [=](EventCustom* arg)
+	{
+		this->_eatenCakeNum++;
+		this->_cakeLabel->setString(Value(_eatenCakeNum).asString());
+
+		auto cakeSp = _elementLayer->getChildByTag(SPRITE_CAKE);
+		if (cakeSp)
+		{
+			cakeSp->stopAllActions();
+			cakeSp->setScale(1);
+			cakeSp->runAction(FadeTo::create(0.2f,128));
+		}
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
 }
 
 void TeachLevel::initEnemys()
@@ -506,8 +496,8 @@ void TeachLevel::initEnemys()
 
 void TeachLevel::initHero()
 {
-	_currentHero = //CheetahCat::create();
-		HuluCat::create();
+	_currentHero = //CheetahCat::create();//HuluCat::create();
+		CaptainCat::create();
 	this->addChild(_currentHero);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH/2, 600);
 }
@@ -677,4 +667,94 @@ void TeachLevel::initTips()
 	tip_kill->runAction(tipAction->clone());
 	tip_kill->setPosition(Vec2(970, 560));
 	_elementLayer->addChild(tip_kill);
+
+	_cakeLabel = Label::create(Value(_eatenCakeNum).asString(), "Fonts/a_song_for_jennifer.ttf", 48);
+	_cakeLabel->setPosition(GAME_SCREEN_SIZE_WIDTH / 2,GAME_SCREEN_SIZE_HEIGHT -80);
+	_elementLayer->addChild(_cakeLabel);
+	
+	auto tip_cake_text = Sprite::createWithSpriteFrameName("Level0/text_cake.png");
+	tip_cake_text->setOpacity(128);
+	tip_cake_text->setPosition(Vec2(460, GAME_SCREEN_SIZE_HEIGHT - 110));
+	_elementLayer->addChild(tip_cake_text);
+
+	auto tip_cake_icon = Sprite::createWithSpriteFrameName("Level0/icon_heart.png");
+	//tip_cake_icon->setOpacity(128);
+	tip_cake_icon->setTag(SPRITE_CAKE);
+	tip_cake_icon->setPosition(Vec2(515,GAME_SCREEN_SIZE_HEIGHT - 60));
+	tip_cake_icon->runAction(RepeatForever::create(Sequence::create(ScaleTo::create(1.0, 1.28f), ScaleTo::create(1.0, 1.0f), NULL)));
+	_elementLayer->addChild(tip_cake_icon);
+}
+
+void TeachLevel::playerInDoor()
+{
+	CCLOG("IN DOOR");
+	auto tempTip = _elementLayer->getChildByTag(SPRITE_GAME);
+	tempTip->stopAllActions();
+	tempTip->runAction(FadeTo::create(0.5, 64));
+	//TODO
+
+	Director::getInstance()->end();
+}
+
+void TeachLevel::throwShield()
+{
+	/*bool haveShield = false;
+	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	{
+		if ((*wea)->_IsValid)
+		{
+			if ((*wea)->getName() == WEAPON_SHIELD_NAME)
+			{
+				haveShield = true;
+			}
+		}
+	}
+
+	if (!haveShield){*/
+		auto weapon = Shield::create();
+		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
+		_elementLayer->addChild(weapon, -1);
+		_weapons.pushBack(weapon);
+		Vec2 shieldDirection;
+		if (_currentHero->_Direction == Direction::Left)
+		{
+			shieldDirection = Vec2(-400, 0);
+		}
+		else if (_currentHero->_Direction == Direction::Right)
+		{
+			shieldDirection = Vec2(400, 0);
+		}
+
+		auto attackAction = Sequence::create(
+			EaseOut::create(MoveBy::create(0.8f, shieldDirection), 1.5f),
+			EaseIn::create(MoveBy::create(0.8f, -shieldDirection), 1.5f),
+			CallFunc::create([=](){weapon->deal(); }),
+			NULL);
+		weapon->runAction(attackAction);
+	/*}*/
+}
+
+void TeachLevel::throwBianbian()
+{
+	bool haveBianbian = false;
+	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	{
+		if ((*wea)->_IsValid)
+		{
+			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
+			{
+				haveBianbian = true;
+			}
+		}
+	}
+
+	if (!haveBianbian){
+		auto weapon = Bianbian::create();
+		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
+		_elementLayer->addChild(weapon, -1);
+		_weapons.pushBack(weapon);
+		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2, Vec2(0, 128)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
+		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
+		weapon->runAction(jumpDownAction);
+	}
 }

@@ -62,7 +62,7 @@
 			<key>Level0/floor5.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{231,230},{250,53}}</string>
+				<string>{{232,230},{250,53}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -84,7 +84,7 @@
 			<key>Level0/teach_enemy.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{423,291},{57,53}}</string>
+				<string>{{140,367},{57,53}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -95,7 +95,7 @@
 			<key>Level0/text_attack.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{328,291},{87,40}}</string>
+				<string>{{230,341},{87,40}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -117,7 +117,7 @@
 			<key>Level0/text_jump.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{230,291},{90,42}}</string>
+				<string>{{231,291},{90,42}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -139,7 +139,7 @@
 			<key>Level0/text_left.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{140,202},{83,46}}</string>
+				<string>{{140,259},{83,46}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -150,7 +150,7 @@
 			<key>Level0/text_right.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{140,256},{82,46}}</string>
+				<string>{{140,313},{82,46}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
@@ -161,13 +161,35 @@
 			<key>Level0/door.png</key>
 			<dict>
 				<key>frame</key>
-				<string>{{140,310},{50,75}}</string>
+				<string>{{329,291},{50,75}}</string>
 				<key>offset</key>
 				<string>{0,0}</string>
 				<key>rotated</key>
 				<false />
 				<key>sourceSize</key>
 				<string>{50,75}</string>
+			</dict>
+			<key>Level0/icon_heart.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{325,374},{57,50}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{57,50}</string>
+			</dict>
+			<key>Level0/text_cake.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{140,202},{84,49}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{84,49}</string>
 			</dict>
 		</dict>
 		<key>metadata</key>

@@ -189,7 +189,7 @@ void HuluCat::_BeginAttack()
 					_SpriteTimeline->setLastFrameCallFunc(nullptr);
 				}
 			});
-			_eventDispatcher->dispatchCustomEvent("Bianbian", this);
+			_eventDispatcher->dispatchCustomEvent(EVENT_WEAPON_CREATE, (void*)(WeaponEventType::ThrowBianbian));
 
 			_AttackCount++;
 			this->scheduleOnce([=](float delta){

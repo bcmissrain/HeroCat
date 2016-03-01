@@ -1,6 +1,5 @@
 #include "CheetahCat.h"
 #include "../Levels/BaseLevel.h"
-#include "../Weapons/Bianbian.h"
 USING_NS_CC;
 
 bool CheetahCat::init()

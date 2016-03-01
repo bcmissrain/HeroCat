@@ -14,8 +14,11 @@
 #define WEAPON_TEACH_DOOR_NAME "tec_door"
 #define WEAPON_BISCUIT_NAME "biscuit"
 #define WEAPON_BIANBIAN_NAME "bian"
+#define WEAPON_SHIELD_NAME "shield"
 
-#define EVENT_TEACH_DOOR "teach_door"
+#define EVENT_TEACH_DOOR "event_teach_door"
+#define EVENT_WEAPON_CREATE "event_weapon_create"
+#define EVENT_BISCAKE_EAT "event_biscake_eat"
 
 #define TAG_HERO 15829383718
 //baseElement
@@ -90,6 +93,13 @@ enum class FloorType
 };
 
 //weapon
+enum class WeaponEventType
+{
+	None = 0,
+	ThrowShield,
+	ThrowBianbian
+};
+
 enum class WeaponType
 {
 	None = 0,
@@ -110,10 +120,12 @@ enum class WeaponDirection
 	Right = 0,
 	Left
 };
+
 //enemy
 enum class EnemyDieType
 {
 	Transparent,
 	ScaleDown
 };
+
 #endif

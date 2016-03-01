@@ -713,10 +713,13 @@ void SpringLevel::initFloors()
 void SpringLevel::initWeapons()
 {
 	//init weapon listener
-	auto eventListener = EventListenerCustom::create("Bianbian",
+	auto eventListener = EventListenerCustom::create(EVENT_WEAPON_CREATE,
 		[=](EventCustom* arg){
-		CCLOG("GetBianbian");
-		AddBianbianByPos(Vec2());
+		int wType = (int)arg->getUserData();
+		if (wType == (int)WeaponEventType::ThrowBianbian)
+		{
+			AddBianbianByPos(Vec2());
+		}
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }

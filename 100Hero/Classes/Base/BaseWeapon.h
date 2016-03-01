@@ -28,6 +28,7 @@ public:
 
 public:
 	float _BaseScale = 1;
+	float _InValidTime = -1;
 	WeaponType _WeaponType = WeaponType::Hand;
 	WeaponMoveWays _WeaponMoveWays = WeaponMoveWays::Horizontal;
 	WeaponDirection _Direction = WeaponDirection::Right;

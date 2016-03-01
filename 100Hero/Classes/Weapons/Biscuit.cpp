@@ -51,6 +51,7 @@ void Biscuit::deal()
 		CallFunc::create([=](){_CanClean = true; _Sprite->setOpacity(255); }),
 		NULL);
 	_Sprite->runAction(dieAction);
+	_eventDispatcher->dispatchCustomEvent(EVENT_BISCAKE_EAT, nullptr);
 }
 
 bool Biscuit::isTarget(BaseElement* gameElement)
