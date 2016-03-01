@@ -151,6 +151,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Base\BaseHero.cpp" />
     <ClCompile Include="..\Classes\Base\BaseWall.cpp" />
     <ClCompile Include="..\Classes\Base\BaseWeapon.cpp" />
+    <ClCompile Include="..\Classes\Controls\ControlButton.cpp" />
+    <ClCompile Include="..\Classes\Enemys\ChalkEnemy.cpp" />
     <ClCompile Include="..\Classes\Enemys\Enemy360.cpp" />
     <ClCompile Include="..\Classes\Floors\FloorNormal.cpp" />
     <ClCompile Include="..\Classes\Floors\WallNormal.cpp" />
@@ -162,6 +164,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Levels\TeachLevel.cpp" />
     <ClCompile Include="..\Classes\Weapons\Bianbian.cpp" />
     <ClCompile Include="..\Classes\Weapons\Biscuit.cpp" />
+    <ClCompile Include="..\Classes\Weapons\TeachDoor.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +176,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Base\BaseHero.h" />
     <ClInclude Include="..\Classes\Base\BaseWall.h" />
     <ClInclude Include="..\Classes\Base\BaseWeapon.h" />
+    <ClInclude Include="..\Classes\Controls\ControlButton.h" />
+    <ClInclude Include="..\Classes\Enemys\ChalkEnemy.h" />
     <ClInclude Include="..\Classes\Enemys\Enemy360.h" />
     <ClInclude Include="..\Classes\Floors\FloorNormal.h" />
     <ClInclude Include="..\Classes\Floors\WallNormal.h" />
@@ -184,6 +189,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Levels\TeachLevel.h" />
     <ClInclude Include="..\Classes\Weapons\Bianbian.h" />
     <ClInclude Include="..\Classes\Weapons\Biscuit.h" />
+    <ClInclude Include="..\Classes\Weapons\TeachDoor.h" />
     <ClInclude Include="..\Classes\Weapons\WeaponDefine.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

@@ -37,15 +37,24 @@ protected:
 	virtual void initHero();
 	virtual void initControl();
 private:
+	void initTips();
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	bool ifSupport;
 	bool ifDrawDebug;
 #endif
-	void AddBianbianByPos(cocos2d::Vec2 pos);
+	void playerInDoor();
 
 	bool ifBornHurt = false;
 	bool isBorningEnemy = false;
 	bool canBornEnemy = true;
+
+	bool ifTouchLeft = false;
+	bool ifTouchRight = false;
+	bool ifTouchAttack = false;
+	bool ifTouchJump = false;
+	bool ifEatCake = false;
+	bool ifKillEnemy = false;
+	bool ifDoorOpen = false;
 };
 
 #endif

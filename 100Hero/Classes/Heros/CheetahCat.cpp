@@ -7,7 +7,7 @@ bool CheetahCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.25f;
-	this->_BaseRunSpeed = 500;
+	this->_BaseRunSpeed = 300;
 	//this->_BaseAcceleration = 6;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 210;
@@ -108,11 +108,11 @@ void CheetahCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, Bas
 		break;
 	case CollideOperate::CollideUp:
 		_CollideState = CollideState::HaveSupport;
-		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.33f);
+		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.35f);
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
-		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.67f);
+		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.65f);
 		break;
 	default:
 		break;

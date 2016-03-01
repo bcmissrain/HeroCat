@@ -6,10 +6,19 @@
 #include "../Weapons/Bianbian.h"
 #include "../Weapons/Biscuit.h"
 #include "../Floors/WallNormal.h"
-#include "../Enemys/Enemy360.h"
+#include "../Enemys/ChalkEnemy.h"
+#include "../Weapons/TeachDoor.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
+
+#define SPRITE_LEFT 20001
+#define SPRITE_RIGHT 20002
+#define SPRITE_JUMP 20003
+#define SPRITE_ATTACK 20004
+#define SPRITE_CAKE 20005
+#define SPRITE_KILL 20006
+#define SPRITE_GAME 20007
 
 USING_NS_CC;
 
@@ -29,6 +38,13 @@ bool TeachLevel::init()
 
 	//Load resources
 	TextureCache::getInstance()->addImage("Level0/back0.png");
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	TextureCache::getInstance()->addImage("blank_debug.png");
+#else
+	TextureCache::getInstance()->addImage("blank.png");
+#endif
+
+
 	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Level0/Level0.plist");
 
 	initBackground();
@@ -39,6 +55,7 @@ bool TeachLevel::init()
 	initEnemys();
 	initWeapons();
 	initControl();
+	initTips();
 	this->scheduleUpdate();
 	return true;
 }
@@ -69,13 +86,38 @@ void TeachLevel::updateBorn(float delta)
 	{
 		_currentHero->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
 		_currentHero->initElement();
-		//_currentHero->changeStateTo(ActionState::JumpDown);
+
 		for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
 		{
 			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
 			{
 				(*wea)->deal();
 			}
+		}
+	}
+
+	if (!ifDoorOpen)
+	{
+		ifDoorOpen = true;
+
+		auto bornAction = FadeIn::create(1.0f);
+
+		auto tip_door = Sprite::createWithSpriteFrameName("Level0/text_begin_game.png");
+		tip_door->setTag(SPRITE_GAME);
+		tip_door->runAction(bornAction->clone());
+		tip_door->setPosition(Vec2(680, 720));
+		_elementLayer->addChild(tip_door);
+
+		auto door = TeachDoor::create();
+		door->setPosition(Vec2(680,640));
+		_elementLayer->addChild(door,-1);
+		_weapons.pushBack(door);
+
+		if (ifTouchLeft && ifTouchRight && ifTouchAttack &&ifTouchJump&&ifEatCake&&ifKillEnemy)
+		{
+
+
+
 		}
 	}
 }
@@ -216,6 +258,13 @@ void TeachLevel::updateRecyle(float delta)
 
 		if ((*ene)->_CanClean)
 		{
+			if (!ifKillEnemy)
+			{
+				ifKillEnemy = true;
+				auto tempTip = _elementLayer->getChildByTag(SPRITE_KILL);
+				tempTip->stopAllActions();
+				tempTip->runAction(FadeTo::create(0.5, 64));
+			}
 			(*ene)->removeFromParentAndCleanup(true);
 			ene = _enemys.erase(ene);
 		}
@@ -358,118 +407,19 @@ void TeachLevel::bornCake()
 
 void TeachLevel::bornEnemys()
 {
-	if (isBorningEnemy)
-	{
-		return;
-	}
-
-	if (canBornEnemy)
-	{
-		isBorningEnemy = true;
-		canBornEnemy = false;
-
-		bool ifLeft = getRandomPercent(1, 100) <= 50;
-		//create 3 enemy (50): create 1 boss (25): create 2 enemy& 1 boss(15) :create 2 boss(10)
-		int createEnemyType = getRandomPercent(1, 100);
-
-		auto bornNormal = Sequence::create(CallFunc::create([=](){
-			auto enemy = Enemy360::create();
-			enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
-			if (ifLeft)
-			{
-				enemy->_TurnDirection();
-			}
-			_elementLayer->addChild(enemy, 1);
-			_enemys.pushBack(enemy);
-		}), DelayTime::create(_bornBetweenTime), NULL);
-
-		auto bornBoss = Sequence::create(CallFunc::create([=](){
-			auto enemy = Enemy360::create();
-			enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
-			if (ifLeft)
-			{
-				enemy->_TurnDirection();
-			}
-			_elementLayer->addChild(enemy, 1);
-			_enemys.pushBack(enemy);
-		}), DelayTime::create(_bornBetweenTime), NULL);
-
-		auto bornEnd = Sequence::create(
-			CallFunc::create([=](){
-			isBorningEnemy = false;
-		}),
-			DelayTime::create(_currentBornTime),
-			CallFunc::create([=](){
-			canBornEnemy = true;
-		}), NULL);
-
-		Sequence* bornAction = nullptr;
-		if (createEnemyType <= 50)
-		{
-			bornAction = Sequence::create(Repeat::create(bornNormal, 3), bornEnd, NULL);
-		}
-		else if (createEnemyType <= 75)
-		{
-			bornAction = Sequence::create(bornBoss, bornEnd, NULL);
-		}
-		else if (createEnemyType <= 90)
-		{
-			bornAction = Sequence::create(Repeat::create(bornNormal, 2), bornBoss, bornEnd, NULL);
-		}
-		else
-		{
-			bornAction = Sequence::create(Repeat::create(bornBoss, 2), bornEnd, NULL);
-		}
-		this->runAction(bornAction);
-
-		_currentBornTime -= _bornTimeSpeed;
-		if (_currentBornTime < _baseMinBornTime)
-		{
-			_currentBornTime = _baseMinBornTime;
-		}
-	}
 }
 
 void TeachLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
 {
-	bool ifTurnLeft = baseEnemy->_Direction == Direction::Left;
-	auto bornAction = CallFunc::create([=](){
-		auto enemy = Enemy360Hurt::create();
-
-		enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
-		if (ifTurnLeft)
-		{
-			enemy->_TurnDirection();
-		}
-		_elementLayer->addChild(enemy, 1);
-		_enemys.pushBack(enemy);
-	});
-	this->runAction(bornAction);
 }
 
-void TeachLevel::AddBianbianByPos(cocos2d::Vec2 pos)
+void TeachLevel::playerInDoor()
 {
-	bool haveBianbian = false;
-	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
-	{
-		if ((*wea)->_IsValid)
-		{
-			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
-			{
-				haveBianbian = true;
-			}
-		}
-	}
-
-	if (!haveBianbian){
-		auto weapon = Bianbian::create();
-		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
-		_elementLayer->addChild(weapon, -1);
-		_weapons.pushBack(weapon);
-		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2, Vec2(0, 128)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
-		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
-		weapon->runAction(jumpDownAction);
-	}
+	CCLOG("IN DOOR");
+	auto tempTip = _elementLayer->getChildByTag(SPRITE_GAME);
+	tempTip->stopAllActions();
+	tempTip->runAction(FadeTo::create(0.5, 64));
+	//TODO
 }
 
 void TeachLevel::initBornPoints()
@@ -480,7 +430,6 @@ void TeachLevel::initBackground()
 {
 	_elementLayer = Layer::create();
 	this->addChild(_elementLayer);
-
 	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Level0/back0.png"));
 	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
 	_elementLayer->addChild(backSprite, -3);
@@ -508,6 +457,28 @@ void TeachLevel::initFloors()
 	floor0->setPosition(710, 260 + 160*2);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
+
+	auto _wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(820, 460));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(1125, 460));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
 }
 
 void TeachLevel::initWeapons()
@@ -517,26 +488,26 @@ void TeachLevel::initWeapons()
 	_elementLayer->addChild(biscuit, -1);
 	_weapons.pushBack(biscuit);
 
-	//init weapon listener
-	auto eventListener = EventListenerCustom::create("Bianbian",
+	//init door listener
+	auto eventListener = EventListenerCustom::create(EVENT_TEACH_DOOR,
 		[=](EventCustom* arg){
-		CCLOG("GetBianbian");
-		AddBianbianByPos(Vec2());
+		playerInDoor();
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 }
 
 void TeachLevel::initEnemys()
 {
-	/*auto enemy = Enemy360Boss::create();
-	enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+	auto enemy = ChalkEnemy::create();
+	enemy->setPosition(Vec2(970 , 510));
 	_elementLayer->addChild(enemy, 1);
-	_enemys.pushBack(enemy);*/
+	_enemys.pushBack(enemy);
 }
 
 void TeachLevel::initHero()
 {
-	_currentHero = CheetahCat::create();//HuluCat::create();
+	_currentHero = //CheetahCat::create();
+		HuluCat::create();
 	this->addChild(_currentHero);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH/2, 600);
 }
@@ -555,11 +526,18 @@ void TeachLevel::initControl()
 	keyListener->onKeyReleased = CC_CALLBACK_2(TeachLevel::onKeyReleased, this);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 #else
-	auto leftButton = ui::Button::create("buttonLeft.png", "", "");
-	leftButton->setScale(0.45f);
+	auto leftButton = ui::Button::create("Level0/button_left.png", "", "");
 	this->addChild(leftButton);
-	leftButton->setPosition(Vec2(110, 80));
+	leftButton->setPosition(Vec2(110, 100));
 	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchLeft)
+		{
+			ifTouchLeft = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_LEFT);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5,64));
+		}
+
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
@@ -577,11 +555,18 @@ void TeachLevel::initControl()
 		}
 	});
 
-	auto rightButton = ui::Button::create("buttonRight.png", "", "");
-	rightButton->setScale(0.45f);
+	auto rightButton = ui::Button::create("Level0/button_right.png", "", "");
 	this->addChild(rightButton);
-	rightButton->setPosition(Vec2(325, 80));
+	rightButton->setPosition(Vec2(325, 100));
 	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchRight)
+		{
+			ifTouchRight = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_RIGHT);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
@@ -599,11 +584,18 @@ void TeachLevel::initControl()
 		}
 	});
 
-	auto jumpButton = ui::Button::create("buttonJump.png", "", "");
-	jumpButton->setScale(0.45f);
+	auto jumpButton = ui::Button::create("Level0/button_jump.png", "", "");
 	this->addChild(jumpButton);
-	jumpButton->setPosition(Vec2(getVisibleSize().width - 110, 80));
+	jumpButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 110, 100));
 	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchJump)
+		{
+			ifTouchJump = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_JUMP);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
@@ -621,11 +613,18 @@ void TeachLevel::initControl()
 		}
 	});
 
-	auto attackButton = ui::Button::create("buttonAttack.png", "", "");
-	attackButton->setScale(0.45f);
+	auto attackButton = ui::Button::create("Level0/button_attack.png", "", "");
 	this->addChild(attackButton);
-	attackButton->setPosition(Vec2(getVisibleSize().width - 270, 80));
+	attackButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 270, 100));
 	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		if (!ifTouchAttack)
+		{
+			ifTouchAttack = true;
+			auto tempTip = _elementLayer->getChildByTag(SPRITE_ATTACK);
+			tempTip->stopAllActions();
+			tempTip->runAction(FadeTo::create(0.5, 64));
+		}
+
 		switch (type)
 		{
 		case cocos2d::ui::Widget::TouchEventType::BEGAN:
@@ -643,4 +642,39 @@ void TeachLevel::initControl()
 		}
 	});
 #endif
+}
+
+void TeachLevel::initTips()
+{
+	auto tipAction =RepeatForever::create(Sequence::create(ScaleTo::create(1.2f,1.1f),ScaleTo::create(0.8f,1.0f),NULL));
+	
+	auto tip_moveLeft = Sprite::createWithSpriteFrameName("Level0/text_left.png");
+	tip_moveLeft->setTag(SPRITE_LEFT);
+	tip_moveLeft->runAction(tipAction->clone());
+	tip_moveLeft->setPosition(Vec2(100,195));
+	_elementLayer->addChild(tip_moveLeft);
+
+	auto tip_moveRight = Sprite::createWithSpriteFrameName("Level0/text_right.png");
+	tip_moveRight->setTag(SPRITE_RIGHT);
+	tip_moveRight->runAction(tipAction->clone());
+	tip_moveRight->setPosition(Vec2(340, 195));
+	_elementLayer->addChild(tip_moveRight);
+
+	auto tip_jump = Sprite::createWithSpriteFrameName("Level0/text_jump.png");
+	tip_jump->setTag(SPRITE_JUMP);
+	tip_jump->runAction(tipAction->clone());
+	tip_jump->setPosition(Vec2(1060, 195));
+	_elementLayer->addChild(tip_jump);
+
+	auto tip_attack = Sprite::createWithSpriteFrameName("Level0/text_attack.png");
+	tip_attack->setTag(SPRITE_ATTACK);
+	tip_attack->runAction(tipAction->clone());
+	tip_attack->setPosition(Vec2(815, 195));
+	_elementLayer->addChild(tip_attack);
+
+	auto tip_kill = Sprite::createWithSpriteFrameName("Level0/text_kill_enemy.png");
+	tip_kill->setTag(SPRITE_KILL);
+	tip_kill->runAction(tipAction->clone());
+	tip_kill->setPosition(Vec2(970, 560));
+	_elementLayer->addChild(tip_kill);
 }

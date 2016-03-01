@@ -11,8 +11,11 @@
 #define ELEMENT_FLOOR_TAG 1393652
 #define ELEMENT_ENEMY_TAG 1393653
 
-#define  WEAPON_BISCUIT_NAME "biscuit"
+#define WEAPON_TEACH_DOOR_NAME "tec_door"
+#define WEAPON_BISCUIT_NAME "biscuit"
 #define WEAPON_BIANBIAN_NAME "bian"
+
+#define EVENT_TEACH_DOOR "teach_door"
 
 #define TAG_HERO 15829383718
 //baseElement
@@ -89,7 +92,8 @@ enum class FloorType
 //weapon
 enum class WeaponType
 {
-	Biscuit = 0,
+	None = 0,
+	Biscuit,
 	Hand,
 	Hulu,
 	Shoot

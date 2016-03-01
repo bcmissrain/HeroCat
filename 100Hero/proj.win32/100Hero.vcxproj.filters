@@ -28,6 +28,9 @@
     <Filter Include="src\Levels">
       <UniqueIdentifier>{7347f6a7-c82a-4c6c-945e-ebad2ba9daee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Controls">
+      <UniqueIdentifier>{6cbd5265-3fb3-4126-98a9-c29aea3fa4fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -86,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Levels\TeachLevel.cpp">
       <Filter>src\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Controls\ControlButton.cpp">
+      <Filter>src\Controls</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Enemys\ChalkEnemy.cpp">
+      <Filter>src\Enemys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\TeachDoor.cpp">
+      <Filter>src\Weapons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +163,15 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Levels\TeachLevel.h">
       <Filter>src\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Controls\ControlButton.h">
+      <Filter>src\Controls</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Enemys\ChalkEnemy.h">
+      <Filter>src\Enemys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\TeachDoor.h">
+      <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
