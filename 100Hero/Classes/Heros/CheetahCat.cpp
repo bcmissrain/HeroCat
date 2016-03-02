@@ -2,6 +2,11 @@
 #include "../Levels/BaseLevel.h"
 USING_NS_CC;
 
+HeroType CheetahCat::getHeroType()
+{
+	return HeroType::CheetahCat;
+}
+
 bool CheetahCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
@@ -116,6 +121,7 @@ void CheetahCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, Bas
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
+		this->_JumpSpeed = this->_JumpSpeed2 = 0;
 		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.65f);
 		break;
 	default:

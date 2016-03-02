@@ -3,6 +3,11 @@
 #include "../Weapons/Bianbian.h"
 USING_NS_CC;
 
+HeroType HuluCat::getHeroType()
+{
+	return HeroType::HuluCat;
+}
+
 bool HuluCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
@@ -117,6 +122,7 @@ void HuluCat::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEle
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
+		this->_JumpSpeed = this->_JumpSpeed2 = 0;
 		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.68f);
 		break;
 	default:

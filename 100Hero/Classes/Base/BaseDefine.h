@@ -20,6 +20,7 @@
 #define EVENT_TEACH_DOOR "event_teach_door"
 #define EVENT_WEAPON_CREATE "event_weapon_create"
 #define EVENT_BISCAKE_EAT "event_biscake_eat"
+#define EVENT_MAKE_UP "event_make_up"
 
 #define TAG_HERO 15829383718
 //baseElement
@@ -82,6 +83,14 @@ enum class AttackState
 {
 	NotAttack,
 	Attacking
+};
+
+enum class HeroType
+{
+	CheetahCat,
+	HuluCat,
+	CaptainCat,
+	TangShengCat
 };
 
 //floor

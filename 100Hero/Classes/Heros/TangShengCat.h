@@ -4,6 +4,7 @@
 class TangShengCat :public BaseHero
 {
 public:
+	virtual HeroType getHeroType() override;
 	virtual bool init() override;
 	CREATE_FUNC(TangShengCat);
 	virtual bool initElement() override;

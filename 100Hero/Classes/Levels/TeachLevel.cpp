@@ -12,7 +12,7 @@
 #include "../Floors/WallNormal.h"
 #include "../Enemys/ChalkEnemy.h"
 #include "../Weapons/TeachDoor.h"
-
+#include "../Heros/HeroController.h"
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
 
@@ -32,7 +32,7 @@ bool TeachLevel::init()
 	{
 		return false;
 	}
-
+	HeroController::initHeros();
 	BaseLevel::initRandom();
 
 	_minX = -(GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width) / 2;
@@ -66,6 +66,7 @@ bool TeachLevel::init()
 
 void TeachLevel::onExit()
 {
+	HeroController::cleanHeros();
 	_floors.clear();
 	_weapons.clear();
 	_enemys.clear();
@@ -134,7 +135,7 @@ void TeachLevel::initWeapons()
 {
 	//init biscuit
 	auto biscuit = Biscuit::create();
-	biscuit->setPosition(Vec2(420, 260 + 120));
+	biscuit->setPosition(Vec2(420, 800));//260 + 120));
 	_elementLayer->addChild(biscuit, -1);
 	_weapons.pushBack(biscuit);
 
@@ -176,9 +177,45 @@ void TeachLevel::initWeapons()
 			cakeSp->stopAllActions();
 			cakeSp->setScale(1);
 			cakeSp->runAction(FadeTo::create(0.2f, 128));
+			
+			_currentHero->retain();
+			this->removeChild(_currentHero, false);
+
+			_SpriteTimeline->gotoFrameAndPlay(0, 20, false);
+			_SpriteTimeline->setLastFrameCallFunc([=](){		
+				_eventDispatcher->dispatchCustomEvent(EVENT_MAKE_UP); 
+			});
+
+			if (_currentHero->getHeroType() == HeroType::CheetahCat)
+			{
+				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CaptainCat), _currentHero);
+			}
+			else if (_currentHero->getHeroType() == HeroType::CaptainCat)
+			{
+				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::TangShengCat), _currentHero);
+			}
+			else if (_currentHero->getHeroType() == HeroType::TangShengCat)
+			{
+				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::HuluCat), _currentHero);
+			}
+			else if (_currentHero->getHeroType() == HeroType::HuluCat)
+			{			
+				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CheetahCat), _currentHero);
+			}
 		}
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
+	
+	auto makeUpListener = EventListenerCustom::create(EVENT_MAKE_UP, [=](EventCustom* arg){
+		this->addChild(_currentHero);
+		this->runAction(CallFunc::create([=](){
+			auto biscuit = Biscuit::create();
+			biscuit->setPosition(Vec2(420, 800));//260 + 120));
+			_elementLayer->addChild(biscuit, -1);
+			_weapons.pushBack(biscuit);
+		}));
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(makeUpListener, this);
 }
 
 void TeachLevel::initEnemys()
@@ -191,13 +228,23 @@ void TeachLevel::initEnemys()
 
 void TeachLevel::initHero()
 {
-	_currentHero = 
+	_currentHero =
 		//CheetahCat::create();
 		//HuluCat::create();
 		//CaptainCat::create();
-		TangShengCat::create();
+		//TangShengCat::create();
+		HeroController::getHeroByType(HeroType::HuluCat);
 	this->addChild(_currentHero);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
+
+	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("MakeUp.csb"));
+	_Sprite->setPosition(_currentHero->getPosition());
+	_Sprite->setScale(0.25f);
+	this->addChild(_Sprite);
+	_SpriteTimeline = CSLoader::createTimeline("MakeUp.csb");
+	_SpriteTimeline->retain();
+	_Sprite->runAction(_SpriteTimeline);
+	_SpriteTimeline->gotoFrameAndPause(20);
 }
 
 void TeachLevel::initControl()
@@ -692,6 +739,16 @@ void TeachLevel::ResetPosition()
 	else if (_currentHero->getPositionX() > GAME_SCREEN_SIZE_WIDTH - 50)
 	{
 		_currentHero->setPositionX(GAME_SCREEN_SIZE_WIDTH - 50);
+	}
+
+	_Sprite->setPosition(_currentHero->getPosition());
+	if (_currentHero->_Direction == Direction::Left)
+	{
+		_Sprite->setScaleX(-abs(_Sprite->getScaleX()));
+	}
+	else
+	{
+		_Sprite->setScaleX(abs(_Sprite->getScaleX()));
 	}
 }
 

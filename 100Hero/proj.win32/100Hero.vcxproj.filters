@@ -117,6 +117,9 @@
     <ClCompile Include="..\Classes\Utils\ImageDoctor.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Heros\HeroController.cpp">
+      <Filter>src\Heros</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Utils\ImageDoctor.h">
       <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Heros\HeroController.h">
+      <Filter>src\Heros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

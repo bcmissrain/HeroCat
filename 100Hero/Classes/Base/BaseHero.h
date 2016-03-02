@@ -88,7 +88,7 @@ public:
 	//base
 	BaseHero(){}
 	~BaseHero(){}
-
+	virtual HeroType getHeroType() = 0;
 	virtual void afterUpdate() override;
 
 	//control

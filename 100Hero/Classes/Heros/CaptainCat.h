@@ -4,6 +4,7 @@
 class CaptainCat :public BaseHero
 {
 public:
+	virtual HeroType getHeroType() override;
 	virtual bool init() override;
 	CREATE_FUNC(CaptainCat);
 	virtual bool initElement() override;

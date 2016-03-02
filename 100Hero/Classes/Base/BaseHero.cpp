@@ -228,6 +228,7 @@ void JumpUp2Status::updateState(BaseHero* hero, float deltaTime /* = 0 */)
 {
 	hero->_JumpUp2(deltaTime);
 }
+
 //JumpDown
 ActionState JumpDownStatus::getState()
 {
