@@ -109,6 +109,7 @@ public:
 
 	virtual void _Stand(float deltaTime);
 	virtual void _Run(float deltaTime);
+	virtual void _Jump(float deltaTime,bool ifFirst);
 	virtual void _Stop(float deltaTime);
 	virtual void _JumpUp(float deltaTime);
 	virtual void _JumpUp2(float deltaTime);
@@ -153,16 +154,24 @@ public:
 	float _BaseScale;
 	float _BaseRunSpeed;
 	float _BaseAcceleration = 1024;
+	float _BaseJumpAcceleration = 0;
+	float _BaseJumpAcceleration2 = 0;
+	float _BaseJumpSpeed = 0;
+	float _BaseJumpSpeed2 = 0;
+	float _JumpSpeed = 0;
+	float _JumpSpeed2 = 0;
 	float _RunSpeed;
 	float _JumpMoveSpeed;
 	float _JumpHeight;
 	float _JumpTime;
 	float _JumpHeight2;
 	float _JumpTime2;
-	float _AttackColdTime;
+
+	float _AttackColdTime = 0;
 	int   _AttackMaxTimes = -1;
 	int	  _AttackCount = 0;
-	bool _CanDoubleJump;
-	bool _IsDoubleJump;
+	bool _CanDoubleJump = false;
+	bool _IsDoubleJump = false;
+
 };
 #endif

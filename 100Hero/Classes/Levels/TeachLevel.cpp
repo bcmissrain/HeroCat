@@ -1,5 +1,5 @@
 #include "TeachLevel.h"
-
+#include "../Utils/ImageDoctor.h"
 #include "../Heros/HuluCat.h"
 #include "../Heros/CaptainCat.h"
 #include "../Heros/TangShengCat.h"
@@ -60,7 +60,7 @@ bool TeachLevel::init()
 	initControl();
 	initTips();
 	this->scheduleUpdate();
-	
+
 	return true;
 }
 
@@ -191,7 +191,10 @@ void TeachLevel::initEnemys()
 
 void TeachLevel::initHero()
 {
-	_currentHero = //CheetahCat::create();//HuluCat::create();//CaptainCat::create();
+	_currentHero = 
+		//CheetahCat::create();
+		//HuluCat::create();
+		//CaptainCat::create();
 		TangShengCat::create();
 	this->addChild(_currentHero);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);

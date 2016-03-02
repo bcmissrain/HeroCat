@@ -31,6 +31,9 @@
     <Filter Include="src\Controls">
       <UniqueIdentifier>{6cbd5265-3fb3-4126-98a9-c29aea3fa4fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Utils">
+      <UniqueIdentifier>{b8f38dce-a784-489d-a6a7-4a2996e5e12b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="..\Classes\Weapons\Lection.cpp">
       <Filter>src\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Utils\ImageDoctor.cpp">
+      <Filter>src\Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Weapons\Lection.h">
       <Filter>src\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Utils\ImageDoctor.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

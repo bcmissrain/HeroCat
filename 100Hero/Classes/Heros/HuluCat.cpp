@@ -32,6 +32,24 @@ bool HuluCat::init()
 
 bool HuluCat::initElement()
 {
+	//init jump info
+	float revTime = 0;
+	if (_JumpTime != 0)
+	{
+		revTime = 1 / _JumpTime;
+	}
+	_BaseJumpAcceleration = _JumpHeight * 2 * revTime * revTime;
+	_BaseJumpSpeed = _JumpTime * _BaseJumpAcceleration;
+
+	//init jump2 info
+	float revTime2 = 0;
+	if (_JumpTime2 != 0)
+	{
+		revTime2 = 1 / _JumpTime2;
+	}
+	_BaseJumpAcceleration2 = _JumpHeight2 * 2 * revTime2 * revTime2;
+	_BaseJumpSpeed2 = _JumpTime2 * _BaseJumpAcceleration2;
+
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackState = AttackState::NotAttack;
@@ -54,39 +72,26 @@ void HuluCat::_BeginRun()
 
 void HuluCat::_BeginJumpUp()
 {
-	_SpriteTimeline->gotoFrameAndPlay(30,40,false);
-	auto jumpUpAction = EaseOut::create(MoveBy::create(_JumpTime, Vec2(0, _JumpHeight)),2.0);
-	jumpUpAction->setTag(ACTION_TAG_JUMP_UP);
-	this->runAction(jumpUpAction);
+	_SpriteTimeline->gotoFrameAndPlay(30, 40, false);
+	this->_JumpSpeed = this->_BaseJumpSpeed;
 }
 
 void HuluCat::_BeginJumpUp2()
 {
-	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
-	this->stopActionByTag(ACTION_TAG_JUMP_UP);
 	this->_IsDoubleJump = true;
 	_SpriteTimeline->gotoFrameAndPlay(38, 40, false);
-	auto jumpUpAction = EaseOut::create(MoveBy::create(_JumpTime2, Vec2(0, _JumpHeight2)), 2.0);
-	jumpUpAction->setTag(ACTION_TAG_JUMP_UP_2);
-	this->runAction(jumpUpAction);
+	this->_JumpSpeed2 = this->_BaseJumpSpeed2;
 }
 
 void HuluCat::_BeginJumpDown()
 {
-	this->stopActionByTag(ACTION_TAG_JUMP_UP);
-	this->stopActionByTag(ACTION_TAG_JUMP_UP_2);
 	_SpriteTimeline->gotoFrameAndPlay(40, 45, false);
-	auto jumpDownAction = EaseIn::create(MoveBy::create(_JumpTime * 2, Vec2(0, -_JumpHeight*4)), 2.0);
-		/*Sequence::create(EaseIn::create(MoveBy::create(_JumpTime , Vec2(0, -_JumpHeight)), 2.0),
-		MoveBy::create(_JumpTime*4,Vec2(0,-_JumpHeight*4)),
-		NULL);*/
-	jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
-	this->runAction(jumpDownAction);
 }
 
 void HuluCat::_BeginJumpFinish()
 {
-	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
+	this->_JumpSpeed = 0;
+	this->_JumpSpeed2 = 0;
 	_SpriteTimeline->gotoFrameAndPlay(50, 55, false);
 	this->_IsDoubleJump = false;
 }

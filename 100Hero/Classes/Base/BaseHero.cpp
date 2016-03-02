@@ -1,5 +1,6 @@
 #include "BaseHero.h"
 
+#define HERO_MIN_JUMP_SPEED -3000
 //Stand
 ActionState StandStatus::getState()
 {
@@ -163,7 +164,7 @@ void JumpUpStatus::initState(BaseHero* hero)
 
 void JumpUpStatus::checkState(BaseHero* hero)
 {
-	if (hero->getActionByTag(ACTION_TAG_JUMP_UP) == nullptr)
+	if (hero->_JumpSpeed <= 0)
 	{
 		hero->changeStateTo(ActionState::JumpDown);
 	}
@@ -206,7 +207,7 @@ void JumpUp2Status::initState(BaseHero* hero)
 
 void JumpUp2Status::checkState(BaseHero* hero)
 {
-	if (hero->getActionByTag(ACTION_TAG_JUMP_UP_2) == nullptr)
+	if (hero->_JumpSpeed2 <= 0)
 	{
 		hero->changeStateTo(ActionState::JumpDown);
 	}
@@ -390,7 +391,6 @@ float BaseHero::getMaxJumpSpeed()
 	return _JumpHeight * 2 / _JumpTime;
 }
 
-
 void BaseHero::onWeaponCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
 	if (!this->_IsValid)
@@ -523,13 +523,54 @@ void BaseHero::_Run(float deltaTime)
 	//CCLOG("Run state %d , %d ,speed %f", _MoveState, _MoveStateCache, _RunSpeed);
 }
 
+void BaseHero::_Jump(float deltaTime, bool ifFirst)
+{
+	if (ifFirst)
+	{
+		float acc = -_BaseJumpAcceleration;
+		float nextSpeed = _JumpSpeed + acc * deltaTime;
+		if (nextSpeed < HERO_MIN_JUMP_SPEED)
+		{
+			nextSpeed = HERO_MIN_JUMP_SPEED;
+		}
+		float moveDis = (_JumpSpeed + nextSpeed) * 0.5f *deltaTime;
+		this->setPositionY(this->getPositionY() + moveDis);
+		_JumpSpeed = nextSpeed;
+	}
+	else
+	{
+		float acc2 = -_BaseJumpAcceleration2;
+		float nextSpeed2 = _JumpSpeed2 + acc2 * deltaTime;
+		if (nextSpeed2 < HERO_MIN_JUMP_SPEED)
+		{
+			nextSpeed2 = HERO_MIN_JUMP_SPEED;
+		}
+		float moveDis2 = (_JumpSpeed2 + nextSpeed2) * 0.5f *deltaTime;
+		this->setPositionY(this->getPositionY() + moveDis2);
+		_JumpSpeed2 = nextSpeed2;
+		//reset JumpSpeed
+		_JumpSpeed = _JumpSpeed2;
+	}
+}
+
 void BaseHero::_Stop(float deltaTime){	_Run(deltaTime); }
 
-void BaseHero::_JumpUp(float deltaTime){ _Run(deltaTime); }
+void BaseHero::_JumpUp(float deltaTime)
+{
+	_Run(deltaTime);
+	_Jump(deltaTime, true);
+}
 
-void BaseHero::_JumpUp2(float deltaTime){ _Run(deltaTime);  }
+void BaseHero::_JumpUp2(float deltaTime)
+{
+	_Run(deltaTime); 
+	_Jump(deltaTime, false);
+}
 
-void BaseHero::_JumpDown(float deltaTime){ _Run(deltaTime); }
+void BaseHero::_JumpDown(float deltaTime){ 
+	_Run(deltaTime); 
+	_Jump(deltaTime, true);
+}
 
 void BaseHero::_JumpFinish(float deltaTime){ _Run(deltaTime); }
 
