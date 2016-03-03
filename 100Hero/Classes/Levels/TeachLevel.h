@@ -55,9 +55,6 @@ private:
 	bool ifEatCake = false;
 	bool ifKillEnemy = false;
 	bool ifDoorOpen = false;
-
-	cocostudio::timeline::SkeletonNode*  _Sprite = nullptr;
-	cocostudio::timeline::ActionTimeline* _SpriteTimeline = nullptr;
 };
 
 #endif
