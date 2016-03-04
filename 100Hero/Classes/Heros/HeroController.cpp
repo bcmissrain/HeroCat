@@ -20,6 +20,8 @@ void HeroController::initHeros()
 	_heros.insert((int)hero->getHeroType(), hero);
 	hero = TangShengCat::create();
 	_heros.insert((int)hero->getHeroType(), hero);
+	hero = IronCat::create();
+	_heros.insert((int)hero->getHeroType(), hero);
 	_ifInit = true;
 
 	_makeUp = Node::create();
@@ -75,6 +77,9 @@ BaseHero* HeroController::getHeroByType(HeroType heroType)
 		break;
 	case HeroType::TangShengCat:
 		hero = TangShengCat::create();
+		break;
+	case HeroType::IronCat:
+		hero = IronCat::create();
 		break;
 	default:
 		break;

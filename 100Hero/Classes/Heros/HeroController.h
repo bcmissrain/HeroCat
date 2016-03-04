@@ -6,6 +6,7 @@
 #include "HuluCat.h"
 #include "CaptainCat.h"
 #include "TangShengCat.h"
+#include "IronCat.h"
 
 class HeroController
 {

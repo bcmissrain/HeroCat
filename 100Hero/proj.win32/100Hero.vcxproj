@@ -161,6 +161,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Heros\CheetahCat.cpp" />
     <ClCompile Include="..\Classes\Heros\HeroController.cpp" />
     <ClCompile Include="..\Classes\Heros\HuluCat.cpp" />
+    <ClCompile Include="..\Classes\Heros\IronCat.cpp" />
     <ClCompile Include="..\Classes\Heros\TangShengCat.cpp" />
     <ClCompile Include="..\Classes\Levels\BaseLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\SpringLevel.cpp" />
@@ -192,6 +193,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Heros\CheetahCat.h" />
     <ClInclude Include="..\Classes\Heros\HeroController.h" />
     <ClInclude Include="..\Classes\Heros\HuluCat.h" />
+    <ClInclude Include="..\Classes\Heros\IronCat.h" />
     <ClInclude Include="..\Classes\Heros\TangShengCat.h" />
     <ClInclude Include="..\Classes\Levels\BaseLevel.h" />
     <ClInclude Include="..\Classes\Levels\SpringLevel.h" />

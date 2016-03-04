@@ -16,7 +16,28 @@ public:
     virtual bool init();
     
     CREATE_FUNC(HelloWorld);
-	void update(float delta);
+private:
+	BaseLevel* _currentLevel;
+};
+
+class HelloWorldB : public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+
+	CREATE_FUNC(HelloWorldB);
+private:
+};
+
+
+class HelloWorld2 : public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+
+	CREATE_FUNC(HelloWorld2);
 private:
 	BaseLevel* _currentLevel;
 };

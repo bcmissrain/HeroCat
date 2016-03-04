@@ -10,9 +10,6 @@
 class BaseLevel:public cocos2d::Layer
 {
 public:
-	BaseLevel(){};
-	~BaseLevel(){};
-
 	virtual bool init() = 0;
 	virtual void update(float delta) override;
 

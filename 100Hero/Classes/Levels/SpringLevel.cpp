@@ -66,6 +66,7 @@ void SpringLevel::onExit()
 	_elementLayer->removeAllChildren();
 	this->removeAllChildren();
 	TextureCache::getInstance()->removeUnusedTextures();
+	Layer::onExit();
 }
 
 void SpringLevel::updateInput(float delta)
@@ -89,7 +90,7 @@ void SpringLevel::updateBorn(float delta)
 
 	if (_currentHero->getBoundingBox().getMaxY() < 0 && !_currentHero->_IsValid)
 	{
-		_currentHero->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+		_currentHero->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
 		_currentHero->initElement();
 		//_currentHero->changeStateTo(ActionState::JumpDown);
 		for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)

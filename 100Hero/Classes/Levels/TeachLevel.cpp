@@ -15,6 +15,7 @@
 #include "../Heros/HeroController.h"
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
+#include "HelloWorldScene.h"
 
 #define SPRITE_LEFT 20001
 #define SPRITE_RIGHT 20002
@@ -73,6 +74,7 @@ void TeachLevel::onExit()
 	_elementLayer->removeAllChildren();
 	this->removeAllChildren();
 	TextureCache::getInstance()->removeUnusedTextures();
+	Layer::onExit();
 }
 
 
@@ -193,6 +195,10 @@ void TeachLevel::initWeapons()
 			}
 			else if (_currentHero->getHeroType() == HeroType::HuluCat)
 			{
+				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::IronCat), _currentHero);
+			}
+			else if (_currentHero->getHeroType() == HeroType::IronCat)
+			{
 				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CheetahCat), _currentHero);
 			}
 			HeroController::makeUp();
@@ -216,7 +222,7 @@ void TeachLevel::initHero()
 		//HuluCat::create();
 		//CaptainCat::create();
 		//TangShengCat::create();
-		HeroController::getHeroByType(HeroType::HuluCat);
+		HeroController::getHeroByType(HeroType::IronCat);
 	this->addChild(_currentHero);
 	this->addChild(HeroController::_makeUp);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
@@ -663,6 +669,13 @@ void TeachLevel::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::
 	{
 		_ifClickAttack = ClickState::Begin;
 	}
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	if (keyCode == EventKeyboard::KeyCode::KEY_V)
+	{
+		Director::getInstance()->replaceScene(HelloWorldB::createScene());
+	}
+#endif
 }
 
 void TeachLevel::onKeyReleased(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
@@ -745,8 +758,8 @@ void TeachLevel::playerInDoor()
 	tempTip->stopAllActions();
 	tempTip->runAction(FadeTo::create(0.5, 64));
 	//TODO
-
-	Director::getInstance()->end();
+	Director::getInstance()->replaceScene(HelloWorldB::createScene());
+	//Director::getInstance()->end();
 }
 
 void TeachLevel::throwShield()

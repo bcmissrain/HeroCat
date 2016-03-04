@@ -120,6 +120,9 @@
     <ClCompile Include="..\Classes\Heros\HeroController.cpp">
       <Filter>src\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Heros\IronCat.cpp">
+      <Filter>src\Heros</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -210,6 +213,9 @@
       <Filter>src\Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Heros\HeroController.h">
+      <Filter>src\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Heros\IronCat.h">
       <Filter>src\Heros</Filter>
     </ClInclude>
   </ItemGroup>

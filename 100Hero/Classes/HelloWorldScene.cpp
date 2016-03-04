@@ -31,7 +31,51 @@ bool HelloWorld::init()
     return true;
 }
 
-void HelloWorld::update(float delta)
+Scene* HelloWorldB::createScene()
 {
-	_currentLevel->update(delta);
+	auto scene = Scene::create();
+
+	auto layer = HelloWorldB::create();
+
+	scene->addChild(layer);
+
+	return scene;
+}
+
+bool HelloWorldB::init()
+{
+	if (!Layer::init())
+	{
+		return false;
+	}
+	this->runAction(Sequence::create(
+		DelayTime::create(0.5),
+		CallFunc::create([](){
+		Director::getInstance()->replaceScene(HelloWorld::createScene());
+	}),
+		NULL));
+	return true;
+}
+
+Scene* HelloWorld2::createScene()
+{
+	auto scene = Scene::create();
+
+	auto layer = HelloWorld2::create();
+
+	scene->addChild(layer);
+
+	return scene;
+}
+
+bool HelloWorld2::init()
+{
+	if (!Layer::init())
+	{
+		return false;
+	}
+	//Director::getInstance()->replaceScene(HelloWorld::createScene());
+	//_currentLevel = SpringLevel::create();
+	//this->addChild(_currentLevel);
+	return true;
 }

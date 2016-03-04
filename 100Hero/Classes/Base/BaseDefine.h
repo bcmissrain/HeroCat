@@ -90,7 +90,8 @@ enum class HeroType
 	CheetahCat,
 	HuluCat,
 	CaptainCat,
-	TangShengCat
+	TangShengCat,
+	IronCat
 };
 
 //floor
