@@ -9,7 +9,7 @@ public:
 	virtual bool initElement() override;
 	virtual void update(float delta) override;
 	CREATE_FUNC(Lection);
-	virtual void deal() override;
+	virtual void deal(BaseElement* gameElement) override;
 	virtual bool isTarget(BaseElement* gameElement) override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;

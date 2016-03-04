@@ -42,7 +42,7 @@ bool Biscuit::initElement()
 	return true;
 }
 
-void Biscuit::deal()
+void Biscuit::deal(BaseElement* gameElement)
 {
 	_IsValid = false;
 	this->stopAllActions();

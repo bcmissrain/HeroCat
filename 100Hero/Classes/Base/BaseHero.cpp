@@ -400,7 +400,7 @@ void BaseHero::onWeaponCollide(cocos2d::Point point, CollideOperate opType, Base
 	}
 
 	auto weaponElement = (BaseWeapon*)gameElement;
-	weaponElement->deal();
+	weaponElement->deal(this);
 	
 }
 

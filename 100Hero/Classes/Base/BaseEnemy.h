@@ -37,7 +37,7 @@ public:
 	virtual void _Run(float deltaTime);
 	virtual void _Fly(float deltaTime);
 	virtual void _TurnDirection();
-	virtual void _Hurt(float lostBlood,EnemyDieType dieType = EnemyDieType::Transparent);
+	virtual void _Hurt(float lostBlood,EnemyDieType dieType,bool ifTurnDirection);
 	virtual void _JumpDown();
 	virtual void _JumpFinish();
 	virtual void _Die(EnemyDieType dieType = EnemyDieType::Transparent);

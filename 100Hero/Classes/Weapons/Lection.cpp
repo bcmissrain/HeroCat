@@ -42,7 +42,7 @@ void Lection::update(float delta)
 {
 }
 
-void Lection::deal()
+void Lection::deal(BaseElement* gameElement)
 {
 	//always effective
 	//_IsValid = false;

@@ -30,7 +30,7 @@ bool TeachDoor::initElement()
 	return true;
 }
 
-void TeachDoor::deal()
+void TeachDoor::deal(BaseElement* gameElement)
 {
 	_IsValid = false;
 	this->stopAllActions();

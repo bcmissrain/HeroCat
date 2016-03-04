@@ -134,12 +134,13 @@ void BaseEnemy::_TurnDirection()
 	}
 }
 
-void BaseEnemy::_Hurt(float lostBlood,EnemyDieType dieType)
+void BaseEnemy::_Hurt(float lostBlood,EnemyDieType dieType,bool ifTurnDirection)
 {
 	this->_Blood -= lostBlood;
 	if (this->_Blood >= 0.001)
 	{
-
+		if (ifTurnDirection)
+			this->_TurnDirection();
 	}
 	else
 	{

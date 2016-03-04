@@ -24,7 +24,7 @@ bool Bianbian::init()
 	if (this->_InValidTime > 0)
 	{
 		auto invalidAction = Sequence::create(DelayTime::create(_InValidTime), CallFunc::create([=](){
-			deal();
+			deal(this);
 		}), NULL);
 		this->runAction(invalidAction);
 	}
@@ -56,7 +56,7 @@ void Bianbian::update(float delta)
 	_lastPosY = currentPosY;
 }
 
-void Bianbian::deal()
+void Bianbian::deal(BaseElement* gameElement)
 {
 	//_IsValid = false;
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);

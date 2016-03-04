@@ -97,7 +97,7 @@ void SpringLevel::updateBorn(float delta)
 		{
 			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
 			{
-				(*wea)->deal();
+				(*wea)->deal(_currentHero);
 			}
 		}
 	}

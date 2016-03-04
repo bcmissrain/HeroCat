@@ -13,7 +13,7 @@ class BaseWeapon :public BaseElement
 public:
 	BaseWeapon(){}
 	~BaseWeapon(){}
-	virtual void deal(){};
+	virtual void deal(BaseElement* gameElement){};
 
 	virtual cocos2d::Rect getAttackBox();
 	inline WeaponType getWeaponType();
@@ -37,6 +37,7 @@ public:
 	cocos2d::Rect _AttackArea;
 	EnemyDieType _EnemyDieType = EnemyDieType::Transparent;
 	float _HurtValue = 1;
+	bool _CanTurnDirection = false;
 };
 
 #endif // !__BASE_WEAPON_H__

@@ -451,7 +451,7 @@ void TeachLevel::updateBorn(float delta)
 		{
 			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
 			{
-				(*wea)->deal();
+				(*wea)->deal(_currentHero);
 			}
 		}
 	}
@@ -794,7 +794,7 @@ void TeachLevel::throwShield()
 		auto attackAction = Sequence::create(
 			EaseOut::create(MoveBy::create(0.8f, shieldDirection), 1.5f),
 			EaseIn::create(MoveBy::create(0.8f, -shieldDirection), 1.5f),
-			CallFunc::create([=](){weapon->deal(); }),
+			CallFunc::create([=](){weapon->deal(_currentHero); }),
 			NULL);
 		weapon->runAction(attackAction);
 	/*}*/

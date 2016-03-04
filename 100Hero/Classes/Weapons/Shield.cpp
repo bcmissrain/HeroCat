@@ -6,6 +6,7 @@ bool Shield::init()
 {
 	this->_HurtValue = 1.0f;
 	this->_BaseScale = 0.5f;
+	this->_CanTurnDirection = true;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_SHIELD_NAME);
 	_WeaponType = WeaponType::Shoot;
@@ -31,7 +32,7 @@ void Shield::update(float delta)
 
 }
 
-void Shield::deal()
+void Shield::deal(BaseElement* baseElement)
 {
 	_IsValid = false;
 	this->stopAllActions();
@@ -66,5 +67,5 @@ void Shield::onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseEle
 		return;
 
 	//TODO
-	deal();
+	deal(gameElement);
 }
