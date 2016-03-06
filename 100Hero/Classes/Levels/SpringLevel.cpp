@@ -1,15 +1,23 @@
 #include "SpringLevel.h"
 
+#include "../Heros/HeroController.h"
 #include "../Heros/HuluCat.h"
+#include "../Heros/CaptainCat.h"
+#include "../Heros/TangShengCat.h"
 #include "../Heros/CheetahCat.h"
-#include "../Floors/FloorNormal.h"
-#include "../Weapons/Bianbian.h"
-#include "../Weapons/Biscuit.h"
-#include "../Floors/WallNormal.h"
+
 #include "../Enemys/Enemy360.h"
 
+#include "../Floors/FloorNormal.h"
+#include "../Floors/WallNormal.h"
+
+#include "../Weapons/Bianbian.h"
+#include "../Weapons/Shield.h"
+#include "../Weapons/Biscuit.h"
+#include "../Weapons/Lection.h"
+
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
-#define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
+#define GAME_SCREEN_SIZE_HEIGHT 1136 /*1024*/
 
 USING_NS_CC;
 
@@ -19,7 +27,7 @@ bool SpringLevel::init()
 	{
 		return false;
 	}
-	
+	HeroController::initHeros();
 	BaseLevel::initRandom();
 
 	_minX = -(GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width) / 2;
@@ -31,13 +39,22 @@ bool SpringLevel::init()
 	TextureCache::getInstance()->addImage("360.png");
 	TextureCache::getInstance()->addImage("360_hurt.png");
 	TextureCache::getInstance()->addImage("360_boss.png");
+	TextureCache::getInstance()->addImage("springback.png");
 	TextureCache::getInstance()->addImage("Images/bigBian.png");
+	TextureCache::getInstance()->addImage("Images/shield.png");
 
-	_baseMaxBornTime = 8;
-	_baseMinBornTime = 4;
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	TextureCache::getInstance()->addImage("blank_debug.png");
+#else
+	TextureCache::getInstance()->addImage("blank.png");
+#endif
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("Level1/SpringLevel.plist");
+
+	_baseMaxBornTime = 10;
+	_baseMinBornTime = 6;
 	_currentBornTime = _baseMaxBornTime;
 	_bornTimeSpeed = 4.0f / 20.0f;
-	_bornBetweenTime = 0.5f;
+	_bornBetweenTime = 0.8f;
 
 	initBackground();
 	initBornPoints();
@@ -53,6 +70,11 @@ bool SpringLevel::init()
 	initFloors();
 	initEnemys();
 	initWeapons();
+
+	_cakeLabel = Label::create(Value(_eatenCakeNum).asString(), "Fonts/a_song_for_jennifer.ttf", 48);
+	_cakeLabel->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, getVisibleSize().height - 80);
+	this->addChild(_cakeLabel);
+
 	initControl();
 	this->scheduleUpdate();
 	return true;
@@ -60,6 +82,7 @@ bool SpringLevel::init()
 
 void SpringLevel::onExit()
 {
+	HeroController::cleanHeros();
 	_floors.clear();
 	_weapons.clear();
 	_enemys.clear();
@@ -191,7 +214,7 @@ void SpringLevel::updateLate(float delta)
 		}
 	}
 #endif
-	
+
 	ResetPosition();
 
 	//late update enemy
@@ -204,9 +227,8 @@ void SpringLevel::updateLate(float delta)
 	{
 		(*ene)->afterUpdate();
 	}
-	
-	_currentHero->afterUpdate();
 
+	_currentHero->afterUpdate();
 
 	//reset input
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
@@ -404,6 +426,8 @@ void SpringLevel::ResetPosition()
 	{
 		_currentHero->setPositionX(visibleSize.width);
 	}
+
+	HeroController::resetPosition(_currentHero->getPosition(), _currentHero->_Direction);
 }
 
 void SpringLevel::bornCake()
@@ -435,7 +459,10 @@ void SpringLevel::bornEnemys()
 	{
 		return;
 	}
-	
+	//temp limit
+	if (_enemys.size() >= 7)
+		return;
+
 	if (canBornEnemy)
 	{
 		isBorningEnemy = true;
@@ -444,7 +471,7 @@ void SpringLevel::bornEnemys()
 		bool ifLeft = getRandomPercent(1, 100) <= 50;
 		//create 3 enemy (50): create 1 boss (25): create 2 enemy& 1 boss(15) :create 2 boss(10)
 		int createEnemyType = getRandomPercent(1, 100);
-		
+
 		auto bornNormal = Sequence::create(CallFunc::create([=](){
 			auto enemy = Enemy360::create();
 			enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
@@ -457,7 +484,7 @@ void SpringLevel::bornEnemys()
 		}), DelayTime::create(_bornBetweenTime), NULL);
 
 		auto bornBoss = Sequence::create(CallFunc::create([=](){
-			auto enemy = Enemy360::create();
+			auto enemy = Enemy360Big::create();
 			enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
 			if (ifLeft)
 			{
@@ -506,8 +533,17 @@ void SpringLevel::bornEnemys()
 void SpringLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
 {
 	bool ifTurnLeft = baseEnemy->_Direction == Direction::Left;
+	bool ifBig = baseEnemy->_EnemyType == EnemyType::Big;
 	auto bornAction = CallFunc::create([=](){
-		auto enemy = Enemy360Hurt::create();
+		BaseEnemy* enemy = nullptr;
+		if (ifBig)
+		{
+			enemy = Enemy360HurtBig::create();
+		}
+		else
+		{
+			enemy = Enemy360Hurt::create();
+		}
 		
 		enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
 		if (ifTurnLeft)
@@ -520,7 +556,408 @@ void SpringLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
 	this->runAction(bornAction);
 }
 
-void SpringLevel::AddBianbianByPos(cocos2d::Vec2 pos)
+void SpringLevel::initBornPoints()
+{
+	_cakeBornPoints.push_back(Vec2(400, 410));
+	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 400, 410));
+	_cakeBornPoints.push_back(Vec2(150, 280));
+	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 150, 280));
+	_cakeBornPoints.push_back(Vec2(400, 190));
+	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 400, 190));
+
+	_cakeBornPoints.push_back(Vec2(400, 410 + 400));
+	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 400, 410 + 400));
+	_cakeBornPoints.push_back(Vec2(150, 280 + 400));
+	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 150, 280 + 400));
+
+	_enemysBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	for (auto p = _cakeBornPoints.begin(); p != _cakeBornPoints.end(); p++)
+	{
+		auto sp = Sprite::create("cakePoint.png");
+		sp->setPosition(*p);
+		_elementLayer->addChild(sp);
+
+		auto biscuit = Biscuit::create();
+		biscuit->setPosition(*p);
+		_elementLayer->addChild(biscuit, -1);
+		_weapons.pushBack(biscuit);
+	}
+
+	for (auto p = _enemysBornPoints.begin(); p != _enemysBornPoints.end(); p++)
+	{
+		auto sp = Sprite::create("enemyPoint.png");
+		sp->setPosition(*p);
+		_elementLayer->addChild(sp);
+	}
+#endif
+}
+
+void SpringLevel::initBackground()
+{
+	_elementLayer = Layer::create();
+	this->addChild(_elementLayer);
+	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("springback.png"));
+	backSprite->setScale(GAME_SCREEN_SIZE_WIDTH / backSprite->getContentSize().width);
+	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
+	_elementLayer->addChild(backSprite, -3);
+}
+
+void SpringLevel::initFloors()
+{
+	//LD
+	BaseFloor* floor0 = FloorNormal::create();
+	Node* sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(127, 100);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//RD
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 127, 100);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//LDL
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor0.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition( 180, 0);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//RDL
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor0.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 180, 0);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//CM
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor0.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//LT
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(127, 500);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//RT
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 127, 500);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//CM
+	floor0 = FloorNormal::create();
+	sp0 = Sprite::createWithSpriteFrameName("spring_floor0.png");
+	floor0->initBySprite(sp0);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 700);
+	_elementLayer->addChild(floor0, -1);
+	_floors.pushBack(floor0);
+
+	//LD
+	auto _wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(-20, 128));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	//RD
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH + 20, 128));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	//LT
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(-20, 550));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	//RT
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH+20, 550));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	//LDL
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(230, 50));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+
+	//RDL
+	_wall0 = WallNormal::create();
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank_debug.png"));
+#else
+	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
+#endif
+	_wall0->initBySprite(sp0);
+	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 230, 50));
+	_elementLayer->addChild(_wall0, -1);
+	_floors.pushBack(_wall0);
+}
+
+void SpringLevel::initEnemys()
+{
+	/*auto enemy = Enemy360Boss::create();
+	enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
+	_elementLayer->addChild(enemy, 1);
+	_enemys.pushBack(enemy);*/
+}
+
+void SpringLevel::initHero()
+{
+	_currentHero = HeroController::getHeroByType(HeroType::CaptainCat);
+	this->addChild(_currentHero);
+	this->addChild(HeroController::_makeUp);
+	_currentHero->setPosition(240, 500);
+
+	auto makeUpAction = EventListenerCustom::create(EVENT_MAKE_UP, [=](EventCustom* arg)
+	{
+		if (_currentHero->getParent() == nullptr){
+			CCLOG("cocos ok  hero %d", _currentHero->getHeroType());
+			this->addChild(_currentHero);
+			this->runAction(CallFunc::create([=](){
+				//recreate biscuits
+				bornCake();
+			}));
+		}
+		else
+		{
+			CCLOG("cocos action bug");
+		}
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(makeUpAction, this);
+}
+
+void SpringLevel::initWeapons()
+{
+	auto weaponListener = EventListenerCustom::create(EVENT_WEAPON_CREATE, [=](EventCustom* arg)
+	{
+		auto wType = (int)(arg->getUserData());
+		if (wType == (int)WeaponEventType::ThrowShield)
+		{
+			throwShield();
+		}
+		else if (wType == (int)WeaponEventType::ThrowBianbian)
+		{
+			throwBianbian();
+		}
+		else if (wType == (int)WeaponEventType::CreateLection)
+		{
+			createLection();
+		}
+	});
+
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(weaponListener, this);
+
+	auto eatCakeListener = EventListenerCustom::create(EVENT_BISCAKE_EAT, [=](EventCustom* arg)
+	{
+		this->_eatenCakeNum++;
+		this->_cakeLabel->setString(Value(_eatenCakeNum).asString());
+		_currentHero->retain();
+
+		this->removeChild(_currentHero, true);
+		if (_currentHero->getHeroType() == HeroType::CheetahCat)
+		{
+			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CaptainCat), _currentHero);
+		}
+		else if (_currentHero->getHeroType() == HeroType::CaptainCat)
+		{
+			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::TangShengCat), _currentHero);
+		}
+		else if (_currentHero->getHeroType() == HeroType::TangShengCat)
+		{
+			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::HuluCat), _currentHero);
+		}
+		else if (_currentHero->getHeroType() == HeroType::HuluCat)
+		{
+			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::IronCat), _currentHero);
+		}
+		else if (_currentHero->getHeroType() == HeroType::IronCat)
+		{
+			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CheetahCat), _currentHero);
+		}
+		HeroController::makeUp();
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
+}
+
+void SpringLevel::initControl()
+{
+	_ifClickLeft = ClickState::None;
+	_ifClickRight = ClickState::None;
+	_ifClickJump = ClickState::None;
+	_ifClickAttack = ClickState::None;
+
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+	//add key listener
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyPressed = CC_CALLBACK_2(SpringLevel::onKeyPressed, this);
+	keyListener->onKeyReleased = CC_CALLBACK_2(SpringLevel::onKeyReleased, this);
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+#else
+	auto leftButton = ui::Button::create("buttonLeft.png", "", "");
+	leftButton->setScale(0.45f);
+	this->addChild(leftButton);
+	leftButton->setPosition(Vec2(110, 100));
+	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onMoveLeft(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onMoveLeft(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onMoveLeft(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+
+	auto rightButton = ui::Button::create("buttonRight.png", "", "");
+	rightButton->setScale(0.45f);
+	this->addChild(rightButton);
+	rightButton->setPosition(Vec2(325, 100));
+	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onMoveRight(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onMoveRight(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onMoveRight(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+
+	auto jumpButton = ui::Button::create("buttonJump.png", "", "");
+	jumpButton->setScale(0.45f);
+	this->addChild(jumpButton);
+	jumpButton->setPosition(Vec2(getVisibleSize().width - 110, 100));
+	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onJump(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onJump(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onJump(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+
+	auto attackButton = ui::Button::create("buttonAttack.png", "", "");
+	attackButton->setScale(0.45f);
+	this->addChild(attackButton);
+	attackButton->setPosition(Vec2(getVisibleSize().width - 270, 100));
+	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
+		switch (type)
+		{
+		case cocos2d::ui::Widget::TouchEventType::BEGAN:
+			_currentHero->onAttack(ClickState::Begin);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::MOVED:
+			_currentHero->onAttack(ClickState::Still);
+			break;
+		case cocos2d::ui::Widget::TouchEventType::CANCELED:
+		case cocos2d::ui::Widget::TouchEventType::ENDED:
+			_currentHero->onAttack(ClickState::End);
+			break;
+		default:
+			break;
+		}
+	});
+#endif
+}
+
+void SpringLevel::throwShield()
+{
+	auto weapon = Shield::create();
+	weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
+	_elementLayer->addChild(weapon, -1);
+	_weapons.pushBack(weapon);
+	Vec2 shieldDirection;
+	if (_currentHero->_Direction == Direction::Left)
+	{
+		shieldDirection = Vec2(-400, 0);
+	}
+	else if (_currentHero->_Direction == Direction::Right)
+	{
+		shieldDirection = Vec2(400, 0);
+	}
+
+	auto attackAction = Sequence::create(
+		EaseOut::create(MoveBy::create(0.8f, shieldDirection), 1.5f),
+		EaseIn::create(MoveBy::create(0.8f, -shieldDirection), 1.5f),
+		CallFunc::create([=](){weapon->deal(_currentHero); }),
+		NULL);
+	weapon->runAction(attackAction);
+}
+
+void SpringLevel::throwBianbian()
 {
 	bool haveBianbian = false;
 	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
@@ -545,301 +982,9 @@ void SpringLevel::AddBianbianByPos(cocos2d::Vec2 pos)
 	}
 }
 
-void SpringLevel::initBornPoints()
+void SpringLevel::createLection()
 {
-	_cakeBornPoints.push_back(Vec2(400, 410));
-	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 400, 410));
-	_cakeBornPoints.push_back(Vec2(150, 280));
-	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 150, 280));
-	_cakeBornPoints.push_back(Vec2(400, 190));
-	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 400, 190));
-
-	_enemysBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
-
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	for (auto p = _cakeBornPoints.begin(); p != _cakeBornPoints.end(); p++)
-	{
-		auto sp = Sprite::create("cakePoint.png");
-		sp->setPosition(*p);
-		_elementLayer->addChild(sp);
-		
-		auto biscuit = Biscuit::create();
-		biscuit->setPosition(*p);
-		_elementLayer->addChild(biscuit, -1);
-		_weapons.pushBack(biscuit);
-	}
-
-	for (auto p = _enemysBornPoints.begin(); p != _enemysBornPoints.end(); p++)
-	{
-		auto sp = Sprite::create("enemyPoint.png");
-		sp->setPosition(*p);
-		_elementLayer->addChild(sp);
-	}
-#endif
-}
-
-void SpringLevel::initBackground()
-{
-	_elementLayer = Layer::create();
-	this->addChild(_elementLayer);
-
-	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("back0.png"));
-	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
-	_elementLayer->addChild(backSprite, -3);
-}
-
-void SpringLevel::initFloors()
-{
-	//init floor
-	/*BaseFloor* floor0 = FloorNormal::create();
-	cocos2d::ui::Scale9Sprite* sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(256, 60));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width *0.3, 0));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(256, 60));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width *0.7, 0));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(300, 40));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width * 0.125, 200));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(300, 40));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width * 0.875, 200));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(512, 40));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width * 0.5, 400));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(300, 40));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width * 0.25, 600));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(300, 40));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width * 0.75, 600));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(512, 40));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(Vec2(visibleSize.width * 0.5, 800));
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);*/
-	BaseFloor* floor0 = FloorNormal::create();
-	cocos2d::ui::Scale9Sprite* sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(300, 100));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(150, 60);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(300, 100));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 150, 60);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(210, 100));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(300 + 105, 10);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(210, 100));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - (300 + 105), 10);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	floor0 = FloorNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(GAME_SCREEN_SIZE_WIDTH - 680, 50));
-	floor0->initBySprite(sp0);
-	floor0->setPosition(300 + 268, 230 + 45);
-	_elementLayer->addChild(floor0, -1);
-	_floors.pushBack(floor0);
-
-	auto _wall0 = WallNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(40, 40));
-	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(0, 128));
-	_elementLayer->addChild(_wall0, -1);
-	_floors.pushBack(_wall0);
-
-	_wall0 = WallNormal::create();
-	sp0 = cocos2d::ui::Scale9Sprite::create("ninesis2.png");
-	sp0->setContentSize(Size(40, 40));
-	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH, 128));
-	_elementLayer->addChild(_wall0, -1);
-	_floors.pushBack(_wall0);
-}
-
-void SpringLevel::initWeapons()
-{
-	//init weapon listener
-	auto eventListener = EventListenerCustom::create(EVENT_WEAPON_CREATE,
-		[=](EventCustom* arg){
-		int wType = (int)arg->getUserData();
-		if (wType == (int)WeaponEventType::ThrowBianbian)
-		{
-			AddBianbianByPos(Vec2());
-		}
-	});
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
-}
-
-void SpringLevel::initEnemys()
-{
-	/*auto enemy = Enemy360Boss::create();
-	enemy->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT));
-	_elementLayer->addChild(enemy, 1);
-	_enemys.pushBack(enemy);*/
-}
-
-void SpringLevel::initHero()
-{
-	_currentHero = CheetahCat::create();//HuluCat::create();
-	this->addChild(_currentHero);
-	_currentHero->setPosition(240, 500);
-}
-
-void SpringLevel::initControl()
-{
-	_ifClickLeft = ClickState::None;
-	_ifClickRight = ClickState::None;
-	_ifClickJump = ClickState::None;
-	_ifClickAttack = ClickState::None;
-
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
-	//add key listener
-	auto keyListener = EventListenerKeyboard::create();
-	keyListener->onKeyPressed = CC_CALLBACK_2(SpringLevel::onKeyPressed, this);
-	keyListener->onKeyReleased = CC_CALLBACK_2(SpringLevel::onKeyReleased, this);
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
-#else
-	auto leftButton = ui::Button::create("buttonLeft.png", "", "");
-	leftButton->setScale(0.45f);
-	this->addChild(leftButton);
-	leftButton->setPosition(Vec2(110, 80));
-	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onMoveLeft(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onMoveLeft(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onMoveLeft(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-
-	auto rightButton = ui::Button::create("buttonRight.png", "", "");
-	rightButton->setScale(0.45f);
-	this->addChild(rightButton);
-	rightButton->setPosition(Vec2(325, 80));
-	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onMoveRight(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onMoveRight(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onMoveRight(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-
-	auto jumpButton = ui::Button::create("buttonJump.png", "", "");
-	jumpButton->setScale(0.45f);
-	this->addChild(jumpButton);
-	jumpButton->setPosition(Vec2(getVisibleSize().width - 110, 80));
-	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onJump(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onJump(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onJump(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-
-	auto attackButton = ui::Button::create("buttonAttack.png", "", "");
-	attackButton->setScale(0.45f);
-	this->addChild(attackButton);
-	attackButton->setPosition(Vec2(getVisibleSize().width - 270, 80));
-	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
-		switch (type)
-		{
-		case cocos2d::ui::Widget::TouchEventType::BEGAN:
-			_currentHero->onAttack(ClickState::Begin);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::MOVED:
-			_currentHero->onAttack(ClickState::Still);
-			break;
-		case cocos2d::ui::Widget::TouchEventType::CANCELED:
-		case cocos2d::ui::Widget::TouchEventType::ENDED:
-			_currentHero->onAttack(ClickState::End);
-			break;
-		default:
-			break;
-		}
-	});
-#endif
+	auto lection = Lection::create();
+	_elementLayer->addChild(lection);
+	_weapons.pushBack(lection);
 }

@@ -37,12 +37,17 @@ protected:
 	virtual void initHero();
 	virtual void initControl();
 private:
+	void throwShield();
+	void throwBianbian();
+	void createLection();
+private:
+	cocos2d::Label* _cakeLabel;
+	int _eatenCakeNum = 0;
+
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	bool ifSupport;
 	bool ifDrawDebug;
 #endif
-	void AddBianbianByPos(cocos2d::Vec2 pos);
-
 	bool ifBornHurt = false;
 	bool isBorningEnemy = false;
 	bool canBornEnemy = true;

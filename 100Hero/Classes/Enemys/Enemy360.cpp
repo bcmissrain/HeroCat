@@ -4,15 +4,16 @@
 bool Enemy360::init()
 {
 	this->setTag(ELEMENT_ENEMY_TAG);
+	_EnemyType = EnemyType::Small;
 	_Sprite = cocos2d::Sprite::createWithTexture(cocos2d::TextureCache::getInstance()->addImage("360.png"));
 	_Direction = Direction::Right;
 	_MoveState = MoveState::None;
-	_RunSpeed = _BaseRunSpeed = 200;
+	_RunSpeed = _BaseRunSpeed = 160;
 	_JumpTime = 0.3f;
 	_JumpHeight = 200;
 	_Scale = _BaseScale = 0.4f;
 	_Sprite->setScale(_Scale);
-	_Blood = _BaseBlood = 1;
+	_Blood = _BaseBlood = 2;
 	this->addChild(_Sprite);
 	initElement();
 	return true;
@@ -98,14 +99,52 @@ void Enemy360::onWeaponCollide(cocos2d::Point point, CollideOperate opType, Base
 bool Enemy360Hurt::init()
 {
 	this->setTag(ELEMENT_ENEMY_TAG);
+	_EnemyType = EnemyType::Small;
 	_Sprite = cocos2d::Sprite::createWithTexture(cocos2d::TextureCache::getInstance()->addImage("360_hurt.png"));
 	_Direction = Direction::Right;
 	_MoveState = MoveState::None;
-	_RunSpeed = _BaseRunSpeed = 300;
+	_RunSpeed = _BaseRunSpeed = 240;
 	_JumpTime = 0.3f;
 	_JumpHeight = 200;
 	_Scale = _BaseScale = 0.4f;
 	_Sprite->setScale(_Scale);
+	_Blood = _BaseBlood = 1;
+	this->addChild(_Sprite);
+	initElement();
+	return true;
+}
+
+bool Enemy360Big::init()
+{
+	this->setTag(ELEMENT_ENEMY_TAG);
+	_EnemyType = EnemyType::Big;
+	_Sprite = cocos2d::Sprite::createWithTexture(cocos2d::TextureCache::getInstance()->addImage("360.png"));
+	_Direction = Direction::Right;
+	_MoveState = MoveState::None;
+	_RunSpeed = _BaseRunSpeed =	140;
+	_JumpTime = 0.3f;
+	_JumpHeight = 200;
+	_Scale = _BaseScale = 0.6f;
+	_Sprite->setScale(_Scale);
+	_Blood = _BaseBlood = 4;
+	this->addChild(_Sprite);
+	initElement();
+	return true;
+}
+
+bool Enemy360HurtBig::init()
+{
+	this->setTag(ELEMENT_ENEMY_TAG);
+	_EnemyType = EnemyType::Big;
+	_Sprite = cocos2d::Sprite::createWithTexture(cocos2d::TextureCache::getInstance()->addImage("360_hurt.png"));
+	_Direction = Direction::Right;
+	_MoveState = MoveState::None;
+	_RunSpeed = _BaseRunSpeed = 200;
+	_JumpTime = 0.3f;
+	_JumpHeight = 200;
+	_Scale = _BaseScale = 0.6f;
+	_Sprite->setScale(_Scale);
+	_Blood = _BaseBlood = 4;
 	this->addChild(_Sprite);
 	initElement();
 	return true;
@@ -114,6 +153,7 @@ bool Enemy360Hurt::init()
 bool Enemy360Boss::init()
 {
 	this->setTag(ELEMENT_ENEMY_TAG);
+	_EnemyType = EnemyType::Boss;
 	_Sprite = cocos2d::Sprite::createWithTexture(cocos2d::TextureCache::getInstance()->addImage("360_boss.png"));
 	_Direction = Direction::Right;
 	_MoveState = MoveState::None;

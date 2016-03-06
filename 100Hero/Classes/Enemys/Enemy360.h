@@ -21,6 +21,20 @@ public:
 	virtual bool init() override;
 };
 
+class Enemy360Big : public Enemy360
+{
+public:
+	CREATE_FUNC(Enemy360Big);
+	virtual bool init() override;
+};
+
+class Enemy360HurtBig : public Enemy360
+{
+public:
+	CREATE_FUNC(Enemy360HurtBig);
+	virtual bool init() override;
+};
+
 class Enemy360Boss : public Enemy360
 {
 public:

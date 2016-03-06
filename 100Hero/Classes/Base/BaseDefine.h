@@ -134,6 +134,14 @@ enum class WeaponDirection
 };
 
 //enemy
+enum class EnemyType
+{
+	Small,
+	Big,
+	Fly,
+	Boss
+};
+
 enum class EnemyDieType
 {
 	Transparent,

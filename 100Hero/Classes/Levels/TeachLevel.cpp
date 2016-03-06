@@ -1,18 +1,23 @@
 #include "TeachLevel.h"
 #include "../Utils/ImageDoctor.h"
+
+#include "../Heros/HeroController.h"
 #include "../Heros/HuluCat.h"
 #include "../Heros/CaptainCat.h"
 #include "../Heros/TangShengCat.h"
 #include "../Heros/CheetahCat.h"
+
+#include "../Enemys/ChalkEnemy.h"
+
 #include "../Floors/FloorNormal.h"
+#include "../Floors/WallNormal.h"
+
 #include "../Weapons/Bianbian.h"
 #include "../Weapons/Shield.h"
 #include "../Weapons/Biscuit.h"
 #include "../Weapons/Lection.h"
-#include "../Floors/WallNormal.h"
-#include "../Enemys/ChalkEnemy.h"
 #include "../Weapons/TeachDoor.h"
-#include "../Heros/HeroController.h"
+
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
 #include "HelloWorldScene.h"
@@ -33,6 +38,7 @@ bool TeachLevel::init()
 	{
 		return false;
 	}
+
 	HeroController::initHeros();
 	BaseLevel::initRandom();
 
@@ -217,12 +223,7 @@ void TeachLevel::initEnemys()
 
 void TeachLevel::initHero()
 {
-	_currentHero =
-		//CheetahCat::create();
-		//HuluCat::create();
-		//CaptainCat::create();
-		//TangShengCat::create();
-		HeroController::getHeroByType(HeroType::IronCat);
+	_currentHero = HeroController::getHeroByType(HeroType::IronCat);
 	this->addChild(_currentHero);
 	this->addChild(HeroController::_makeUp);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);

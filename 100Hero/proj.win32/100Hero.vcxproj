@@ -165,6 +165,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Heros\TangShengCat.cpp" />
     <ClCompile Include="..\Classes\Levels\BaseLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\SpringLevel.cpp" />
+    <ClCompile Include="..\Classes\Levels\TestLevel.cpp" />
     <ClCompile Include="..\Classes\Levels\TeachLevel.cpp" />
     <ClCompile Include="..\Classes\Utils\ImageDoctor.cpp" />
     <ClCompile Include="..\Classes\Weapons\Bianbian.cpp" />
@@ -197,6 +198,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Heros\TangShengCat.h" />
     <ClInclude Include="..\Classes\Levels\BaseLevel.h" />
     <ClInclude Include="..\Classes\Levels\SpringLevel.h" />
+    <ClInclude Include="..\Classes\Levels\TestLevel.h" />
     <ClInclude Include="..\Classes\Levels\TeachLevel.h" />
     <ClInclude Include="..\Classes\Utils\ImageDoctor.h" />
     <ClInclude Include="..\Classes\Weapons\Bianbian.h" />

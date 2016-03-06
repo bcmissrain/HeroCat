@@ -2,8 +2,9 @@
 #include "ui/CocosGUI.h"
 #include "ui/UIWidget.h"
 
-#include "Levels/SpringLevel.h"
+#include "Levels/TestLevel.h"
 #include "Levels/TeachLevel.h"
+#include "Levels/SpringLevel.h"
 
 
 USING_NS_CC;
@@ -25,7 +26,8 @@ bool HelloWorld::init()
     {
         return false;
     }
-	_currentLevel = TeachLevel::create();//SpringLevel::create();
+	_currentLevel = TeachLevel::create();
+		//SpringLevel::create();
 	this->addChild(_currentLevel);
 
     return true;
@@ -51,7 +53,7 @@ bool HelloWorldB::init()
 	this->runAction(Sequence::create(
 		DelayTime::create(0.5),
 		CallFunc::create([](){
-		Director::getInstance()->replaceScene(HelloWorld::createScene());
+		Director::getInstance()->replaceScene(HelloWorld2::createScene());
 	}),
 		NULL));
 	return true;
@@ -75,7 +77,7 @@ bool HelloWorld2::init()
 		return false;
 	}
 	//Director::getInstance()->replaceScene(HelloWorld::createScene());
-	//_currentLevel = SpringLevel::create();
-	//this->addChild(_currentLevel);
+	_currentLevel = SpringLevel::create();
+	this->addChild(_currentLevel);
 	return true;
 }

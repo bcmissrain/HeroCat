@@ -48,6 +48,7 @@ public:
 	EnemyState _CurrentState = EnemyState::Stand;
 	Direction _Direction = Direction::Right;
 	MoveState _MoveState = MoveState::None;
+	EnemyType _EnemyType = EnemyType::Small;
 	float _BaseScale = 1.0f;
 	float _Scale = 1.0f;
 	float _BaseRunSpeed;
