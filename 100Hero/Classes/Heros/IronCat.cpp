@@ -78,7 +78,7 @@ void IronCat::_BeginRun()
 void IronCat::_BeginJumpUp()
 {
 	_SpriteTimeline->gotoFrameAndPlay(30, 40, false);
-	this->_JumpSpeed = this->_BaseJumpSpeed;
+	this->_JumpSpeed = this->_BaseJumpSpeed + _SupportSpeed;
 }
 
 void IronCat::_BeginJumpUp2()
@@ -106,6 +106,15 @@ void IronCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseEl
 	if (!this->_IsValid)
 	{
 		return;
+	}
+
+	if (gameElement)
+	{
+		auto ele = (BaseFloor*)gameElement;
+		if (ele)
+		{
+			this->_SupportSpeed = ele->_SupportJumpSpeed;
+		}
 	}
 
 	switch (opType)

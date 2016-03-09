@@ -81,7 +81,7 @@ void TangShengCat::_BeginRun()
 void TangShengCat::_BeginJumpUp()
 {
 	_SpriteTimeline->gotoFrameAndPlay(30, 40, false);
-	this->_JumpSpeed = this->_BaseJumpSpeed;
+	this->_JumpSpeed = this->_BaseJumpSpeed + _SupportSpeed;
 }
 
 void TangShengCat::_BeginJumpUp2()
@@ -109,6 +109,15 @@ void TangShengCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, B
 	if (!this->_IsValid)
 	{
 		return;
+	}
+	
+	if (gameElement)
+	{
+		auto ele = (BaseFloor*)gameElement;
+		if (ele)
+		{
+			this->_SupportSpeed = ele->_SupportJumpSpeed;
+		}
 	}
 
 	switch (opType)

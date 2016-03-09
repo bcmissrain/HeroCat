@@ -627,6 +627,7 @@ void BaseHero::changeStateTo(ActionState state)
 void BaseHero::afterUpdate()
 {
 	this->_CollideState = CollideState::NoneSupport;
+	this->_SupportSpeed = 0;
 	BaseElement::afterUpdate();
 	CCLOG("Hero Last Pos %f,%f", _LastRect.getMidX(), _LastRect.getMidY());
 }

@@ -13,7 +13,6 @@ bool CaptainCat::init()
 	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.25f;
 	this->_BaseRunSpeed = 360;
-	//this->_BaseAcceleration = 6;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 210;
 	this->_CanDoubleJump = true;
@@ -78,7 +77,7 @@ void CaptainCat::_BeginRun()
 void CaptainCat::_BeginJumpUp()
 {
 	_SpriteTimeline->gotoFrameAndPlay(30, 40, false);
-	this->_JumpSpeed = this->_BaseJumpSpeed;
+	this->_JumpSpeed = this->_BaseJumpSpeed + this->_SupportSpeed;
 }
 
 void CaptainCat::_BeginJumpUp2()
@@ -106,6 +105,15 @@ void CaptainCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, Bas
 	if (!this->_IsValid)
 	{
 		return;
+	}
+
+	if (gameElement)
+	{
+		auto ele = (BaseFloor*)gameElement;
+		if (ele)
+		{
+			this->_SupportSpeed = ele->_SupportJumpSpeed;
+		}
 	}
 
 	switch (opType)

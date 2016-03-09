@@ -30,6 +30,7 @@ public:
 	inline FloorType getFloorType();
 	virtual cocos2d::Rect getSmallCollideRect(BaseElement* gameElement);
 
+	int _SupportJumpSpeed = 0;
 protected:
 	FloorType _FloorType = FloorType::Normal;
 	cocos2d::Node* _Sprite = nullptr;

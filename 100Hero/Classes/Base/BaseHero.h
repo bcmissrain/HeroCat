@@ -159,6 +159,7 @@ public:
 	float _BaseJumpSpeed = 0;
 	float _BaseJumpSpeed2 = 0;
 	float _JumpSpeed = 0;
+	float _SupportSpeed = 0;
 	float _JumpSpeed2 = 0;
 	float _RunSpeed;
 	float _JumpMoveSpeed;

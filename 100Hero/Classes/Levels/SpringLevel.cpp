@@ -618,6 +618,7 @@ void SpringLevel::initFloors()
 	Node* sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(127, 100);
+	floor0->_SupportJumpSpeed = 500;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -626,6 +627,7 @@ void SpringLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 127, 100);
+	floor0->_SupportJumpSpeed = 500;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -658,6 +660,7 @@ void SpringLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(127, 500);
+	floor0->_SupportJumpSpeed = 500;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -666,6 +669,7 @@ void SpringLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 127, 500);
+	floor0->_SupportJumpSpeed = 500;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 

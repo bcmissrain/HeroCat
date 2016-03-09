@@ -78,7 +78,7 @@ void HuluCat::_BeginRun()
 void HuluCat::_BeginJumpUp()
 {
 	_SpriteTimeline->gotoFrameAndPlay(30, 40, false);
-	this->_JumpSpeed = this->_BaseJumpSpeed;
+	this->_JumpSpeed = this->_BaseJumpSpeed + _SupportSpeed;
 }
 
 void HuluCat::_BeginJumpUp2()
@@ -106,6 +106,15 @@ void HuluCat::onFloorCollide(cocos2d::Point point, CollideOperate opType,BaseEle
 	if (!this->_IsValid)
 	{
 		return;
+	}
+
+	if (gameElement)
+	{
+		auto ele = (BaseFloor*)gameElement;
+		if (ele)
+		{
+			this->_SupportSpeed = ele->_SupportJumpSpeed;
+		}
 	}
 
 	switch (opType)
