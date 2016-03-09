@@ -6,8 +6,8 @@
 class BaseElement : public cocos2d::Node
 {
 public:
-	BaseElement(){};
-	~BaseElement(){};
+	BaseElement();
+	~BaseElement(){}
 
 	virtual bool init();
 	virtual bool initElement();
@@ -37,6 +37,8 @@ public:
 	virtual float getMaxJumpSpeed() = 0;
 	cocos2d::Rect getDetectingBox();
 public:
+	static int elementCodeCounter;
+	int _elementCode = -1;
 	bool _IsValid = true;
 	bool _CanClean = false;
 	cocos2d::Rect _LastRect = cocos2d::Rect(-10000,10000,10,10);

@@ -32,7 +32,7 @@ bool Biscuit::initElement()
 	breathAction->setTag(ACTION_TAG_BREATH);
 	_Sprite->runAction(breathAction);
 	
-	auto jumpDownAction = Sequence::create(DelayTime::create(0.5f), EaseIn::create(MoveBy::create(0.6, Vec2(0, -840)), 2.0), NULL);
+	auto jumpDownAction = Sequence::create(DelayTime::create(0.5f), EaseIn::create(MoveBy::create(0.6f, Vec2(0, -840)), 2.0f), NULL);
 	jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 	this->runAction(jumpDownAction);
 	

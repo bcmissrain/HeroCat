@@ -539,7 +539,7 @@ void TestLevel::AddBianbianByPos(cocos2d::Vec2 pos)
 		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
 		_elementLayer->addChild(weapon, -1);
 		_weapons.pushBack(weapon);
-		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2, Vec2(0, 128)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
+		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2f, Vec2(0, 128)), 2.0f), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0f), NULL);
 		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 		weapon->runAction(jumpDownAction);
 	}

@@ -40,3 +40,16 @@ cocos2d::Rect BaseWeapon::getAttackBox()
 {
 	return _AttackArea;
 }
+
+void BaseWeapon::notifyTurn()
+{
+	this->_currentCollideId = -1;
+}
+
+void BaseWeapon::hurtEnemy(BaseEnemy* enemy)
+{
+	if (_CanHurt)
+	{
+		enemy->_Hurt(_HurtValue, _EnemyDieType, _CanTurnDirection);
+	}
+}

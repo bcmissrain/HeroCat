@@ -146,13 +146,13 @@ public:
 	cocostudio::timeline::SkeletonNode*  _Sprite = nullptr;
 	cocostudio::timeline::ActionTimeline* _SpriteTimeline = nullptr;
 	BaseStatus*	 _CurrentState = nullptr;
-	CollideState _CollideState;
-	MoveState    _MoveState;
-	MoveState    _MoveStateCache;
-	Direction    _Direction;
-	AttackState  _AttackState;
-	float _BaseScale;
-	float _BaseRunSpeed;
+	CollideState _CollideState = CollideState::NoneSupport;
+	MoveState    _MoveState = MoveState::None;
+	MoveState    _MoveStateCache = MoveState::None;
+	Direction    _Direction = Direction::Right;
+	AttackState  _AttackState = AttackState::NotAttack;
+	float _BaseScale = 0;
+	float _BaseRunSpeed = 0;
 	float _BaseAcceleration = 1024;
 	float _BaseJumpAcceleration = 0;
 	float _BaseJumpAcceleration2 = 0;
@@ -161,18 +161,17 @@ public:
 	float _JumpSpeed = 0;
 	float _SupportSpeed = 0;
 	float _JumpSpeed2 = 0;
-	float _RunSpeed;
-	float _JumpMoveSpeed;
-	float _JumpHeight;
-	float _JumpTime;
-	float _JumpHeight2;
-	float _JumpTime2;
+	float _RunSpeed = 0;
+	float _JumpMoveSpeed = 0;
+	float _JumpHeight = 0;
+	float _JumpTime = 0;
+	float _JumpHeight2 = 0;
+	float _JumpTime2 = 0;
 
 	float _AttackColdTime = 0;
 	int   _AttackMaxTimes = -1;
 	int	  _AttackCount = 0;
 	bool _CanDoubleJump = false;
 	bool _IsDoubleJump = false;
-
 };
 #endif

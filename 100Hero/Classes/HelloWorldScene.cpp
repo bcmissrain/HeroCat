@@ -96,7 +96,7 @@ bool BetweenScene::init()
 		return false;
 	}
 	this->runAction(Sequence::create(
-		DelayTime::create(0.1),
+		DelayTime::create(0.1f),
 		CallFunc::create([=](){
 		if (SceneCode == 0)
 		{

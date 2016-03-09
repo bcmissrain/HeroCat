@@ -93,7 +93,7 @@ void Enemy360::onWeaponCollide(cocos2d::Point point, CollideOperate opType, Base
 {
 	auto weaponElement = (BaseWeapon*)gameElement;
 	weaponElement->deal(this);
-	this->_Hurt(weaponElement->_HurtValue,weaponElement->_EnemyDieType,weaponElement->_CanTurnDirection);
+	weaponElement->hurtEnemy(this);
 }
 
 bool Enemy360Hurt::init()

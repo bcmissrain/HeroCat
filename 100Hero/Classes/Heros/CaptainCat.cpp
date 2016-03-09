@@ -8,6 +8,7 @@ HeroType CaptainCat::getHeroType()
 {
 	return HeroType::CaptainCat;
 }
+
 bool CaptainCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);

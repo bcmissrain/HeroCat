@@ -39,6 +39,7 @@ protected:
 private:
 	void throwShield();
 	void throwBianbian();
+	void throwCannon();
 	void createLection();
 private:
 	cocos2d::Label* _cakeLabel;

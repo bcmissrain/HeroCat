@@ -1,5 +1,13 @@
 #include "BaseElement.h"
 
+int BaseElement::elementCodeCounter = 0;
+
+BaseElement::BaseElement()
+{
+	elementCodeCounter++;
+	this->_elementCode = elementCodeCounter;
+}
+
 bool BaseElement::init()
 {
 	initElement();

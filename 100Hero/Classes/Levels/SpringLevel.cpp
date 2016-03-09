@@ -15,6 +15,7 @@
 #include "../Weapons/Shield.h"
 #include "../Weapons/Biscuit.h"
 #include "../Weapons/Lection.h"
+#include "../Weapons/Cannon.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 1136 /*1024*/
@@ -764,7 +765,7 @@ void SpringLevel::initEnemys()
 
 void SpringLevel::initHero()
 {
-	_currentHero = HeroController::getHeroByType(HeroType::CaptainCat);
+	_currentHero = HeroController::getHeroByType(HeroType::IronCat);
 	this->addChild(_currentHero);
 	this->addChild(HeroController::_makeUp);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 500);
@@ -803,6 +804,10 @@ void SpringLevel::initWeapons()
 		else if (wType == (int)WeaponEventType::CreateLection)
 		{
 			createLection();
+		}
+		else if (wType == (int)WeaponEventType::ThrowCannon)
+		{
+			throwCannon();
 		}
 	});
 
@@ -962,6 +967,7 @@ void SpringLevel::throwShield()
 
 	auto attackAction = Sequence::create(
 		EaseOut::create(MoveBy::create(0.8f, shieldDirection), 1.5f),
+		CallFunc::create([=](){weapon->notifyTurn();}),
 		EaseIn::create(MoveBy::create(0.8f, -shieldDirection), 1.5f),
 		CallFunc::create([=](){weapon->deal(_currentHero); }),
 		NULL);
@@ -987,10 +993,36 @@ void SpringLevel::throwBianbian()
 		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
 		_elementLayer->addChild(weapon, -1);
 		_weapons.pushBack(weapon);
-		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2, Vec2(0, 128)), 2.0), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0), NULL);
+		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2f, Vec2(0, 128)), 2.0f), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0f), NULL);
 		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 		weapon->runAction(jumpDownAction);
 	}
+}
+
+
+void SpringLevel::throwCannon()
+{
+	auto weapon = Cannon::create();
+	weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
+	_elementLayer->addChild(weapon, -1);
+	_weapons.pushBack(weapon);
+	Vec2 cannonDirection;
+	if (_currentHero->_Direction == Direction::Left)
+	{
+		cannonDirection = Vec2(-400, 0);
+	}
+	else if (_currentHero->_Direction == Direction::Right)
+	{
+		cannonDirection = Vec2(400, 0);
+	}
+
+	auto attackAction = Sequence::create(
+		EaseOut::create(MoveBy::create(0.8f, cannonDirection), 1.5f),
+		CallFunc::create([=](){weapon->notifyTurn(); }),
+		EaseIn::create(MoveBy::create(0.8f, -cannonDirection), 1.5f),
+		CallFunc::create([=](){weapon->deal(_currentHero); }),
+		NULL);
+	weapon->runAction(attackAction);
 }
 
 void SpringLevel::createLection()

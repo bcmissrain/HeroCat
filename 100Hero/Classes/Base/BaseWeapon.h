@@ -4,6 +4,7 @@
 #include "BaseDefine.h"
 #include "BaseHero.h"
 #include "BaseFloor.h"
+#include "BaseEnemy.h"
 #include "Base/BaseElement.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
@@ -26,9 +27,12 @@ public:
 	virtual DropState getJumpState() override{ return DropState::Down; }
 	virtual float getMaxJumpSpeed() override{ return 0; }
 
+	void hurtEnemy(BaseEnemy* enemy);
+	void notifyTurn();
 public:
 	float _BaseScale = 1;
 	float _InValidTime = -1;
+	int _currentCollideId = -1;
 	WeaponType _WeaponType = WeaponType::Hand;
 	WeaponMoveWays _WeaponMoveWays = WeaponMoveWays::Horizontal;
 	WeaponDirection _Direction = WeaponDirection::Right;
@@ -38,6 +42,7 @@ public:
 	EnemyDieType _EnemyDieType = EnemyDieType::Transparent;
 	float _HurtValue = 1;
 	bool _CanTurnDirection = false;
+	bool _CanHurt = true;
 };
 
 #endif // !__BASE_WEAPON_H__

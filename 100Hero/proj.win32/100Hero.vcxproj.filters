@@ -132,6 +132,9 @@
     <ClCompile Include="..\Classes\Utils\UIRunningNode.cpp">
       <Filter>src\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\Cannon.cpp">
+      <Filter>src\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -235,6 +238,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Utils\UIRunningNode.h">
       <Filter>src\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\Cannon.h">
+      <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,7 @@ private:
 	void playerInDoor();
 	void throwShield();
 	void throwBianbian();
+	void throwCannon();
 	void createLection();
 
 	cocos2d::Label* _cakeLabel;

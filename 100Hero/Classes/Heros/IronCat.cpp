@@ -209,7 +209,7 @@ void IronCat::_BeginAttack()
 				_SpriteTimeline->setLastFrameCallFunc(nullptr);
 			}
 		});
-		_eventDispatcher->dispatchCustomEvent(EVENT_WEAPON_CREATE, (void*)(WeaponEventType::ThrowBianbian));
+		_eventDispatcher->dispatchCustomEvent(EVENT_WEAPON_CREATE, (void*)(WeaponEventType::ThrowCannon));
 
 		_AttackCount++;
 		this->scheduleOnce([=](float delta){

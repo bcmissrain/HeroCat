@@ -42,8 +42,7 @@ void Shield::deal(BaseElement* baseElement)
 		CallFunc::create([=](){
 		_CanClean = true;
 	}), NULL);
-	//CCParticleSystem* particleSystem = CCParticleExplosion::create();
-	//particleSystem->setTexture(TextureCache::getInstance()->addImage("Images/shield.png"));
+
 	CCParticleSystem* particleSystem = CCParticleFire::create();
 	particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/shield.png"));
 	particleSystem->setPosition(Vec2::ZERO);
