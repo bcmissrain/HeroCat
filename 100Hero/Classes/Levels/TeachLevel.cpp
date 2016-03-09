@@ -42,8 +42,8 @@ bool TeachLevel::init()
 	HeroController::initHeros();
 	BaseLevel::initRandom();
 
-	_minX = -(GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width) / 2;
-	_maxX = GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width - _minX;
+	_minX = 0; //-(GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width) / 2;
+	_maxX = 0; //GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width - _minX;
 	_minY = -(GAME_SCREEN_SIZE_HEIGHT - getVisibleSize().height);
 	_maxY = 0;
 
@@ -445,6 +445,8 @@ void TeachLevel::updateBorn(float delta)
 {
 	if (_currentHero->getBoundingBox().getMaxY() < 0 && !_currentHero->_IsValid)
 	{
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("changeScene",(void*)0);
+
 		_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
 		_currentHero->initElement();
 
@@ -674,7 +676,7 @@ void TeachLevel::onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	if (keyCode == EventKeyboard::KeyCode::KEY_V)
 	{
-		Director::getInstance()->replaceScene(HelloWorldB::createScene());
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("changeScene", (void*)1);
 	}
 #endif
 }
@@ -759,7 +761,7 @@ void TeachLevel::playerInDoor()
 	tempTip->stopAllActions();
 	tempTip->runAction(FadeTo::create(0.5, 64));
 	//TODO
-	Director::getInstance()->replaceScene(HelloWorldB::createScene());
+	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("changeScene", (void*)1);
 	//Director::getInstance()->end();
 }
 

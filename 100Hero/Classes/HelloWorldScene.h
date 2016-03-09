@@ -8,38 +8,47 @@
 #include "Floors/FloorNormal.h"
 #include "Levels/BaseLevel.h"
 
-class HelloWorld : public cocos2d::Layer
+class TeachScene : public cocos2d::Layer
 {
 public:
     static cocos2d::Scene* createScene();
 	static cocos2d::RenderTexture* getClipSprite(cocos2d::Sprite* sprite);
     virtual bool init();
     
-    CREATE_FUNC(HelloWorld);
+    CREATE_FUNC(TeachScene);
 private:
 	BaseLevel* _currentLevel;
 };
 
-class HelloWorldB : public cocos2d::Layer
+class SpringScene : public cocos2d::Layer
 {
 public:
 	static cocos2d::Scene* createScene();
 	virtual bool init();
-
-	CREATE_FUNC(HelloWorldB);
-private:
-};
-
-
-class HelloWorld2 : public cocos2d::Layer
-{
-public:
-	static cocos2d::Scene* createScene();
-	virtual bool init();
-
-	CREATE_FUNC(HelloWorld2);
+	CREATE_FUNC(SpringScene);
 private:
 	BaseLevel* _currentLevel;
+};
+
+class WinterScene : public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+	CREATE_FUNC(WinterScene);
+private:
+	BaseLevel* _currentLevel;
+};
+
+class BetweenScene : public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+	CREATE_FUNC(BetweenScene);
+
+public:
+	static int SceneCode;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

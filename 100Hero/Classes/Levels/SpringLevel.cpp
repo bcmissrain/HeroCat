@@ -30,8 +30,8 @@ bool SpringLevel::init()
 	HeroController::initHeros();
 	BaseLevel::initRandom();
 
-	_minX = -(GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width) / 2;
-	_maxX = GAME_SCREEN_SIZE_WIDTH - getVisibleSize().width - _minX;
+	_minX = 0;
+	_maxX = 0;
 	_minY = -(GAME_SCREEN_SIZE_HEIGHT - getVisibleSize().height);
 	_maxY = 0;
 
@@ -123,6 +123,8 @@ void SpringLevel::updateBorn(float delta)
 				(*wea)->deal(_currentHero);
 			}
 		}
+
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("changeScene",(void*)4);
 	}
 }
 
@@ -532,6 +534,10 @@ void SpringLevel::bornEnemys()
 
 void SpringLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
 {
+	//temp limit
+	if (_enemys.size() >= 6)
+		return;
+
 	bool ifTurnLeft = baseEnemy->_Direction == Direction::Left;
 	bool ifBig = baseEnemy->_EnemyType == EnemyType::Big;
 	auto bornAction = CallFunc::create([=](){
@@ -597,6 +603,7 @@ void SpringLevel::initBornPoints()
 void SpringLevel::initBackground()
 {
 	_elementLayer = Layer::create();
+	//_elementLayer->setPositionX(_minX);
 	this->addChild(_elementLayer);
 	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("springback.png"));
 	backSprite->setScale(GAME_SCREEN_SIZE_WIDTH / backSprite->getContentSize().width);
@@ -756,7 +763,7 @@ void SpringLevel::initHero()
 	_currentHero = HeroController::getHeroByType(HeroType::CaptainCat);
 	this->addChild(_currentHero);
 	this->addChild(HeroController::_makeUp);
-	_currentHero->setPosition(240, 500);
+	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 500);
 
 	auto makeUpAction = EventListenerCustom::create(EVENT_MAKE_UP, [=](EventCustom* arg)
 	{

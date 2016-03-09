@@ -13,12 +13,12 @@ public:
 	virtual bool init() = 0;
 	virtual void update(float delta) override;
 
-	static BaseHero* _currentHero;
-	static cocos2d::Vector<BaseFloor*> _floors;
-	static cocos2d::Vector<BaseWeapon*> _weapons;
-	static cocos2d::Vector<BaseEnemy*> _enemys;
-	static std::vector<cocos2d::Vec2> _cakeBornPoints;
-	static std::vector<cocos2d::Vec2> _enemysBornPoints;
+	BaseHero* _currentHero;
+	cocos2d::Vector<BaseFloor*> _floors;
+	cocos2d::Vector<BaseWeapon*> _weapons;
+	cocos2d::Vector<BaseEnemy*> _enemys;
+	std::vector<cocos2d::Vec2> _cakeBornPoints;
+	std::vector<cocos2d::Vec2> _enemysBornPoints;
 
 	static void initRandom();
 	static int getRandomPercent(int begin,int end);

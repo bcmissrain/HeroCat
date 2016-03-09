@@ -126,6 +126,12 @@
     <ClCompile Include="..\Classes\Levels\SpringLevel.cpp">
       <Filter>src\Levels</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Levels\WinterLevel.cpp">
+      <Filter>src\Levels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Utils\UIRunningNode.cpp">
+      <Filter>src\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -223,6 +229,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Levels\SpringLevel.h">
       <Filter>src\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Levels\WinterLevel.h">
+      <Filter>src\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Utils\UIRunningNode.h">
+      <Filter>src\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
