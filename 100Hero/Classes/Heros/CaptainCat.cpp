@@ -62,6 +62,7 @@ bool CaptainCat::initElement()
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
+	_BeginBorn();
 	return true;
 }
 
@@ -172,6 +173,10 @@ void CaptainCat::onWallCollide(cocos2d::Point point, CollideOperate opType, Base
 void CaptainCat::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
 	if (!this->_IsValid)
+	{
+		return;
+	}
+	if (this->_IsBorning)
 	{
 		return;
 	}

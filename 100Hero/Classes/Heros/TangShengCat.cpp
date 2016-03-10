@@ -54,7 +54,6 @@ bool TangShengCat::initElement()
 	_BaseJumpAcceleration2 = _JumpHeight2 * 2 * revTime2 * revTime2;
 	_BaseJumpSpeed2 = _JumpTime2 * _BaseJumpAcceleration2;
 
-
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackCount = 0;
@@ -64,6 +63,7 @@ bool TangShengCat::initElement()
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
+	_BeginBorn();
 	return true;
 }
 
@@ -174,6 +174,10 @@ void TangShengCat::onWallCollide(cocos2d::Point point, CollideOperate opType, Ba
 void TangShengCat::onEnemyCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)
 {
 	if (!this->_IsValid)
+	{
+		return;
+	}
+	if (this->_IsBorning)
 	{
 		return;
 	}

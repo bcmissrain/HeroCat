@@ -327,7 +327,7 @@ void TeachLevel::initControl()
 
 	auto jumpButton = ui::Button::create("Level0/button_jump.png", "", "");
 	this->addChild(jumpButton);
-	jumpButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 110, 100));
+	jumpButton->setPosition(Vec2(getVisibleSize().width - 110, 100));
 	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
 		if (!ifTouchJump)
 		{
@@ -356,7 +356,7 @@ void TeachLevel::initControl()
 
 	auto attackButton = ui::Button::create("Level0/button_attack.png", "", "");
 	this->addChild(attackButton);
-	attackButton->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 270, 100));
+	attackButton->setPosition(Vec2(getVisibleSize().width - 270, 100));
 	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
 		if (!ifTouchAttack)
 		{

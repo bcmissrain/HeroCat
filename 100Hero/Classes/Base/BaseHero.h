@@ -106,6 +106,7 @@ public:
 	virtual void _BeginJumpDown();
 	virtual void _BeginJumpFinish();
 	virtual void _BeginAttack();
+	virtual void _BeginBorn();
 
 	virtual void _Stand(float deltaTime);
 	virtual void _Run(float deltaTime);
@@ -173,5 +174,7 @@ public:
 	int	  _AttackCount = 0;
 	bool _CanDoubleJump = false;
 	bool _IsDoubleJump = false;
+
+	bool _IsBorning = true;
 };
 #endif

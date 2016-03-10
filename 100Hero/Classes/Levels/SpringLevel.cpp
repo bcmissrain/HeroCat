@@ -619,7 +619,7 @@ void SpringLevel::initFloors()
 	Node* sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(127, 100);
-	floor0->_SupportJumpSpeed = 500;
+	floor0->_SupportJumpSpeed = 300;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -628,7 +628,7 @@ void SpringLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 127, 100);
-	floor0->_SupportJumpSpeed = 500;
+	floor0->_SupportJumpSpeed = 300;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -661,7 +661,7 @@ void SpringLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(127, 500);
-	floor0->_SupportJumpSpeed = 500;
+	floor0->_SupportJumpSpeed = 300;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -670,7 +670,7 @@ void SpringLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("spring_floor1.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 127, 500);
-	floor0->_SupportJumpSpeed = 500;
+	floor0->_SupportJumpSpeed = 300;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -773,7 +773,7 @@ void SpringLevel::initHero()
 	auto makeUpAction = EventListenerCustom::create(EVENT_MAKE_UP, [=](EventCustom* arg)
 	{
 		if (_currentHero->getParent() == nullptr){
-			CCLOG("cocos ok  hero %d", _currentHero->getHeroType());
+			CCLOG("cocos ok  hero %d", (int)_currentHero->getHeroType());
 			this->addChild(_currentHero);
 			this->runAction(CallFunc::create([=](){
 				//recreate biscuits
@@ -860,7 +860,6 @@ void SpringLevel::initControl()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 #else
 	auto leftButton = ui::Button::create("buttonLeft.png", "", "");
-	leftButton->setScale(0.45f);
 	this->addChild(leftButton);
 	leftButton->setPosition(Vec2(110, 100));
 	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
@@ -882,7 +881,6 @@ void SpringLevel::initControl()
 	});
 
 	auto rightButton = ui::Button::create("buttonRight.png", "", "");
-	rightButton->setScale(0.45f);
 	this->addChild(rightButton);
 	rightButton->setPosition(Vec2(325, 100));
 	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
@@ -904,7 +902,6 @@ void SpringLevel::initControl()
 	});
 
 	auto jumpButton = ui::Button::create("buttonJump.png", "", "");
-	jumpButton->setScale(0.45f);
 	this->addChild(jumpButton);
 	jumpButton->setPosition(Vec2(getVisibleSize().width - 110, 100));
 	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
@@ -926,7 +923,6 @@ void SpringLevel::initControl()
 	});
 
 	auto attackButton = ui::Button::create("buttonAttack.png", "", "");
-	attackButton->setScale(0.45f);
 	this->addChild(attackButton);
 	attackButton->setPosition(Vec2(getVisibleSize().width - 270, 100));
 	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){

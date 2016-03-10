@@ -591,8 +591,8 @@ void WinterLevel::bornHurtEnemys(BaseEnemy* baseEnemy)
 
 void WinterLevel::initBornPoints()
 {
-	_cakeBornPoints.push_back(Vec2(225 + _minX, 500));
-	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 225 + _maxX, 500));
+	_cakeBornPoints.push_back(Vec2(225 + _minX, 600));
+	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH - 225 + _maxX, 600));
 	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH / 2 - 200, 500));
 	_cakeBornPoints.push_back(Vec2(GAME_SCREEN_SIZE_WIDTH / 2 + 200, 500));
 
@@ -640,7 +640,7 @@ void WinterLevel::initFloors()
 	BaseFloor* floor0 = FloorNormal::create();
 	Node* sp0 = Sprite::createWithSpriteFrameName("winter_floor_400.png");
 	floor0->initBySprite(sp0);
-	floor0->setPosition(325 + _minX, 400);
+	floor0->setPosition(325 + _minX, 500);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -648,7 +648,7 @@ void WinterLevel::initFloors()
 	floor0 = FloorNormal::create();
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_400.png");
 	floor0->initBySprite(sp0);
-	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 325 + _maxX, 400);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 325 + _maxX, 500);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -656,7 +656,7 @@ void WinterLevel::initFloors()
 	floor0 = FloorNormal::create();
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_400.png");
 	floor0->initBySprite(sp0);
-	floor0->setPosition(710 + _minX, 590);
+	floor0->setPosition(710 + _minX, 790);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -664,7 +664,7 @@ void WinterLevel::initFloors()
 	floor0 = FloorNormal::create();
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_400.png");
 	floor0->initBySprite(sp0);
-	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 710 +_maxX, 590);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 710 +_maxX, 790);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -681,6 +681,7 @@ void WinterLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_260.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(770 + _minX, 270);
+	floor0->_SupportJumpSpeed = 300;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -689,6 +690,7 @@ void WinterLevel::initFloors()
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_260.png");
 	floor0->initBySprite(sp0);
 	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 770 + _maxX, 270);
+	floor0->_SupportJumpSpeed = 300;
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -716,7 +718,7 @@ void WinterLevel::initFloors()
 	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
 #endif
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(100 + _minX, 450));
+	_wall0->setPosition(Vec2(100 + _minX, 560));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 
@@ -728,7 +730,7 @@ void WinterLevel::initFloors()
 	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
 #endif
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 100 + _maxX, 450));
+	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 100 + _maxX, 560));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 
@@ -764,7 +766,7 @@ void WinterLevel::initFloors()
 	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
 #endif
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(640 + _minX, 230));
+	_wall0->setPosition(Vec2(660 + _minX, 230));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 
@@ -776,7 +778,7 @@ void WinterLevel::initFloors()
 	sp0 = Sprite::createWithTexture(TextureCache::getInstance()->addImage("blank.png"));
 #endif
 	_wall0->initBySprite(sp0);
-	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 640 + _maxX, 230));
+	_wall0->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 660 + _maxX, 230));
 	_elementLayer->addChild(_wall0, -1);
 	_floors.pushBack(_wall0);
 }
@@ -888,7 +890,6 @@ void WinterLevel::initControl()
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 #else
 	auto leftButton = ui::Button::create("buttonLeft.png", "", "");
-	leftButton->setScale(0.45f);
 	this->addChild(leftButton);
 	leftButton->setPosition(Vec2(110, 100));
 	leftButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
@@ -910,7 +911,6 @@ void WinterLevel::initControl()
 	});
 
 	auto rightButton = ui::Button::create("buttonRight.png", "", "");
-	rightButton->setScale(0.45f);
 	this->addChild(rightButton);
 	rightButton->setPosition(Vec2(325, 100));
 	rightButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
@@ -932,7 +932,6 @@ void WinterLevel::initControl()
 	});
 
 	auto jumpButton = ui::Button::create("buttonJump.png", "", "");
-	jumpButton->setScale(0.45f);
 	this->addChild(jumpButton);
 	jumpButton->setPosition(Vec2(getVisibleSize().width - 110, 100));
 	jumpButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){
@@ -954,7 +953,6 @@ void WinterLevel::initControl()
 	});
 
 	auto attackButton = ui::Button::create("buttonAttack.png", "", "");
-	attackButton->setScale(0.45f);
 	this->addChild(attackButton);
 	attackButton->setPosition(Vec2(getVisibleSize().width - 270, 100));
 	attackButton->addTouchEventListener([=](Ref* gameObj, cocos2d::ui::Widget::TouchEventType type){

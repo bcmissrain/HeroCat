@@ -447,6 +447,21 @@ void BaseHero::_BeginJumpFinish(){}
 
 void BaseHero::_BeginAttack(){}
 
+void BaseHero::_BeginBorn()
+{
+	if (this->_Sprite != nullptr)
+	{
+		this->_IsBorning = true;
+		auto bornAction = cocos2d::Sequence::create(
+			cocos2d::Blink::create(1,5),
+			cocos2d::CallFunc::create([=](){
+			this->_IsBorning = false;
+		}),
+			NULL);
+		this->_Sprite->runAction(bornAction);
+	}
+}
+
 void BaseHero::_Stand(float deltaTime){ _Run(deltaTime); }
 
 void BaseHero::_Run(float deltaTime)
