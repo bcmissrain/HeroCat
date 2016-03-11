@@ -22,8 +22,10 @@ void HeroController::initHeros()
 	_heros.insert((int)hero->getHeroType(), hero);
 	hero = IronCat::create();
 	_heros.insert((int)hero->getHeroType(), hero);
+	hero = TransparentCat::create();
+	_heros.insert((int)hero->getHeroType(), hero);
 	_ifInit = true;
-
+	
 	_makeUp = Node::create();
 	_makeUp->retain();
 	_inner = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("MakeUp.csb"));
@@ -80,6 +82,9 @@ BaseHero* HeroController::getHeroByType(HeroType heroType)
 		break;
 	case HeroType::IronCat:
 		hero = IronCat::create();
+		break;
+	case HeroType::TransparentCat:
+		hero = TransparentCat::create();
 		break;
 	default:
 		break;

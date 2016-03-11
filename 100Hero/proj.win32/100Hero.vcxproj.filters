@@ -135,6 +135,9 @@
     <ClCompile Include="..\Classes\Weapons\Cannon.cpp">
       <Filter>src\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Heros\TransparentCat.cpp">
+      <Filter>src\Heros</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -241,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Weapons\Cannon.h">
       <Filter>src\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Heros\TransparentCat.h">
+      <Filter>src\Heros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

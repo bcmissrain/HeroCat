@@ -7,6 +7,7 @@
 #include "CaptainCat.h"
 #include "TangShengCat.h"
 #include "IronCat.h"
+#include "TransparentCat.h"
 
 class HeroController
 {

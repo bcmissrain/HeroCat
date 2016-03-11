@@ -228,7 +228,7 @@ void TeachLevel::initEnemys()
 
 void TeachLevel::initHero()
 {
-	_currentHero = HeroController::getHeroByType(HeroType::IronCat);
+	_currentHero = HeroController::getHeroByType(HeroType::TransparentCat);
 	this->addChild(_currentHero);
 	this->addChild(HeroController::_makeUp);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
