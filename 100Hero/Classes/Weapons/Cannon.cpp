@@ -4,7 +4,7 @@ USING_NS_CC;
 
 bool Cannon::init()
 {
-	this->_HurtValue = 1.0f;
+	this->_HurtValue = 0.5f;
 	this->_BaseScale = 0.5f;
 	this->_CanTurnDirection = false;
 	this->setTag(ELEMENT_WEAPON_TAG);

@@ -192,26 +192,7 @@ void TeachLevel::initWeapons()
 			
 			_currentHero->retain();
 			this->removeChild(_currentHero, true);
-			if (_currentHero->getHeroType() == HeroType::CheetahCat)
-			{
-				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CaptainCat), _currentHero);
-			}
-			else if (_currentHero->getHeroType() == HeroType::CaptainCat)
-			{
-				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::TangShengCat), _currentHero);
-			}
-			else if (_currentHero->getHeroType() == HeroType::TangShengCat)
-			{
-				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::HuluCat), _currentHero);
-			}
-			else if (_currentHero->getHeroType() == HeroType::HuluCat)
-			{
-				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::IronCat), _currentHero);
-			}
-			else if (_currentHero->getHeroType() == HeroType::IronCat)
-			{
-				_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CheetahCat), _currentHero);
-			}
+			_currentHero = HeroController::getRandNewHero(_currentHero);
 			HeroController::makeUp();
 		}
 	});
@@ -843,17 +824,15 @@ void TeachLevel::throwCannon()
 	Vec2 cannonDirection;
 	if (_currentHero->_Direction == Direction::Left)
 	{
-		cannonDirection = Vec2(-400, 0);
+		cannonDirection = Vec2(-1600, 0);
 	}
 	else if (_currentHero->_Direction == Direction::Right)
 	{
-		cannonDirection = Vec2(400, 0);
+		cannonDirection = Vec2(1600, 0);
 	}
 
 	auto attackAction = Sequence::create(
-		EaseOut::create(MoveBy::create(0.8f, cannonDirection), 1.5f),
-		CallFunc::create([=](){weapon->notifyTurn(); }),
-		EaseIn::create(MoveBy::create(0.8f, -cannonDirection), 1.5f),
+		EaseOut::create(MoveBy::create(2.0f, cannonDirection), 1.5f),
 		CallFunc::create([=](){weapon->deal(_currentHero); }),
 		NULL);
 	weapon->runAction(attackAction);

@@ -850,26 +850,7 @@ void WinterLevel::initWeapons()
 		_currentHero->retain();
 
 		this->removeChild(_currentHero, true);
-		if (_currentHero->getHeroType() == HeroType::CheetahCat)
-		{
-			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CaptainCat), _currentHero);
-		}
-		else if (_currentHero->getHeroType() == HeroType::CaptainCat)
-		{
-			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::TangShengCat), _currentHero);
-		}
-		else if (_currentHero->getHeroType() == HeroType::TangShengCat)
-		{
-			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::HuluCat), _currentHero);
-		}
-		else if (_currentHero->getHeroType() == HeroType::HuluCat)
-		{
-			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::IronCat), _currentHero);
-		}
-		else if (_currentHero->getHeroType() == HeroType::IronCat)
-		{
-			_currentHero = HeroController::initHeroAByB(HeroController::getHeroByType(HeroType::CheetahCat), _currentHero);
-		}
+		_currentHero = HeroController::getRandNewHero(_currentHero);
 		HeroController::makeUp();
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);

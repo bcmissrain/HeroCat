@@ -1,4 +1,5 @@
 #include "HeroController.h"
+#include "../Levels/BaseLevel.h"
 
 USING_NS_CC;
 Map<int,BaseHero*> HeroController::_heros;
@@ -107,6 +108,18 @@ BaseHero* HeroController::initHeroAByB(BaseHero* A, BaseHero* B)
 		return A;
 	}
 	return nullptr;
+}
+
+BaseHero* HeroController::getRandNewHero(BaseHero* oldHero)
+{
+	int oldId = (int)oldHero->getHeroType();
+	int newId = BaseLevel::getRandomPercent(0, _heros.size() - 1);
+	if (newId == oldId)
+	{
+		newId = (newId + 1) % _heros.size();
+	}
+
+	return initHeroAByB(getHeroByType((HeroType)newId),oldHero);
 }
 
 void HeroController::resetPosition(Vec2 pos,Direction dir)

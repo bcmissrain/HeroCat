@@ -16,6 +16,7 @@ public:
 	static void cleanHeros();
 	static BaseHero* getHeroByType(HeroType heroType);
 	static BaseHero* initHeroAByB(BaseHero* A, BaseHero* B);
+	static BaseHero* getRandNewHero(BaseHero* oldHero);
 	static void resetPosition(cocos2d::Vec2 pos,Direction dir);
 	static void makeUp();
 public:

@@ -88,7 +88,7 @@ enum class AttackState
 
 enum class HeroType
 {
-	CheetahCat,
+	CheetahCat = 0,
 	HuluCat,
 	CaptainCat,
 	TangShengCat,

@@ -58,7 +58,7 @@ bool IronCat::initElement()
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackState = AttackState::NotAttack;
-	_AttackColdTime = 0.2f;
+	_AttackColdTime = 0.1f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
