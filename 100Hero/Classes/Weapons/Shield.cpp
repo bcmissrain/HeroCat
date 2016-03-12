@@ -6,7 +6,7 @@ bool Shield::init()
 {
 	this->_HurtValue = 1.0f;
 	this->_BaseScale = 0.5f;
-	this->_CanTurnDirection = true;
+	this->_CanTurnDirection = false;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_SHIELD_NAME);
 	_WeaponType = WeaponType::Shoot;

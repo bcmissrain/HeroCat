@@ -138,6 +138,9 @@
     <ClCompile Include="..\Classes\Heros\TransparentCat.cpp">
       <Filter>src\Heros</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\Love.cpp">
+      <Filter>src\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -247,6 +250,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Heros\TransparentCat.h">
       <Filter>src\Heros</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\Love.h">
+      <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -40,6 +40,7 @@ private:
 	void throwShield();
 	void throwBianbian();
 	void throwCannon();
+	void giveLove();
 	void createLection();
 
 	cocos2d::Label* _cakeLabel;

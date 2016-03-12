@@ -17,6 +17,7 @@
 #define WEAPON_SHIELD_NAME "shield"
 #define WEAPON_LECTION_NAME "lection"
 #define WEAPON_CANNON_NAME "cannon"
+#define WEAPON_LOVE_NAME "love"
 
 #define EVENT_TEACH_DOOR "event_teach_door"
 #define EVENT_WEAPON_CREATE "event_weapon_create"
@@ -112,6 +113,7 @@ enum class WeaponEventType
 	ThrowShield,
 	ThrowBianbian,
 	ThrowCannon,
+	GiveLove,
 	CreateLection
 };
 

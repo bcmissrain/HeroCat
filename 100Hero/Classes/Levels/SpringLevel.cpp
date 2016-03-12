@@ -16,6 +16,7 @@
 #include "../Weapons/Biscuit.h"
 #include "../Weapons/Lection.h"
 #include "../Weapons/Cannon.h"
+#include "../Weapons/Love.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 1136 /*1024*/
@@ -765,7 +766,7 @@ void SpringLevel::initEnemys()
 
 void SpringLevel::initHero()
 {
-	_currentHero = HeroController::getHeroByType(HeroType::IronCat);
+	_currentHero = HeroController::getHeroByType(HeroType::CheetahCat);
 	this->addChild(_currentHero);
 	this->addChild(HeroController::_makeUp);
 	_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 500);
@@ -808,6 +809,10 @@ void SpringLevel::initWeapons()
 		else if (wType == (int)WeaponEventType::ThrowCannon)
 		{
 			throwCannon();
+		}
+		else if (wType == (int)WeaponEventType::GiveLove)
+		{
+			giveLove();
 		}
 	});
 
@@ -976,7 +981,6 @@ void SpringLevel::throwBianbian()
 	}
 }
 
-
 void SpringLevel::throwCannon()
 {
 	auto weapon = Cannon::create();
@@ -997,6 +1001,31 @@ void SpringLevel::throwCannon()
 		EaseOut::create(MoveBy::create(0.8f, cannonDirection), 1.5f),
 		CallFunc::create([=](){weapon->notifyTurn(); }),
 		EaseIn::create(MoveBy::create(0.8f, -cannonDirection), 1.5f),
+		CallFunc::create([=](){weapon->deal(_currentHero); }),
+		NULL);
+	weapon->runAction(attackAction);
+}
+
+void SpringLevel::giveLove()
+{
+	auto weapon = Love::create();
+	weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
+	_elementLayer->addChild(weapon, -1);
+	_weapons.pushBack(weapon);
+	Vec2 loveDirection;
+	if (_currentHero->_Direction == Direction::Left)
+	{
+		loveDirection = Vec2(-200, 0);
+	}
+	else if (_currentHero->_Direction == Direction::Right)
+	{
+		loveDirection = Vec2(200, 0);
+	}
+
+	auto moveUD = Repeat::create(Sequence::create(MoveBy::create(0.5, Vec2(0, 20)), MoveBy::create(0.5, Vec2(0, -20)), NULL), 3);
+	auto moveRight = EaseInOut::create(MoveBy::create(3.0f, loveDirection), 1.5f);
+	auto attackAction = Sequence::create(
+		Spawn::create(moveUD, moveRight, NULL),
 		CallFunc::create([=](){weapon->deal(_currentHero); }),
 		NULL);
 	weapon->runAction(attackAction);

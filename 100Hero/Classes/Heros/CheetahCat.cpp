@@ -56,7 +56,7 @@ bool CheetahCat::initElement()
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackState = AttackState::NotAttack;
-	_AttackColdTime = 0.2f;
+	_AttackColdTime = 0.5f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
@@ -197,8 +197,7 @@ void CheetahCat::_BeginAttack()
 				_SpriteTimeline->setLastFrameCallFunc(nullptr);
 			}
 		});
-		_eventDispatcher->dispatchCustomEvent("Cheetah", this);
-
+		_eventDispatcher->dispatchCustomEvent(EVENT_WEAPON_CREATE, (void*)(WeaponEventType::GiveLove));
 		_AttackCount++;
 		this->scheduleOnce([=](float delta){
 			_AttackState = AttackState::NotAttack;

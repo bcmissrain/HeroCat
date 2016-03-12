@@ -175,6 +175,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Weapons\Biscuit.cpp" />
     <ClCompile Include="..\Classes\Weapons\Cannon.cpp" />
     <ClCompile Include="..\Classes\Weapons\Lection.cpp" />
+    <ClCompile Include="..\Classes\Weapons\Love.cpp" />
     <ClCompile Include="..\Classes\Weapons\Shield.cpp" />
     <ClCompile Include="..\Classes\Weapons\TeachDoor.cpp" />
     <ClCompile Include="main.cpp" />
@@ -212,6 +213,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Weapons\Biscuit.h" />
     <ClInclude Include="..\Classes\Weapons\Cannon.h" />
     <ClInclude Include="..\Classes\Weapons\Lection.h" />
+    <ClInclude Include="..\Classes\Weapons\Love.h" />
     <ClInclude Include="..\Classes\Weapons\Shield.h" />
     <ClInclude Include="..\Classes\Weapons\TeachDoor.h" />
     <ClInclude Include="..\Classes\Weapons\WeaponDefine.h" />
