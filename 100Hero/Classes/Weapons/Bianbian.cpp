@@ -6,7 +6,7 @@ USING_NS_CC;
 bool Bianbian::init()
 {
 	this->_HurtValue = 1024.0f;
-	this->_BaseScale = 0.3f;
+	this->_BaseScale = 0.6f;
 	this->_InValidTime = 2.5f;
 	this->setTag(ELEMENT_WEAPON_TAG);
 	this->setName(WEAPON_BIANBIAN_NAME);

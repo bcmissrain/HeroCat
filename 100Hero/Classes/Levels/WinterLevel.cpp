@@ -631,10 +631,10 @@ void WinterLevel::initBackground()
 {
 	_elementLayer = Layer::create();
 	this->addChild(_elementLayer);
-	//auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("springback.png"));
-	//backSprite->setScale(GAME_SCREEN_SIZE_WIDTH*2 / backSprite->getContentSize().width);
-	//backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
-	//_elementLayer->addChild(backSprite, -3);
+	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("springback.png"));
+	backSprite->setScale(GAME_SCREEN_SIZE_WIDTH * 2 / backSprite->getContentSize().width);
+	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
+	_elementLayer->addChild(backSprite, -3);
 }
 
 void WinterLevel::initFloors()

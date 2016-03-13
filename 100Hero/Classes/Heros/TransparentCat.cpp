@@ -202,10 +202,6 @@ void TransparentCat::_BeginAttack()
 		_SpriteTimeline = CSLoader::createTimeline("Transparent.csb");
 		_SpriteTimeline->retain();
 		_Sprite->runAction(_SpriteTimeline);
-		auto _Weapon = Sprite::create("point.png");
-		this->_Sprite->addChild(_Weapon, 100);
-		_Weapon->setPosition(Vec2(getVisualSize().width / 2, 0));
-		this->_Weapons.pushBack(_Weapon);
 		this->_Sprite->setScale(_BaseScale);
 		if (_Direction == Direction::Left)
 		{
@@ -220,10 +216,6 @@ void TransparentCat::_BeginAttack()
 		_SpriteTimeline = CSLoader::createTimeline("Cheet.csb");
 		_SpriteTimeline->retain();
 		_Sprite->runAction(_SpriteTimeline);
-		auto _Weapon = Sprite::create("point.png");
-		this->_Sprite->addChild(_Weapon, 100);
-		_Weapon->setPosition(Vec2(getVisualSize().width / 2, 0));
-		this->_Weapons.pushBack(_Weapon); 
 		this->_Sprite->setScale(_BaseScale);
 		if (_Direction == Direction::Left)
 		{
