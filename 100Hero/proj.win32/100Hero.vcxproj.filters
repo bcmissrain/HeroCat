@@ -141,6 +141,9 @@
     <ClCompile Include="..\Classes\Weapons\Love.cpp">
       <Filter>src\Weapons</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Weapons\DarkDoor.cpp">
+      <Filter>src\Weapons</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -252,6 +255,9 @@
       <Filter>src\Heros</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Weapons\Love.h">
+      <Filter>src\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Weapons\DarkDoor.h">
       <Filter>src\Weapons</Filter>
     </ClInclude>
   </ItemGroup>

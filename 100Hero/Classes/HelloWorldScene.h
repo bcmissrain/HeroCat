@@ -8,6 +8,22 @@
 #include "Floors/FloorNormal.h"
 #include "Levels/BaseLevel.h"
 
+class LoadingScene : public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+	CREATE_FUNC(LoadingScene);
+};
+
+class BeginScene : public cocos2d::Layer
+{
+public:
+	static cocos2d::Scene* createScene();
+	virtual bool init();
+	CREATE_FUNC(BeginScene);
+};
+
 class TeachScene : public cocos2d::Layer
 {
 public:

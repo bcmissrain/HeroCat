@@ -9,6 +9,97 @@
 USING_NS_CC;
 int BetweenScene::SceneCode = 0;
 
+Scene* LoadingScene::createScene()
+{
+	auto scene = Scene::create();
+	auto layer = LoadingScene::create();
+	scene->addChild(layer);
+	return scene;
+}
+
+bool LoadingScene::init()
+{
+	if (!Layer::init())
+	{
+		return false;
+	}
+	auto logoNode = CSLoader::createNode("Logo.csb");
+	auto logoAction = CSLoader::createTimeline("Logo.csb");
+	this->addChild(logoNode);
+	Vec2 screenSize = Director::getInstance()->getVisibleSize();
+	logoNode->setScale(1.2f);
+	logoNode->setPosition(screenSize / 2);
+	logoNode->runAction(logoAction);
+	logoAction->gotoFrameAndPlay(0, false);
+	logoAction->setLastFrameCallFunc([](){
+		Director::getInstance()->replaceScene(BeginScene::createScene());
+	});
+	return true;
+}
+
+Scene* BeginScene::createScene()
+{
+	auto scene = Scene::create();
+	auto layer = BeginScene::create();
+	scene->addChild(layer);
+	return scene;
+}
+
+bool BeginScene::init()
+{
+	if (!Layer::init())
+	{
+		return false;
+	}
+
+	auto touchListener = EventListenerTouchOneByOne::create();
+	touchListener->onTouchBegan = [](Touch* touch, Event* event){
+		Director::getInstance()->replaceScene(TeachScene::createScene());
+		return true;
+	};
+	touchListener->onTouchMoved = [](Touch* touch, Event* event){
+	};
+	touchListener->onTouchEnded = [](Touch* touch, Event* event){
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
+
+	auto winSize = Director::getInstance()->getVisibleSize();
+	auto sprite = Sprite::create("beginback.png");
+	sprite->setPosition(winSize / 2);
+	this->addChild(sprite);
+	float curScale = winSize.width / sprite->getContentSize().width;
+	sprite->setScale(curScale);
+
+	auto text = Sprite::create("beginText.png");
+	text->setPosition(Vec2(winSize.width / 2, 64));
+	text->setScale(curScale);
+	this->addChild(text);
+	text->runAction(RepeatForever::create(
+		Spawn::create(
+			Sequence::create(
+				ScaleTo::create(1.0f, 1.2f*curScale),
+				ScaleTo::create(1.0f, curScale),
+				NULL),
+			Sequence::create(
+				FadeTo::create(1.0f, 64),
+				FadeTo::create(1.0f, 128),
+				NULL),
+			NULL)));
+	return true;
+
+	/* bug here not act 
+	auto touchListener = EventListenerTouchOneByOne::create();
+	touchListener->onTouchBegan = [](Touch* touch, Event* event){
+		Director::getInstance()->replaceScene(TeachScene::createScene());
+		return true;
+	};
+	touchListener->onTouchMoved = [](Touch* touch, Event* event){
+	};
+	touchListener->onTouchEnded = [](Touch* touch, Event* event){
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, sprite);*/
+}
+
 Scene* TeachScene::createScene()
 {
     auto scene = Scene::create();

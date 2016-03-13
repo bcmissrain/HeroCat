@@ -17,6 +17,7 @@
 #include "../Weapons/Lection.h"
 #include "../Weapons/Cannon.h"
 #include "../Weapons/Love.h"
+#include "../Weapons/DarkDoor.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 1024 /*1024*/
@@ -46,6 +47,7 @@ bool WinterLevel::init()
 	TextureCache::getInstance()->addImage("Images/love.png");
 	TextureCache::getInstance()->addImage("Images/cannon.png");
 	TextureCache::getInstance()->addImage("Images/shield.png");
+	TextureCache::getInstance()->addImage("Images/darkdoor.png");
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	TextureCache::getInstance()->addImage("blank_debug.png");
@@ -631,7 +633,7 @@ void WinterLevel::initBackground()
 {
 	_elementLayer = Layer::create();
 	this->addChild(_elementLayer);
-	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("springback.png"));
+	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("winterback.png"));
 	backSprite->setScale(GAME_SCREEN_SIZE_WIDTH * 2 / backSprite->getContentSize().width);
 	backSprite->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH / 2, GAME_SCREEN_SIZE_HEIGHT / 2));
 	_elementLayer->addChild(backSprite, -3);
@@ -659,7 +661,7 @@ void WinterLevel::initFloors()
 	floor0 = FloorNormal::create();
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_400.png");
 	floor0->initBySprite(sp0);
-	floor0->setPosition(710 + _minX, 790);
+	floor0->setPosition(710 + _minX, 690);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -667,7 +669,7 @@ void WinterLevel::initFloors()
 	floor0 = FloorNormal::create();
 	sp0 = Sprite::createWithSpriteFrameName("winter_floor_400.png");
 	floor0->initBySprite(sp0);
-	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 710 +_maxX, 790);
+	floor0->setPosition(GAME_SCREEN_SIZE_WIDTH - 710 +_maxX, 690);
 	_elementLayer->addChild(floor0, -1);
 	_floors.pushBack(floor0);
 
@@ -823,6 +825,60 @@ void WinterLevel::initHero()
 
 void WinterLevel::initWeapons()
 {
+	auto darkDoorA = DarkDoor::create();
+	darkDoorA->setTag((int)'A');
+	darkDoorA->setPosition(Vec2(930 + _minX, 330));
+	_elementLayer->addChild(darkDoorA);
+	_weapons.pushBack(darkDoorA);
+
+	auto darkDoorB = DarkDoor::create();
+	darkDoorB->setTag((int)'B');
+	darkDoorB->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 930 + _maxX, 330));
+	_elementLayer->addChild(darkDoorB);
+	_weapons.pushBack(darkDoorB);
+
+	auto darkDoorC = DarkDoor::create();
+	darkDoorC->setTag((int)'C');
+	darkDoorC->setPosition(Vec2(120 + _minX, 550));
+	_elementLayer->addChild(darkDoorC);
+	_weapons.pushBack(darkDoorC);
+
+	auto darkDoorD = DarkDoor::create();
+	darkDoorD->setTag((int)'D');
+	darkDoorD->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 120 + _maxX, 550));
+	_elementLayer->addChild(darkDoorD);
+	_weapons.pushBack(darkDoorD);
+
+	auto darkDoorListener = EventListenerCustom::create(EVENT_DARK_DOOR, [=](EventCustom* arg){
+		int tag = (int)arg->getUserData();
+		if (tag == (int)'A')
+		{
+			auto doorBPos = ((BaseWeapon*)_elementLayer->getChildByTag((int)'B'))->getVisualCenter();
+			doorBPos.x += 80;
+			_currentHero->setPosition(doorBPos);
+		}
+		else if (tag == (int)'B')
+		{
+			auto doorAPos = ((BaseWeapon*)_elementLayer->getChildByTag((int)'A'))->getVisualCenter();
+			doorAPos.x -= 80;
+			_currentHero->setPosition(doorAPos);
+		}
+		else if (tag == (int)'C')
+		{
+			auto doorDPos = ((BaseWeapon*)_elementLayer->getChildByTag((int)'D'))->getVisualCenter();
+			doorDPos.x -= 80;
+			_currentHero->setPosition(doorDPos);
+		}
+		else if (tag == (int)'D')
+		{
+			auto doorCPos = ((BaseWeapon*)_elementLayer->getChildByTag((int)'C'))->getVisualCenter();
+			doorCPos.x -= 80;
+			_currentHero->setPosition(doorCPos);
+		}
+		_currentHero->_BeginBorn();
+	});
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(darkDoorListener, this);
+
 	auto weaponListener = EventListenerCustom::create(EVENT_WEAPON_CREATE, [=](EventCustom* arg)
 	{
 		auto wType = (int)(arg->getUserData());

@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>Logo/logo0.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,4},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo1.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{336,4},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo2.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{668,4},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo3.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,157},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo4.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{336,157},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo5.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{668,157},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo6.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{4,310},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+			<key>Logo/logo7.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{336,310},{324,145}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{324,145}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>Logo.png</string>
+			<key>realTextureFileName</key>
+			<string>Logo.png</string>
+			<key>size</key>
+			<string>{1024,512}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>1024</integer>
+			<key>height</key>
+			<integer>512</integer>
+		</dict>
+	</dict>
+</plist>

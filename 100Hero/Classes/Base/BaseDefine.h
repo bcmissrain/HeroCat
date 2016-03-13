@@ -13,6 +13,7 @@
 
 #define WEAPON_TEACH_DOOR_NAME "tec_door"
 #define WEAPON_BISCUIT_NAME "biscuit"
+#define WEAPON_DARK_DOOR_NAME "dark_door"
 #define WEAPON_BIANBIAN_NAME "bian"
 #define WEAPON_SHIELD_NAME "shield"
 #define WEAPON_LECTION_NAME "lection"
@@ -20,6 +21,7 @@
 #define WEAPON_LOVE_NAME "love"
 
 #define EVENT_TEACH_DOOR "event_teach_door"
+#define EVENT_DARK_DOOR "event_dark_door"
 #define EVENT_WEAPON_CREATE "event_weapon_create"
 #define EVENT_BISCAKE_EAT "event_biscake_eat"
 #define EVENT_MAKE_UP "event_make_up"
