@@ -11,24 +11,28 @@ HeroType IronCat::getHeroType()
 bool IronCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
-	this->_BaseScale = 0.25f;
+	this->_BaseScale = 0.28f;
 	this->_BaseRunSpeed = 500;
 	this->_BaseAcceleration = 6;
 	this->_JumpTime = 0.3f;
-	this->_JumpHeight = 160;
+	this->_JumpHeight = 150;
 	this->_CanDoubleJump = true;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.3f;
-	this->_JumpHeight2 = 150;
-	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
+	this->_JumpHeight2 = 140;
+	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("IronCat.csb"));
 	this->addChild(_Sprite);
-	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");
+	_SpriteTimeline = CSLoader::createTimeline("IronCat.csb");
 	_SpriteTimeline->retain();
 	_Sprite->runAction(_SpriteTimeline);
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	auto _Weapon = Sprite::create("point.png");
+#else
+	auto _Weapon = Node::create();
+#endif
 	this->_Sprite->addChild(_Weapon, 100);
-	_Weapon->setPosition(Vec2(getVisualSize().width / 2, 0));
+	_Weapon->setPosition(Vec2(getVisualSize().width / 1.8f, 0));
 	this->_Weapons.pushBack(_Weapon);
 
 	initElement();
@@ -58,7 +62,7 @@ bool IronCat::initElement()
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackState = AttackState::NotAttack;
-	_AttackColdTime = 0.1f;
+	_AttackColdTime = 0.20f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
@@ -128,12 +132,12 @@ void IronCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseEl
 		break;
 	case CollideOperate::CollideUp:
 		_CollideState = CollideState::HaveSupport;
-		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.32f);
+		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.36f);
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
 		this->_JumpSpeed = this->_JumpSpeed2 = 0;
-		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.68f);
+		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.64f);
 		break;
 	default:
 		break;
@@ -203,9 +207,9 @@ void IronCat::_BeginAttack()
 
 		if (!haveBianbian){
 		*/
-		_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
+		_SpriteTimeline->gotoFrameAndPlay(60, 75, false);
 		_SpriteTimeline->setLastFrameCallFunc([=](){
-			if (_SpriteTimeline->getCurrentFrame() == 70)
+			if (_SpriteTimeline->getCurrentFrame() == 75)
 			{
 				if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
 				{

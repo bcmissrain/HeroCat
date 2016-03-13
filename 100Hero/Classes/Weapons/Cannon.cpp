@@ -11,7 +11,7 @@ bool Cannon::init()
 	this->setName(WEAPON_CANNON_NAME);
 	_WeaponType = WeaponType::Shoot;
 	_WeaponMoveWays = WeaponMoveWays::Horizontal;
-	_Sprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Images/shield.png"));
+	_Sprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Images/cannon.png"));
 	this->addChild(_Sprite);
 	_EnemyDieType = EnemyDieType::Transparent;
 	initElement();
@@ -45,9 +45,10 @@ void Cannon::deal(BaseElement* baseElement)
 		}), NULL);
 
 		CCParticleSystem* particleSystem = CCParticleFire::create();
-		particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/shield.png"));
+		particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/cannon.png"));
 		particleSystem->setPosition(Vec2::ZERO);
 		this->addChild(particleSystem);
+
 		this->runAction(dealAction);
 	};
 
@@ -80,7 +81,7 @@ bool Cannon::isTarget(BaseElement* gameElement)
 
 cocos2d::Size Cannon::getVisualSize()
 {
-	return _Sprite->getBoundingBox().size * this->getScale();
+	return _Sprite->getBoundingBox().size * this->getScaleY();
 }
 
 void Cannon::onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement)

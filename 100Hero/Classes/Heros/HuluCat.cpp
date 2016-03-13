@@ -12,10 +12,10 @@ bool HuluCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.25f;
-	this->_BaseRunSpeed = 500;
+	this->_BaseRunSpeed = 320;
 	this->_JumpTime = 0.3f;
-	this->_JumpHeight = 210;
-	this->_CanDoubleJump = true;
+	this->_JumpHeight = 215;
+	this->_CanDoubleJump = false;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
 	this->_JumpHeight2 = 160;
@@ -25,7 +25,11 @@ bool HuluCat::init()
 	_SpriteTimeline->retain();
 	_Sprite->runAction(_SpriteTimeline);
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	auto _Weapon = Sprite::create("point.png");
+#else
+	auto _Weapon = Node::create();
+#endif
 	this->_Sprite->addChild(_Weapon,100);
 	_Weapon->setPosition(Vec2(getVisualSize().width/2, 0));
 	this->_Weapons.pushBack(_Weapon);
@@ -57,7 +61,7 @@ bool HuluCat::initElement()
 	_IsValid = true;
 	_CanClean = false;
 	this->_AttackState = AttackState::NotAttack;
-	_AttackColdTime = 0.2f;
+	_AttackColdTime = 0.6f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);

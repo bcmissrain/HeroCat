@@ -11,7 +11,7 @@ bool Love::init()
 	this->setName(WEAPON_LOVE_NAME);
 	_WeaponType = WeaponType::Shoot;
 	_WeaponMoveWays = WeaponMoveWays::Horizontal;
-	_Sprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Images/shield.png"));
+	_Sprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("Images/love.png"));
 	this->addChild(_Sprite);
 	_EnemyDieType = EnemyDieType::Transparent;
 	initElement();
@@ -44,7 +44,7 @@ void Love::deal(BaseElement* baseElement)
 	}), NULL);
 
 	CCParticleSystem* particleSystem = CCParticleFire::create();
-	particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/shield.png"));
+	particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/love.png"));
 	particleSystem->setPosition(Vec2::ZERO);
 	this->addChild(particleSystem);
 	this->runAction(dealAction);

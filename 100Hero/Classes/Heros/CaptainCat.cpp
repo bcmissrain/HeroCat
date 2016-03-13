@@ -13,20 +13,23 @@ bool CaptainCat::init()
 {
 	this->setTag(ELEMENT_HERO_TAG);
 	this->_BaseScale = 0.25f;
-	this->_BaseRunSpeed = 360;
+	this->_BaseRunSpeed = 340;
 	this->_JumpTime = 0.3f;
 	this->_JumpHeight = 210;
 	this->_CanDoubleJump = true;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.2f;
 	this->_JumpHeight2 = 160;
-	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
+	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("CaptainCat.csb"));
 	this->addChild(_Sprite);
-	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");
+	_SpriteTimeline = CSLoader::createTimeline("CaptainCat.csb");
 	_SpriteTimeline->retain();
 	_Sprite->runAction(_SpriteTimeline);
-
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	auto _Weapon = Sprite::create("point.png");
+#else
+	auto _Weapon = Node::create();
+#endif
 	this->_Sprite->addChild(_Weapon, 100);
 	_Weapon->setPosition(Vec2(getVisualSize().width / 2, 0));
 	this->_Weapons.pushBack(_Weapon);
@@ -128,12 +131,12 @@ void CaptainCat::onFloorCollide(cocos2d::Point point, CollideOperate opType, Bas
 		break;
 	case CollideOperate::CollideUp:
 		_CollideState = CollideState::HaveSupport;
-		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.32f);
+		this->setPositionY(point.y + _Sprite->getBoundingBox().size.height* 0.35f);
 		break;
 	case CollideOperate::CollideDown:
 		_CollideState = CollideState::HeadCollide;
 		this->_JumpSpeed = this->_JumpSpeed2 = 0;
-		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.68f);
+		this->setPositionY(point.y - _Sprite->getBoundingBox().size.height*0.65f);
 		break;
 	default:
 		break;
@@ -203,9 +206,9 @@ void CaptainCat::_BeginAttack()
 
 		if (!haveBianbian){
 		*/
-		_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
+		_SpriteTimeline->gotoFrameAndPlay(60, 75, false);
 		_SpriteTimeline->setLastFrameCallFunc([=](){
-			if (_SpriteTimeline->getCurrentFrame() == 70)
+			if (_SpriteTimeline->getCurrentFrame() == 75)
 			{
 				if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
 				{

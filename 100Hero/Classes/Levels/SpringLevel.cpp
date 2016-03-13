@@ -43,6 +43,8 @@ bool SpringLevel::init()
 	TextureCache::getInstance()->addImage("360_boss.png");
 	TextureCache::getInstance()->addImage("springback.png");
 	TextureCache::getInstance()->addImage("Images/bigBian.png");
+	TextureCache::getInstance()->addImage("Images/love.png");
+	TextureCache::getInstance()->addImage("Images/cannon.png");
 	TextureCache::getInstance()->addImage("Images/shield.png");
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
@@ -605,7 +607,6 @@ void SpringLevel::initBornPoints()
 void SpringLevel::initBackground()
 {
 	_elementLayer = Layer::create();
-	//_elementLayer->setPositionX(_minX);
 	this->addChild(_elementLayer);
 	auto backSprite = Sprite::createWithTexture(TextureCache::getInstance()->addImage("springback.png"));
 	backSprite->setScale(GAME_SCREEN_SIZE_WIDTH / backSprite->getContentSize().width);
@@ -958,19 +959,19 @@ void SpringLevel::throwShield()
 
 void SpringLevel::throwBianbian()
 {
-	bool haveBianbian = false;
-	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
-	{
-		if ((*wea)->_IsValid)
-		{
-			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
-			{
-				haveBianbian = true;
-			}
-		}
-	}
+	//bool haveBianbian = false;
+	//for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	//{
+	//	if ((*wea)->_IsValid)
+	//	{
+	//		if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
+	//		{
+	//			haveBianbian = true;
+	//		}
+	//	}
+	//}
 
-	if (!haveBianbian){
+	//if (!haveBianbian){
 		auto weapon = Bianbian::create();
 		weapon->setPosition(_elementLayer->convertToNodeSpace(_currentHero->getWeaponPosByIndex(0)));
 		_elementLayer->addChild(weapon, -1);
@@ -978,7 +979,7 @@ void SpringLevel::throwBianbian()
 		auto jumpDownAction = Sequence::create(EaseOut::create(MoveBy::create(0.2f, Vec2(0, 128)), 2.0f), EaseIn::create(MoveBy::create(_currentHero->_JumpTime * 2, Vec2(0, -_currentHero->_JumpHeight * 4)), 2.0f), NULL);
 		jumpDownAction->setTag(ACTION_TAG_JUMP_DOWN);
 		weapon->runAction(jumpDownAction);
-	}
+	//}
 }
 
 void SpringLevel::throwCannon()
@@ -990,17 +991,16 @@ void SpringLevel::throwCannon()
 	Vec2 cannonDirection;
 	if (_currentHero->_Direction == Direction::Left)
 	{
-		cannonDirection = Vec2(-400, 0);
+		cannonDirection = Vec2(-1600, 0);
+		weapon->setScaleX(-weapon->getScaleX());
 	}
 	else if (_currentHero->_Direction == Direction::Right)
 	{
-		cannonDirection = Vec2(400, 0);
+		cannonDirection = Vec2(1600, 0);
 	}
 
 	auto attackAction = Sequence::create(
-		EaseOut::create(MoveBy::create(0.8f, cannonDirection), 1.5f),
-		CallFunc::create([=](){weapon->notifyTurn(); }),
-		EaseIn::create(MoveBy::create(0.8f, -cannonDirection), 1.5f),
+		EaseOut::create(MoveBy::create(2.0f, cannonDirection), 1.5f),
 		CallFunc::create([=](){weapon->deal(_currentHero); }),
 		NULL);
 	weapon->runAction(attackAction);
@@ -1015,15 +1015,15 @@ void SpringLevel::giveLove()
 	Vec2 loveDirection;
 	if (_currentHero->_Direction == Direction::Left)
 	{
-		loveDirection = Vec2(-200, 0);
+		loveDirection = Vec2(-400, 0);
 	}
 	else if (_currentHero->_Direction == Direction::Right)
 	{
-		loveDirection = Vec2(200, 0);
+		loveDirection = Vec2(400, 0);
 	}
 
-	auto moveUD = Repeat::create(Sequence::create(MoveBy::create(0.5, Vec2(0, 20)), MoveBy::create(0.5, Vec2(0, -20)), NULL), 3);
-	auto moveRight = EaseInOut::create(MoveBy::create(3.0f, loveDirection), 1.5f);
+	auto moveUD = Repeat::create(Sequence::create(MoveBy::create(0.5, Vec2(0, 20)), MoveBy::create(0.5, Vec2(0, -20)), NULL), 4);
+	auto moveRight = EaseInOut::create(MoveBy::create(4.0f, loveDirection), 1.5f);
 	auto attackAction = Sequence::create(
 		Spawn::create(moveUD, moveRight, NULL),
 		CallFunc::create([=](){weapon->deal(_currentHero); }),

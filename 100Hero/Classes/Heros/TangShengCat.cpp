@@ -14,18 +14,22 @@ bool TangShengCat::init()
 	this->_BaseScale = 0.25f;
 	this->_BaseRunSpeed = 300;
 	this->_JumpTime = 0.28f;
-	this->_JumpHeight = 200;
-	this->_CanDoubleJump = true;
+	this->_JumpHeight = 210;
+	this->_CanDoubleJump = false;
 	this->_IsDoubleJump = false;
 	this->_JumpTime2 = 0.25f;
 	this->_JumpHeight2 = 160;
-	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("Hulu.csb"));
+	_Sprite = static_cast<cocostudio::timeline::SkeletonNode*>(CSLoader::createNode("TangshengCat.csb"));
 	this->addChild(_Sprite);
-	_SpriteTimeline = CSLoader::createTimeline("Hulu.csb");
+	_SpriteTimeline = CSLoader::createTimeline("TangshengCat.csb");
 	_SpriteTimeline->retain();
 	_Sprite->runAction(_SpriteTimeline);
 
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	auto _Weapon = Sprite::create("point.png");
+#else
+	auto _Weapon = Node::create();
+#endif
 	this->_Sprite->addChild(_Weapon, 100);
 	_Weapon->setPosition(Vec2(getVisualSize().width / 2, 0));
 	this->_Weapons.pushBack(_Weapon);
@@ -189,9 +193,9 @@ void TangShengCat::_BeginAttack()
 {
 	if (_AttackState == AttackState::NotAttack)
 	{
-		_SpriteTimeline->gotoFrameAndPlay(60, 70, false);
+		_SpriteTimeline->gotoFrameAndPlay(55, 75, false);
 		_SpriteTimeline->setLastFrameCallFunc([=](){
-			if (_SpriteTimeline->getCurrentFrame() == 70)
+			if (_SpriteTimeline->getCurrentFrame() == 75)
 			{
 				if (this->_CurrentState->getState() == ActionState::Run || this->_CurrentState->getState() == ActionState::Stop)
 				{
@@ -200,9 +204,11 @@ void TangShengCat::_BeginAttack()
 				_SpriteTimeline->setLastFrameCallFunc(nullptr);
 			}
 		});
-		_eventDispatcher->dispatchCustomEvent(EVENT_WEAPON_CREATE, (void*)((int)WeaponEventType::CreateLection));
-
-		_AttackCount++;
+		if (_AttackCount < _AttackMaxTimes)
+		{
+			_eventDispatcher->dispatchCustomEvent(EVENT_WEAPON_CREATE, (void*)((int)WeaponEventType::CreateLection));
+			_AttackCount++;
+		}
 		this->scheduleOnce([=](float delta){
 			_AttackState = AttackState::NotAttack;
 		}, _AttackColdTime, "attack");
@@ -215,12 +221,6 @@ void TangShengCat::_Attack(ClickState clickState)
 	if (!this->_IsValid)
 	{
 		return;
-	}
-
-	if (_AttackMaxTimes > 0)
-	{
-		if (_AttackCount >= _AttackMaxTimes)
-			return;
 	}
 	if (clickState == ClickState::Begin)
 	{

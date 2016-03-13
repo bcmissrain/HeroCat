@@ -52,6 +52,8 @@ bool TeachLevel::init()
 	//Load resources
 	TextureCache::getInstance()->addImage("Level0/back0.png");
 	TextureCache::getInstance()->addImage("Images/shield.png");
+	TextureCache::getInstance()->addImage("Images/love.png");
+	TextureCache::getInstance()->addImage("Images/cannon.png");
 	TextureCache::getInstance()->addImage("Images/bigBian.png");
 
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
@@ -798,16 +800,16 @@ void TeachLevel::throwShield()
 void TeachLevel::throwBianbian()
 {
 	bool haveBianbian = false;
-	for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
-	{
-		if ((*wea)->_IsValid)
-		{
-			if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
-			{
-				haveBianbian = true;
-			}
-		}
-	}
+	//for (auto wea = _weapons.begin(); wea != _weapons.end(); wea++)
+	//{
+	//	if ((*wea)->_IsValid)
+	//	{
+	//		if ((*wea)->getName() == WEAPON_BIANBIAN_NAME)
+	//		{
+	//			haveBianbian = true;
+	//		}
+	//	}
+	//}
 
 	if (!haveBianbian){
 		auto weapon = Bianbian::create();
@@ -830,6 +832,7 @@ void TeachLevel::throwCannon()
 	if (_currentHero->_Direction == Direction::Left)
 	{
 		cannonDirection = Vec2(-1600, 0);
+		weapon->setScaleX(-weapon->getScaleX());
 	}
 	else if (_currentHero->_Direction == Direction::Right)
 	{
@@ -852,15 +855,15 @@ void TeachLevel::giveLove()
 	Vec2 loveDirection;
 	if (_currentHero->_Direction == Direction::Left)
 	{
-		loveDirection = Vec2(-200, 0);
+		loveDirection = Vec2(-400, 0);
 	}
 	else if (_currentHero->_Direction == Direction::Right)
 	{
-		loveDirection = Vec2(200, 0);
+		loveDirection = Vec2(400, 0);
 	}
 
-	auto moveUD = Repeat::create(Sequence::create(MoveBy::create(0.5, Vec2(0, 20)), MoveBy::create(0.5, Vec2(0, -20)), NULL),3);
-	auto moveRight = EaseInOut::create(MoveBy::create(3.0f, loveDirection), 1.5f);
+	auto moveUD = Repeat::create(Sequence::create(MoveBy::create(0.5, Vec2(0, 20)), MoveBy::create(0.5, Vec2(0, -20)), NULL),4);
+	auto moveRight = EaseInOut::create(MoveBy::create(4.0f, loveDirection), 1.5f);
 	auto attackAction = Sequence::create(
 		Spawn::create(moveUD,moveRight,NULL),
 		CallFunc::create([=](){weapon->deal(_currentHero); }),

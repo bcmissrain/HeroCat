@@ -104,7 +104,10 @@ BaseHero* HeroController::initHeroAByB(BaseHero* A, BaseHero* B)
 		A->setPosition(B->getPosition());
 		A->_Direction = B->_Direction;
 		A->_MoveState = B->_MoveState;
-		A->_Sprite->setScaleX(B->_Sprite->getScaleX());
+		if (B->_Sprite->getScaleX() < 0)
+		{
+			A->_Sprite->setScaleX(-A->_BaseScale);
+		}
 		return A;
 	}
 	return nullptr;
