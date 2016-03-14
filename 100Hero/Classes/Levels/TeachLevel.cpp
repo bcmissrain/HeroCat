@@ -19,10 +19,9 @@
 #include "../Weapons/Cannon.h"
 #include "../Weapons/Love.h"
 #include "../Weapons/TeachDoor.h"
-
+#include "SimpleAudioEngine.h"
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 852 /*1024*/
-#include "HelloWorldScene.h"
 
 #define SPRITE_LEFT 20001
 #define SPRITE_RIGHT 20002
@@ -201,6 +200,7 @@ void TeachLevel::initWeapons()
 			this->removeChild(_currentHero, true);
 			_currentHero = HeroController::getRandNewHero(_currentHero);
 			HeroController::makeUp();
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Grow.wav");
 		}
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
@@ -551,6 +551,14 @@ void TeachLevel::updateLate(float delta)
 
 	_currentHero->afterUpdate();
 
+	if (_currentHero->_IsValid == false)
+	{
+		if (ifHeroValid)
+		{
+			ifHeroValid = false;
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Die.wav");
+		}
+	}
 
 	//reset input
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32

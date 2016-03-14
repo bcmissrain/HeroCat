@@ -5,6 +5,7 @@
 #include "Levels/TeachLevel.h"
 #include "Levels/SpringLevel.h"
 #include "Levels/WinterLevel.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 int BetweenScene::SceneCode = 0;
@@ -42,6 +43,14 @@ Scene* BeginScene::createScene()
 	auto scene = Scene::create();
 	auto layer = BeginScene::create();
 	scene->addChild(layer);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadBackgroundMusic("Music/BackGround.mp3");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Block.wav");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Hit.wav");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Die.wav");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Grow.wav");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Rocket.wav");
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Jump.wav"); 
+
 	return scene;
 }
 
@@ -55,6 +64,7 @@ bool BeginScene::init()
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = [](Touch* touch, Event* event){
 		Director::getInstance()->replaceScene(TeachScene::createScene());
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("Music/BackGround.mp3", true);
 		return true;
 	};
 	touchListener->onTouchMoved = [](Touch* touch, Event* event){

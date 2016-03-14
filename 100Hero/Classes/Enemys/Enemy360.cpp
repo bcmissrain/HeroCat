@@ -144,7 +144,7 @@ bool Enemy360HurtBig::init()
 	_JumpHeight = 200;
 	_Scale = _BaseScale = 0.6f;
 	_Sprite->setScale(_Scale);
-	_Blood = _BaseBlood = 4;
+	_Blood = _BaseBlood = 2;
 	this->addChild(_Sprite);
 	initElement();
 	return true;

@@ -1,5 +1,5 @@
 #include "BaseEnemy.h"
-
+#include "SimpleAudioEngine.h"
 void BaseEnemy::check()
 {
 	if (!_IsValid)
@@ -173,6 +173,7 @@ void BaseEnemy::_JumpFinish()
 
 void BaseEnemy::_Die(EnemyDieType dieType)
 {
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Hit.wav");
 	this->_IsValid = false;
 	this->stopActionByTag(ACTION_TAG_JUMP_DOWN);
 	if (dieType == EnemyDieType::Transparent)

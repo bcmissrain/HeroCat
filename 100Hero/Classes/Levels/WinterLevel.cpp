@@ -18,6 +18,7 @@
 #include "../Weapons/Cannon.h"
 #include "../Weapons/Love.h"
 #include "../Weapons/DarkDoor.h"
+#include "SimpleAudioEngine.h"
 
 #define GAME_SCREEN_SIZE_WIDTH 1136 /*1136*/
 #define GAME_SCREEN_SIZE_HEIGHT 1024 /*1024*/
@@ -42,7 +43,7 @@ bool WinterLevel::init()
 	TextureCache::getInstance()->addImage("360.png");
 	TextureCache::getInstance()->addImage("360_hurt.png");
 	TextureCache::getInstance()->addImage("360_boss.png");
-	TextureCache::getInstance()->addImage("springback.png");
+	TextureCache::getInstance()->addImage("winterback.png");
 	TextureCache::getInstance()->addImage("Images/bigBian.png");
 	TextureCache::getInstance()->addImage("Images/love.png");
 	TextureCache::getInstance()->addImage("Images/cannon.png");
@@ -238,6 +239,14 @@ void WinterLevel::updateLate(float delta)
 
 	_currentHero->afterUpdate();
 
+	if (_currentHero->_IsValid == false)
+	{
+		if (ifHeroValid)
+		{
+			ifHeroValid = false;
+			CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Die.wav");
+		}
+	}
 	//reset input
 #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
 	if (_ifClickLeft == ClickState::Begin)
@@ -839,13 +848,13 @@ void WinterLevel::initWeapons()
 
 	auto darkDoorC = DarkDoor::create();
 	darkDoorC->setTag((int)'C');
-	darkDoorC->setPosition(Vec2(120 + _minX, 550));
+	darkDoorC->setPosition(Vec2(100 + _minX, 550));
 	_elementLayer->addChild(darkDoorC);
 	_weapons.pushBack(darkDoorC);
 
 	auto darkDoorD = DarkDoor::create();
 	darkDoorD->setTag((int)'D');
-	darkDoorD->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 120 + _maxX, 550));
+	darkDoorD->setPosition(Vec2(GAME_SCREEN_SIZE_WIDTH - 100 + _maxX, 550));
 	_elementLayer->addChild(darkDoorD);
 	_weapons.pushBack(darkDoorD);
 
@@ -872,7 +881,7 @@ void WinterLevel::initWeapons()
 		else if (tag == (int)'D')
 		{
 			auto doorCPos = ((BaseWeapon*)_elementLayer->getChildByTag((int)'C'))->getVisualCenter();
-			doorCPos.x -= 80;
+			doorCPos.x += 80;
 			_currentHero->setPosition(doorCPos);
 		}
 		_currentHero->_BeginBorn();
@@ -915,6 +924,7 @@ void WinterLevel::initWeapons()
 		this->removeChild(_currentHero, true);
 		_currentHero = HeroController::getRandNewHero(_currentHero);
 		HeroController::makeUp();
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Grow.wav");
 	});
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(eatCakeListener, this);
 }

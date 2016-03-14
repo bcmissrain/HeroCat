@@ -1,5 +1,5 @@
 #include "BaseHero.h"
-
+#include "SimpleAudioEngine.h"
 #define HERO_MIN_JUMP_SPEED -3000
 //Stand
 ActionState StandStatus::getState()
@@ -615,11 +615,13 @@ void BaseHero::changeStateTo(ActionState state)
 		_CurrentState->initState(this);
 		break;
 	case ActionState::JumpUp:
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Jump.wav");
 		CC_SAFE_DELETE(_CurrentState);
 		_CurrentState = new JumpUpStatus();
 		_CurrentState->initState(this);
 		break;
 	case ActionState::JumpUp2:
+		CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Jump.wav");
 		CC_SAFE_DELETE(_CurrentState);
 		_CurrentState = new JumpUp2Status();
 		_CurrentState->initState(this);

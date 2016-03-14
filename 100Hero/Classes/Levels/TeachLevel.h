@@ -57,6 +57,8 @@ private:
 	bool ifEatCake = false;
 	bool ifKillEnemy = false;
 	bool ifDoorOpen = false;
+
+	bool ifHeroValid = true;
 };
 
 #endif

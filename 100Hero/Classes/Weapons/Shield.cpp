@@ -1,5 +1,5 @@
 #include "Shield.h"
-
+#include "SimpleAudioEngine.h"
 USING_NS_CC;
 
 bool Shield::init()
@@ -47,6 +47,7 @@ void Shield::deal(BaseElement* baseElement)
 	particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/shield.png"));
 	particleSystem->setPosition(Vec2::ZERO);
 	this->addChild(particleSystem);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Rocket.wav");
 	this->runAction(dealAction);
 }
 

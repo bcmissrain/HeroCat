@@ -53,6 +53,7 @@ private:
 	bool ifBornHurt = false;
 	bool isBorningEnemy = false;
 	bool canBornEnemy = true;
+	bool ifHeroValid = true;
 };
 
 #endif

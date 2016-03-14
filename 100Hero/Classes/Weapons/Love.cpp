@@ -1,5 +1,5 @@
 #include "Love.h"
-
+#include "SimpleAudioEngine.h"
 USING_NS_CC;
 
 bool Love::init()
@@ -47,6 +47,7 @@ void Love::deal(BaseElement* baseElement)
 	particleSystem->setTexture(CCTextureCache::sharedTextureCache()->addImage("Images/love.png"));
 	particleSystem->setPosition(Vec2::ZERO);
 	this->addChild(particleSystem);
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect("Music/Rocket.wav");
 	this->runAction(dealAction);
 }
 
