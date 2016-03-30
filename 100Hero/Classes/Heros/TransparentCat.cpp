@@ -63,6 +63,7 @@ bool TransparentCat::initElement()
 	_AttackColdTime = 0.2f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
+	boundingBoxSize = _Sprite->getBoundingBox().size;
 	changeStateTo(ActionState::Stand);
 	_BeginBorn();
 	return true;

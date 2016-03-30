@@ -8,6 +8,8 @@ public:
 	virtual bool init() override;
 	CREATE_FUNC(TangShengCat);
 	virtual bool initElement() override;
+	
+	virtual cocos2d::Point getVisualCenter() override;
 
 	virtual bool collideWithGameElement(BaseElement* gameElement) override { return false; }
 	virtual void onFloorCollide(cocos2d::Point point, CollideOperate opType, BaseElement* gameElement) override;

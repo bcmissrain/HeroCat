@@ -63,6 +63,7 @@ bool CheetahCat::initElement()
 	_AttackColdTime = 1.0f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
+	boundingBoxSize = _Sprite->getBoundingBox().size;
 	changeStateTo(ActionState::Stand);
 	_BeginBorn();
 	return true;

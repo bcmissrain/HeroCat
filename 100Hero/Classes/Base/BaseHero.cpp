@@ -359,19 +359,9 @@ void BaseHero::onAttack(ClickState clickState)
 	this->_ifClickAttack = clickState;
 }
 
-cocos2d::Size BaseHero::getVisualSize()
-{
-	return _Sprite->getBoundingBox().size;
-}
-
 cocos2d::Point BaseHero::getVisualCenter()
 {
-	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
-}
-
-cocos2d::Rect BaseHero::getBoundingBox()
-{
-	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2,getVisualSize());
+	return this->convertToWorldSpace(_Sprite->getPosition());
 }
 
 DropState BaseHero::getJumpState()

@@ -33,7 +33,6 @@ bool CaptainCat::init()
 	this->_Sprite->addChild(_Weapon, 100);
 	_Weapon->setPosition(Vec2(getVisualSize().width / 2, 0));
 	this->_Weapons.pushBack(_Weapon);
-
 	initElement();
 	return true;
 }
@@ -63,6 +62,7 @@ bool CaptainCat::initElement()
 	this->_AttackState = AttackState::NotAttack;
 	_AttackColdTime = 0.5f;
 	this->_Sprite->setScale(_BaseScale);
+	boundingBoxSize = _Sprite->getBoundingBox().size;
 	this->setRotation(0);
 	changeStateTo(ActionState::Stand);
 	_BeginBorn();

@@ -14,9 +14,10 @@ public:
 	virtual void update(float delta){}
 	virtual void afterUpdate();
 
-	virtual cocos2d::Rect getBoundingBox() = 0;
-	virtual cocos2d::Size getVisualSize() = 0;
-	virtual cocos2d::Point getVisualCenter() = 0;
+	virtual cocos2d::Rect getBoundingBox();
+	virtual cocos2d::Size getVisualSize();
+	virtual cocos2d::Point getVisualCenter();
+
 	virtual cocos2d::Rect getEffectiveBox(){ return getBoundingBox(); }
 	virtual bool ifCollide(cocos2d::Rect rect)
 	{
@@ -35,12 +36,12 @@ public:
 	//tell up or down or still
 	virtual DropState getJumpState() = 0;
 	virtual float getMaxJumpSpeed() = 0;
-	cocos2d::Rect getDetectingBox();
 public:
 	static int elementCodeCounter;
 	int _elementCode = -1;
 	bool _IsValid = true;
 	bool _CanClean = false;
+	cocos2d::Size boundingBoxSize = cocos2d::Size::ZERO;
 	cocos2d::Rect _LastRect = cocos2d::Rect(-10000,10000,10,10);
 };
 #endif

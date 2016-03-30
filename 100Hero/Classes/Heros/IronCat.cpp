@@ -65,6 +65,7 @@ bool IronCat::initElement()
 	_AttackColdTime = 0.20f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
+	boundingBoxSize = _Sprite->getBoundingBox().size;
 	changeStateTo(ActionState::Stand);
 	_BeginBorn();
 	return true;

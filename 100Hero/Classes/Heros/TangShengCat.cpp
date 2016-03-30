@@ -66,9 +66,17 @@ bool TangShengCat::initElement()
 	_AttackColdTime = 0.5f;
 	this->_Sprite->setScale(_BaseScale);
 	this->setRotation(0);
+	boundingBoxSize = _Sprite->getBoundingBox().size;
 	changeStateTo(ActionState::Stand);
 	_BeginBorn();
 	return true;
+}
+
+Point TangShengCat::getVisualCenter()
+{
+	Vec2 pos = _Sprite->getPosition();
+	pos.y += boundingBoxSize.height * 0.1;
+	return this->convertToWorldSpace(Vec2(pos));
 }
 
 void TangShengCat::_BeginStand()

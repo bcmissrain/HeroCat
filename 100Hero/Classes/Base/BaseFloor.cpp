@@ -1,5 +1,11 @@
 #include "BaseFloor.h"
 
+bool BaseFloor::initElement()
+{
+	BaseElement::initElement();
+	return true;
+}
+
 void BaseFloor::initBySprite(cocos2d::Node* sprite)
 {
 	this->removeAllChildren();
@@ -7,19 +13,14 @@ void BaseFloor::initBySprite(cocos2d::Node* sprite)
 	this->_Sprite = sprite;
 }
 
-cocos2d::Rect BaseFloor::getBoundingBox()
-{
-	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2, getVisualSize());
-}
-
 cocos2d::Size BaseFloor::getVisualSize()
 {
-	return _Sprite->getBoundingBox().size;
+	return _Sprite->getContentSize();
 }
 
 cocos2d::Point BaseFloor::getVisualCenter()
 {
-	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
+	return this->convertToWorldSpace(_Sprite->getPosition());
 }
 
 DropState BaseFloor::getJumpState()
@@ -49,6 +50,7 @@ bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 	if (!_IsValid)
 		return false;
 	auto elementBox = gameElement->getBoundingBox();
+	auto elementCenter = gameElement->getVisualCenter();
 	auto boundingBox = getBoundingBox();
 	/*
 	if ((elementBox.getMinX()>=boundingBox.getMinX()&&elementBox.getMinX() <= boundingBox.getMaxX())
@@ -80,13 +82,13 @@ bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 
 	return false;
 	*/
-	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))
+	if (boundingBox.intersectsRect(elementBox))
 	{
 		auto collideRect = getSmallCollideRect(gameElement);
 
-		if (collideRect.intersectsRect(gameElement->getBoundingBox()))
+		if (collideRect.intersectsRect(elementBox))
 		{
-			if (gameElement->getVisualCenter().y > boundingBox.getMidY())
+			if (elementCenter.y > boundingBox.getMidY())
 			{
 				gameElement->onFloorCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp, this);
 			}
@@ -97,7 +99,7 @@ bool BaseFloor::collideWithGameElement(BaseElement* gameElement)
 		}
 		else
 		{
-			if (gameElement->getVisualCenter().x > boundingBox.getMidX())
+			if (elementCenter.x > boundingBox.getMidX())
 			{
 				gameElement->onFloorCollide(cocos2d::Point(boundingBox.getMaxX(), 0), CollideOperate::CollideRight, this);
 			}

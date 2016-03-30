@@ -25,8 +25,6 @@ public:
 	virtual void afterUpdate() override;
 
 	//info
-	virtual cocos2d::Rect getBoundingBox() override;
-	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
 	virtual DropState getJumpState() override{ return DropState::Down; };
 	virtual float getMaxJumpSpeed() override{ return 0; };

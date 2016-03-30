@@ -123,8 +123,6 @@ public:
 	virtual void changeStateTo(ActionState state);
 
 	//info
-	virtual cocos2d::Rect getBoundingBox() override;
-	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
 	virtual DropState getJumpState() override;
 	virtual float getMaxJumpSpeed()override;

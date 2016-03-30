@@ -24,6 +24,7 @@ bool Enemy360::initElement()
 	_IsValid = true;
 	_CanClean = false;
 	changeStateTo(EnemyState::JumpDown);
+	boundingBoxSize = _Sprite->getBoundingBox().size;
 	return true;
 }
 

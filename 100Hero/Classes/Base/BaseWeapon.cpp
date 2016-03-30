@@ -1,10 +1,5 @@
 #include "BaseWeapon.h"
 
-cocos2d::Rect BaseWeapon::getBoundingBox()
-{
-	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2, getVisualSize());
-}
-
 cocos2d::Size BaseWeapon::getVisualSize()
 {
 	return _Sprite->getBoundingBox().size;
@@ -12,7 +7,7 @@ cocos2d::Size BaseWeapon::getVisualSize()
 
 cocos2d::Point BaseWeapon::getVisualCenter()
 {
-	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
+	return this->convertToWorldSpace(_Sprite->getPosition());
 }
 
 bool BaseWeapon::collideWithGameElement(BaseElement* gameElement)

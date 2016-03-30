@@ -20,7 +20,6 @@ public:
 	inline WeaponType getWeaponType();
 	virtual bool isTarget(BaseElement* gameElement){ return false; }
 
-	virtual cocos2d::Rect getBoundingBox() override;
 	virtual cocos2d::Size getVisualSize() override;
 	virtual cocos2d::Point getVisualCenter() override;
 	virtual bool collideWithGameElement(BaseElement* gameElement) override;

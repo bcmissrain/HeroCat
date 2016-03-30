@@ -50,6 +50,7 @@ Scene* BeginScene::createScene()
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Grow.wav");
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Rocket.wav");
 	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Jump.wav"); 
+	CocosDenshion::SimpleAudioEngine::sharedEngine()->preloadEffect("Music/Win.wav");
 
 	return scene;
 }

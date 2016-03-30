@@ -69,19 +69,9 @@ void BaseEnemy::afterUpdate()
 	BaseElement::afterUpdate();
 }
 
-cocos2d::Rect BaseEnemy::getBoundingBox()
-{
-	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2, getVisualSize());
-}
-
-cocos2d::Size BaseEnemy::getVisualSize()
-{
-	return _Sprite->getBoundingBox().size;
-}
-
 cocos2d::Point BaseEnemy::getVisualCenter()
 {
-	return this->convertToWorldSpace(cocos2d::Vec2(_Sprite->getBoundingBox().getMidX(), _Sprite->getBoundingBox().getMidY()));
+	return this->convertToWorldSpace(_Sprite->getPosition());
 }
 
 bool BaseEnemy::collideWithGameElement(BaseElement* gameElement)

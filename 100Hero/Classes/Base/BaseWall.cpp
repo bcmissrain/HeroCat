@@ -6,13 +6,15 @@ bool BaseWall::collideWithGameElement(BaseElement* gameElement)
 		return false;
 
 	auto boundingBox = getBoundingBox();
-	if (boundingBox.intersectsRect(gameElement->getBoundingBox()))
+	auto elementBox = gameElement->getBoundingBox();
+	auto elementCenter = gameElement->getVisualCenter();
+	if (boundingBox.intersectsRect(elementBox))
 	{
 		auto collideRect = getSmallCollideRect(gameElement);
 
-		if (collideRect.intersectsRect(gameElement->getBoundingBox()))
+		if (collideRect.intersectsRect(elementBox))
 		{
-			if (gameElement->getVisualCenter().y > boundingBox.getMidY())
+			if (elementCenter.y > boundingBox.getMidY())
 			{
 				gameElement->onWallCollide(cocos2d::Point(0, boundingBox.getMaxY()), CollideOperate::CollideUp, this);
 			}
@@ -23,7 +25,7 @@ bool BaseWall::collideWithGameElement(BaseElement* gameElement)
 		}
 		else
 		{
-			if (gameElement->getVisualCenter().x > boundingBox.getMidX())
+			if (elementCenter.x > boundingBox.getMidX())
 			{
 				gameElement->onWallCollide(cocos2d::Point(boundingBox.getMaxX(), 0), CollideOperate::CollideRight, this);
 			}

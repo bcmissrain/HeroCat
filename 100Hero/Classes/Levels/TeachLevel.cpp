@@ -439,7 +439,6 @@ void TeachLevel::updateBorn(float delta)
 	if (_currentHero->getBoundingBox().getMaxY() < 0 && !_currentHero->_IsValid)
 	{
 		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent("changeScene",(void*)0);
-
 		_currentHero->setPosition(GAME_SCREEN_SIZE_WIDTH / 2, 300);
 		_currentHero->initElement();
 

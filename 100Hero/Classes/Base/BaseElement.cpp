@@ -26,24 +26,17 @@ void BaseElement::afterUpdate()
 	this->_LastRect = getBoundingBox();
 }
 
-cocos2d::Rect BaseElement::getDetectingBox()
+cocos2d::Rect BaseElement::getBoundingBox()
 {
-	if (getJumpState() == DropState::Still)
-	{
-		return getBoundingBox();
-	}
-	else if (getJumpState() == DropState::Up)
-	{
-		float width = getVisualSize().width;
-		float height = getVisualSize().height+getMaxJumpSpeed();
-		return cocos2d::Rect(getVisualCenter() - getVisualSize(), cocos2d::Size(width, height));
-	}
-	else if (getJumpState() == DropState::Down)
-	{
-		float width = getVisualSize().width;
-		float height = getVisualSize().height + getMaxJumpSpeed();
-		auto beginPos = getVisualCenter() - getVisualSize();
-		beginPos.y -= getMaxJumpSpeed();
-		return cocos2d::Rect(beginPos, cocos2d::Size(width, height));
-	}
+	return cocos2d::Rect(getVisualCenter() - getVisualSize() / 2, getVisualSize());
+}
+
+cocos2d::Size BaseElement::getVisualSize()
+{
+	return boundingBoxSize;
+}
+
+cocos2d::Point BaseElement::getVisualCenter()
+{
+	return this->convertToWorldSpace(this->getPosition());
 }
