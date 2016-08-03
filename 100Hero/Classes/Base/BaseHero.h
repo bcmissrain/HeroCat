@@ -1,7 +1,7 @@
 #ifndef __BASEHERO_H__
 #define __BASEHERO_H__
 
-#include "Base/BaseElement.h"
+#include "BaseElement.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 #include "BaseDefine.h"

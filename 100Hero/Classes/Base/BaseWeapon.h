@@ -5,7 +5,7 @@
 #include "BaseHero.h"
 #include "BaseFloor.h"
 #include "BaseEnemy.h"
-#include "Base/BaseElement.h"
+#include "BaseElement.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
 

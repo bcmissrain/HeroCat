@@ -1,7 +1,7 @@
 #ifndef __BASE_ENEMY_H__
 #define __BASE_ENEMY_H__
 #include "BaseDefine.h"
-#include "Base/BaseElement.h"
+#include "BaseElement.h"
 
 enum class EnemyState
 {
